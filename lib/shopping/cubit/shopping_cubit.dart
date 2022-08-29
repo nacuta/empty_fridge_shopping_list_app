@@ -16,11 +16,13 @@ class ShoppingCubit extends Cubit<ShoppingState> {
     _firestore
         .collection('shoppings')
         .doc('docList')
-        .get()
-        .then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      print(data.toString());
-      return data;
-    });
+        .set(<String, dynamic>{'Title': 'Ceva bun'});
+  }
+
+  void getShoppingsToList() {
+    _firestore.collection('shoppings').doc('docList').get().then(
+          (DocumentSnapshot doc) => doc.data() as Map<String, dynamic>,
+          onError: (e) => print("Error completing: $e"),
+        );
   }
 }
