@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "519871489490",
+    "project_id": "mobilabshoppinglist",
+    "storage_bucket": "mobilabshoppinglist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519871489490:android:45a5679f5eff18ce6d140b",
+        "android_client_info": {
+          "package_name": "com.example.verygoodcore.mobi_lab_shopping_list_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519871489490-cp0p991iift5rd57r28d5ltg1e3lc69u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI8f-mlqftxrJtpWLIh4E2BX5fMmVVHIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519871489490-cp0p991iift5rd57r28d5ltg1e3lc69u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "519871489490-j9mahihncdu3bksijndm1q0g5vglgjgm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.verygoodcore.mobi-lab-shopping-list-app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,7 @@
+{
+    "@@locale": "en",
+    "shoppingAppBarTitle": "Shopping List",
+    "@shoppingAppBarTitle": {
+        "description": "Text shown in the AppBar of the Shopping Page"
+    }
+}

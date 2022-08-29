@@ -1,0 +1,7 @@
+{
+    "@@locale": "ro",
+    "shoppingAppBarTitle": "Lista de Cumparaturi",
+    "@shoppingAppBarTitle": {
+        "description": "Textul afisat in AppBar in pagina Lista de Cumparaturi"
+    }
+}
