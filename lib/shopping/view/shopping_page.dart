@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/cubit/shopping_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/shopping/shopping_item.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
 
 class ShoppingPage extends StatelessWidget {
@@ -63,9 +64,10 @@ class _ShoppingViewState extends State<ShoppingView> {
                     return const AddToListScreen();
                   },
                 );
+                var y = ShoppingItem(title: x.toString());
                 setState(() {
                   // shoppingList.add(x.toString());
-                  context.read<ShoppingCubit>().addShoppingsToList();
+                  context.read<ShoppingCubit>().addShoppingsToList(y);
                 });
               },
             ),

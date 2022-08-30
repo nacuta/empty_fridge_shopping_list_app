@@ -12,21 +12,23 @@ class AddToListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = TextEditingController();
-    return Dialog(
-      child: TextField(
-        controller: controller,
-        autofocus: true,
-        textCapitalization: TextCapitalization.sentences,
-        decoration: const InputDecoration(
-          // border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          hintText: 'what you need?',
+    return Scaffold(
+      body: Form(
+        child: TextField(
+          controller: controller,
+          autofocus: true,
+          textCapitalization: TextCapitalization.sentences,
+          decoration: const InputDecoration(
+            // border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            hintText: 'what you need?',
+          ),
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          minLines: 1,
+          maxLines: 1000,
+          onSubmitted: (text) => _onSubmit(context, controller),
         ),
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        minLines: 1,
-        maxLines: 1000,
-        onSubmitted: (text) => _onSubmit(context, controller),
       ),
     );
   }
