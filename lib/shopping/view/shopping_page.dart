@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -33,10 +34,46 @@ class _ShoppingViewState extends State<ShoppingView> {
     'Citrus',
     'StrawBerries',
   ];
+  // @override
+  // Widget build(BuildContext context) {
+  //   final l10n = context.l10n;
+
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text(l10n.shoppingAppBarTitle),
+  //       centerTitle: true,
+  //     ),
+  //     body: Column(
+  //       children: [
+  //         FutureBuilder(
+  //           future: context.read<ShoppingCubit>().readShoppingList(),
+  //           builder: (context, snapshot) {
+  //             if (snapshot.connectionState == ConnectionState.waiting) {
+  //               return CircularProgressIndicator();
+  //             } else if (snapshot.hasData) {
+  //               return Text(snapshot.data.toString());
+  //             } else {
+  //               var xx = snapshot.data;
+
+  //               return Text('error');
+  //             }
+  //             // var yy =
+  //           },
+  //         ),
+
+  //
+
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection('shoppings').snapshots();
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.shoppingAppBarTitle),
@@ -44,7 +81,34 @@ class _ShoppingViewState extends State<ShoppingView> {
       ),
       body: Column(
         children: [
-          Expanded(child: MultipleSelectItems(shoppingList: shoppingList)),
+          Expanded(
+            // color: Colors.red,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _usersStream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text("Loading");
+                } else {
+                  Map<String, dynamic> lista = {};
+                  var iterableDocumentsMap =
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    final data = document.data()! as Map<String, dynamic>;
+                    print(data);
+                    return data;
+                  });
+
+                  return MultipleSelectItems(
+                    shoppingList: iterableDocumentsMap,
+                  );
+                }
+              },
+            ),
+          ),
           Card(
             child: ElevatedButton(
               style: ButtonStyle(
@@ -80,7 +144,7 @@ class _ShoppingViewState extends State<ShoppingView> {
 
 class MultipleSelectItems extends StatefulWidget {
   const MultipleSelectItems({super.key, required this.shoppingList});
-  final List<String> shoppingList;
+  final Iterable<Map<String, dynamic>> shoppingList;
 
   @override
   MultipleSelectItemsState createState() => MultipleSelectItemsState();
@@ -89,16 +153,19 @@ class MultipleSelectItems extends StatefulWidget {
 class MultipleSelectItemsState extends State<MultipleSelectItems> {
   List<Widget> get listTileWidgets {
     List<Widget> _widget = [SizedBox(height: 40.0)];
-    List<String> subtitle = ['First', 'Second', 'Third', 'Fourth'];
 
     // ListTileWidget is defined below in another StatefulWidget
-    widget.shoppingList.forEach((name) {
-      _widget.add(ListTileWidget(
-        tittle: name,
-        subtitle: name,
-      ));
+    for (final map in widget.shoppingList) {
+      _widget.add(
+        ListTileWidget(
+          tittle: map['title'] as String,
+          subtitle: map['quantity'].toString(),
+          isChecked: map['isCompleted'] as bool,
+          id: map['id'] as String,
+        ),
+      );
       _widget.add(SizedBox(height: 10.0));
-    });
+    }
 
     return _widget;
   }
@@ -106,28 +173,43 @@ class MultipleSelectItemsState extends State<MultipleSelectItems> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Container(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: this.listTileWidgets)));
+      child: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: this.listTileWidgets),
+      ),
+    );
   }
 }
 
 class ListTileWidget extends StatefulWidget {
-  const ListTileWidget(
-      {super.key, required this.tittle, required this.subtitle});
+  const ListTileWidget({
+    super.key,
+    required this.tittle,
+    required this.subtitle,
+    required this.isChecked,
+    required this.id,
+  });
   final String tittle;
   final String subtitle;
+  final bool isChecked;
+  final String id;
 
   @override
   State<ListTileWidget> createState() => _ListTileWidgetState();
 }
 
 class _ListTileWidgetState extends State<ListTileWidget> {
-  bool isChecked = false;
-
   @override
   Widget build(BuildContext context) {
+    var isCheck = widget.isChecked;
+    final ceva = ShoppingItem(
+      title: widget.tittle,
+      quantity: int.parse(widget.subtitle),
+      isCompleted: isCheck,
+      id: widget.id,
+    );
+
     Color getColor(Set<MaterialState> states) {
       const interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -142,17 +224,23 @@ class _ListTileWidgetState extends State<ListTileWidget> {
 
     return Card(
       child: ListTile(
+        onLongPress: () {
+          context.read<ShoppingCubit>().deleteShoppingList(ceva);
+        },
         leading: Checkbox(
           checkColor: Colors.white,
           fillColor: MaterialStateProperty.resolveWith(getColor),
-          value: isChecked,
+          value: isCheck,
           onChanged: (bool? value) {
             setState(() {
-              isChecked = value!;
+              isCheck = value!;
+              context
+                  .read<ShoppingCubit>()
+                  .addShoppingsToList(ceva.copyWith(isCompleted: isCheck));
             });
           },
         ),
-        title: isChecked
+        title: isCheck
             ? Text(
                 widget.tittle,
                 style: const TextStyle(decoration: TextDecoration.lineThrough),
