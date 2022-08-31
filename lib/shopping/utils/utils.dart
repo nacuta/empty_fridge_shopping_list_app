@@ -60,4 +60,23 @@ extension IsChecked<T> on Iterable<Map<String, dynamic>> {
     }
     return _widget;
   }
+
+  List<Widget> areNotDone() {
+    List<Widget> _widget = [SizedBox(height: 20.0)];
+    for (final map in this) {
+      final isChecked = map['isCompleted'] as bool;
+      if (!isChecked) {
+        _widget.add(
+          MultipleSelectedListTileWidget(
+            tittle: map['title'] as String,
+            subtitle: map['quantity'].toString(),
+            isChecked: isChecked,
+            id: map['id'] as String,
+          ),
+        );
+        _widget.add(SizedBox(height: 10.0));
+      }
+    }
+    return _widget;
+  }
 }

@@ -28,6 +28,7 @@ class _MultipleSelectedListTileWidgetState
   @override
   Widget build(BuildContext context) {
     var isCheck = widget.isChecked;
+    bool isSelected = false;
     final ceva = ShoppingItem(
       title: widget.tittle,
       quantity: int.parse(widget.subtitle),
@@ -48,6 +49,7 @@ class _MultipleSelectedListTileWidgetState
     }
 
     return Card(
+      color: Colors.grey,
       child: ListTile(
         title: isCheck
             ? Text(
@@ -63,11 +65,11 @@ class _MultipleSelectedListTileWidgetState
         trailing: Checkbox(
           checkColor: Colors.white,
           fillColor: MaterialStateProperty.resolveWith(getColor),
-          value: isCheck,
+          value: isSelected,
           shape: const CircleBorder(),
-          onChanged: (bool? value) {
+          onChanged: (value) {
             setState(() {
-              isCheck = value!;
+              isSelected = value!;
             });
           },
         ),
@@ -92,7 +94,7 @@ class MultipleSelectItems2State extends State<MultipleSelectItems2> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ...widget.shoppingList.isNotDone(),
+            ...widget.shoppingList.areNotDone(),
             if (widget.shoppingList.multipleAreDone().length != 1)
               const Text(
                 'Completed',
