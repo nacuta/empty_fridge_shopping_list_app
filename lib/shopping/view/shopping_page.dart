@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/cubit/shopping_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/shopping_item.dart';
+import 'package:mobi_lab_shopping_list_app/shopping/utils/utils.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
 
 class ShoppingPage extends StatelessWidget {
@@ -92,9 +93,9 @@ class _ShoppingViewState extends State<ShoppingView> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text("Loading");
+                  return const Center(child: CircularProgressIndicator());
                 } else {
-                  Map<String, dynamic> lista = {};
+                  final lista = <String, dynamic>{};
                   var iterableDocumentsMap =
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     final data = document.data()! as Map<String, dynamic>;
@@ -151,32 +152,25 @@ class MultipleSelectItems extends StatefulWidget {
 }
 
 class MultipleSelectItemsState extends State<MultipleSelectItems> {
-  List<Widget> get listTileWidgets {
-    List<Widget> _widget = [SizedBox(height: 40.0)];
-
-    // ListTileWidget is defined below in another StatefulWidget
-    for (final map in widget.shoppingList) {
-      _widget.add(
-        ListTileWidget(
-          tittle: map['title'] as String,
-          subtitle: map['quantity'].toString(),
-          isChecked: map['isCompleted'] as bool,
-          id: map['id'] as String,
-        ),
-      );
-      _widget.add(SizedBox(height: 10.0));
-    }
-
-    return _widget;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
       child: SingleChildScrollView(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: this.listTileWidgets),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Shopping list',
+              style: TextStyle(fontSize: 22),
+            ),
+            ...widget.shoppingList.isNotDone(),
+            const Text(
+              'Completed',
+              style: TextStyle(fontSize: 22),
+            ),
+            ...widget.shoppingList.isDone(),
+          ],
+        ),
       ),
     );
   }
