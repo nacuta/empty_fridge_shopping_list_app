@@ -8,6 +8,7 @@ import 'package:mobi_lab_shopping_list_app/shopping/cubit/shopping_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/shopping_item.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/utils/utils.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
+import 'package:mobi_lab_shopping_list_app/shopping/view/multiple_selection.dart';
 
 class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
@@ -29,49 +30,7 @@ class ShoppingView extends StatefulWidget {
 }
 
 class _ShoppingViewState extends State<ShoppingView> {
-  List<String> shoppingList = [
-    'Apples',
-    'Pears',
-    'Citrus',
-    'StrawBerries',
-  ];
-  // @override
-  // Widget build(BuildContext context) {
-  //   final l10n = context.l10n;
-
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text(l10n.shoppingAppBarTitle),
-  //       centerTitle: true,
-  //     ),
-  //     body: Column(
-  //       children: [
-  //         FutureBuilder(
-  //           future: context.read<ShoppingCubit>().readShoppingList(),
-  //           builder: (context, snapshot) {
-  //             if (snapshot.connectionState == ConnectionState.waiting) {
-  //               return CircularProgressIndicator();
-  //             } else if (snapshot.hasData) {
-  //               return Text(snapshot.data.toString());
-  //             } else {
-  //               var xx = snapshot.data;
-
-  //               return Text('error');
-  //             }
-  //             // var yy =
-  //           },
-  //         ),
-
-  //
-
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('shoppings').snapshots();
-
+  late Iterable<Map<String, dynamic>> iterableDocumentsMap;
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -85,21 +44,21 @@ class _ShoppingViewState extends State<ShoppingView> {
           Expanded(
             // color: Colors.red,
             child: StreamBuilder<QuerySnapshot>(
-              stream: _usersStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
+              stream: context.read<ShoppingCubit>().readShoppingList(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot,
+              ) {
                 if (snapshot.hasError) {
-                  return Text('Something went wrong');
+                  return const Text('Something went wrong');
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  final lista = <String, dynamic>{};
-                  var iterableDocumentsMap =
+                  iterableDocumentsMap =
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     final data = document.data()! as Map<String, dynamic>;
-                    print(data);
                     return data;
                   });
 
@@ -123,16 +82,18 @@ class _ShoppingViewState extends State<ShoppingView> {
                 ],
               ),
               onPressed: () async {
-                final x = await showDialog(
+                var x = await showDialog(
                   context: context,
                   builder: (context) {
                     return const AddToListScreen();
                   },
                 );
-                var y = ShoppingItem(title: x.toString());
+
                 setState(() {
                   // shoppingList.add(x.toString());
-                  context.read<ShoppingCubit>().addShoppingsToList(y);
+                  context
+                      .read<ShoppingCubit>()
+                      .addShoppingsToList(x as ShoppingItem);
                 });
               },
             ),
@@ -159,93 +120,17 @@ class MultipleSelectItemsState extends State<MultipleSelectItems> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Shopping list',
-              style: TextStyle(fontSize: 22),
-            ),
             ...widget.shoppingList.isNotDone(),
-            const Text(
-              'Completed',
-              style: TextStyle(fontSize: 22),
-            ),
+            if (widget.shoppingList.isDone().length != 1)
+              const Text(
+                'Completed',
+                style: TextStyle(fontSize: 22),
+              )
+            else
+              Container(),
             ...widget.shoppingList.isDone(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ListTileWidget extends StatefulWidget {
-  const ListTileWidget({
-    super.key,
-    required this.tittle,
-    required this.subtitle,
-    required this.isChecked,
-    required this.id,
-  });
-  final String tittle;
-  final String subtitle;
-  final bool isChecked;
-  final String id;
-
-  @override
-  State<ListTileWidget> createState() => _ListTileWidgetState();
-}
-
-class _ListTileWidgetState extends State<ListTileWidget> {
-  @override
-  Widget build(BuildContext context) {
-    var isCheck = widget.isChecked;
-    final ceva = ShoppingItem(
-      title: widget.tittle,
-      quantity: int.parse(widget.subtitle),
-      isCompleted: isCheck,
-      id: widget.id,
-    );
-
-    Color getColor(Set<MaterialState> states) {
-      const interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.red;
-    }
-
-    return Card(
-      child: ListTile(
-        onLongPress: () {
-          context.read<ShoppingCubit>().deleteShoppingList(ceva);
-        },
-        leading: Checkbox(
-          checkColor: Colors.white,
-          fillColor: MaterialStateProperty.resolveWith(getColor),
-          value: isCheck,
-          onChanged: (bool? value) {
-            setState(() {
-              isCheck = value!;
-              context
-                  .read<ShoppingCubit>()
-                  .addShoppingsToList(ceva.copyWith(isCompleted: isCheck));
-            });
-          },
-        ),
-        title: isCheck
-            ? Text(
-                widget.tittle,
-                style: const TextStyle(decoration: TextDecoration.lineThrough),
-              )
-            : Text(
-                widget.tittle,
-              ),
-        subtitle: Text(
-          widget.subtitle,
-        ),
-        trailing: const Icon(Icons.edit),
       ),
     );
   }

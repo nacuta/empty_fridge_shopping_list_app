@@ -7,3 +7,15 @@ class ShoppingInitial extends ShoppingState {
   @override
   List<Object?> get props => [];
 }
+
+class ShoppingIsLoading extends ShoppingState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ShoppingIsLoaded extends ShoppingState {
+  ShoppingIsLoaded(this.iterableMap);
+  final Iterable<Map<String, dynamic>> iterableMap;
+  @override
+  List<Object?> get props => [iterableMap];
+}

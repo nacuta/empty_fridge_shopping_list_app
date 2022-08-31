@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,25 +16,9 @@ class ShoppingCubit extends Cubit<ShoppingState> {
         super(ShoppingInitial());
   FirebaseFirestore _firestore;
 
-  // Future<Iterable<Map<String, dynamic>>> readShoppingList() async {
-  //   final ref = await FirebaseFirestore.instance.collection('shoppings').get();
-  //   final val = ref.docs.map((doc) => doc.data());
-  //   return val;
-  // }
-  Future<DocumentSnapshot<Map<String, dynamic>>> readShoppingList() async {
-    var ref =
-        await FirebaseFirestore.instance.collection('shoppings').doc().get();
-    var _questions = ref.data();
-    // ref.map((query)=>ShoppingItem(query));
-    // .map(
-    //   (question) => Question(
-    //       id: question['id'],
-    //       question: question['question'],
-    //       options: question['options'],
-    //       answer_index: question['answer_index']),
-    // )
-    // .toList();
-    // var users = ShoppingItem.fromJson(_questions);
+  Stream<QuerySnapshot<Map<String, dynamic>>> readShoppingList() {
+    final ref = FirebaseFirestore.instance.collection('shoppings').snapshots();
+
     return ref;
   }
 
