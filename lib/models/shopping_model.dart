@@ -31,7 +31,7 @@ class ShoppingModel extends Equatable {
   final String title;
   final int quantity;
   final String id;
-  final bool? isCompleted;
+  late final bool? isCompleted;
 
   ShoppingModel copyWith({
     String? id,

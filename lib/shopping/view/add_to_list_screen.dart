@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mobi_lab_shopping_list_app/app/app.dart';
-import 'package:mobi_lab_shopping_list_app/shopping/shopping_item.dart';
+import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 
 class AddToListScreen extends StatelessWidget {
   const AddToListScreen({super.key});
@@ -12,7 +12,7 @@ class AddToListScreen extends StatelessWidget {
     TextEditingController _shoppingItemController,
     TextEditingController _quantityItemController,
   ) {
-    var result = ShoppingItem(
+    var result = ShoppingModel(
       title: _shoppingItemController.text,
       quantity: int.parse(_quantityItemController.text),
     );
