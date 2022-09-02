@@ -9,8 +9,9 @@ class EditItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Shopping'),
+        title: const Text('Edit Shopping'),
       ),
+      // ignore: use_colored_box
       body: Container(
         color: Colors.green,
         child: Text(editShopping.title),

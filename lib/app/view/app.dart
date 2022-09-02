@@ -12,7 +12,7 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/view/shopping_page.dart
 import 'package:mobi_lab_shopping_list_app/utils/theme.dart';
 
 class App extends StatelessWidget {
-  App({super.key});
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {

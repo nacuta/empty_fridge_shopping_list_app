@@ -20,6 +20,8 @@ class DatabaseService {
         .doc(item.id)
         .delete()
         .then((value) => print('User Deleted'))
-        .catchError((error) => print('Failed to delete user: $error'));
+        .catchError(
+          (Exception error) => print('Failed to delete user: $error'),
+        );
   }
 }

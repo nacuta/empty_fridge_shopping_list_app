@@ -16,5 +16,5 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform, //This line is necessary
   );
-  await bootstrap(() => App());
+  await bootstrap(App.new);
 }

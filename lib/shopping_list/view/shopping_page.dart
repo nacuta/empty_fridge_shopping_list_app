@@ -4,7 +4,7 @@ import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/view/new_textfield.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/view/search_text_field.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/add_new_item_button.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/selectable_list_tiles.dart';
@@ -90,6 +90,7 @@ class ShoppingView extends StatelessWidget {
                                 backgroundColor: Theme.of(context).primaryColor,
                                 onSurface: Colors.grey,
                                 shape: const RoundedRectangleBorder(
+                                  // ignore: avoid_redundant_argument_values
                                   borderRadius: BorderRadius.zero,
                                 ),
                               ),
@@ -108,6 +109,7 @@ class ShoppingView extends StatelessWidget {
                                 backgroundColor: Theme.of(context).primaryColor,
                                 onSurface: Colors.grey,
                                 shape: const RoundedRectangleBorder(
+                                  // ignore: avoid_redundant_argument_values
                                   borderRadius: BorderRadius.zero,
                                 ),
                               ),

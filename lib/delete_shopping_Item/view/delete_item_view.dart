@@ -9,8 +9,9 @@ class DeleteItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Delete Shopping'),
+        title: const Text('Delete Shopping'),
       ),
+      // ignore: use_colored_box
       body: Container(
         color: Colors.red,
         child: Text(editShopping.title),
