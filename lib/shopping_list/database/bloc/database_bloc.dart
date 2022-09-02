@@ -19,16 +19,14 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     on<DatabaseChanged>(_changedData);
     on<DatabaseChangedCompletionToggled>(_onDatabaseChangedCompletionToggled);
     on<DatabaseRemoveAll>(_onDatabaseRemoveAll);
+    on<DatabaseUncheckAll>(_onDatabaseUncheckAll);
   }
   final DatabaseRepository _databaseRepository;
 
-  // ignore: always_declare_return_types, inference_failure_on_function_return_type
-  _fetchData(DatabaseFetched event, Emitter<DatabaseState> emit) async {
+  Future<void> _fetchData(
+      DatabaseFetched event, Emitter<DatabaseState> emit) async {
     try {
-      // ignore: omit_local_variable_types, prefer_final_locals
-      List<ShoppingModel> listOfShoppings =
-          await _databaseRepository.retrieveItemsData();
-      print('data retrived');
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
       emit(
         state.copyWith(
           status: DatabaseStateStatus.success,
@@ -40,14 +38,13 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     }
   }
 
-  // ignore: inference_failure_on_function_return_type, always_declare_return_types
-  _writeData(DatabaseWrite event, Emitter<DatabaseState> emit) async {
+  Future<void> _writeData(
+    DatabaseWrite event,
+    Emitter<DatabaseState> emit,
+  ) async {
     try {
       await _databaseRepository.saveItemData(event.newData);
-      print('data to write');
-      // ignore: omit_local_variable_types
-      final List<ShoppingModel> listOfShoppings =
-          await _databaseRepository.retrieveItemsData();
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
       emit(
         state.copyWith(
           status: DatabaseStateStatus.success,
@@ -59,10 +56,10 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     }
   }
 
-  void _changedData(DatabaseChanged event, Emitter<DatabaseState> emit) async {
+  Future<void> _changedData(
+      DatabaseChanged event, Emitter<DatabaseState> emit) async {
     try {
-      final List<ShoppingModel> listOfShoppings =
-          await _databaseRepository.retrieveItemsData();
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
       emit(
         state.copyWith(
           status: DatabaseStateStatus.success,
@@ -81,8 +78,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     try {
       final newTodo = event.shopItem.copyWith(isCompleted: event.isCompleted);
       await _databaseRepository.saveItemData(newTodo);
-      final List<ShoppingModel> listOfShoppings =
-          await _databaseRepository.retrieveItemsData();
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
       emit(
         state.copyWith(
           status: DatabaseStateStatus.success,
@@ -108,6 +104,24 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
         ),
       );
     } catch (_) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
+    }
+  }
+
+  Future<FutureOr<void>> _onDatabaseUncheckAll(
+    DatabaseUncheckAll event,
+    Emitter<DatabaseState> emit,
+  ) async {
+    try {
+      event.listToUncheck.forEach(_databaseRepository.saveItemData);
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
+    } catch (e) {
       emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
