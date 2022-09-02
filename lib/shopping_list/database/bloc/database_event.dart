@@ -22,6 +22,14 @@ class DatabaseWrite extends DatabaseEvent {
   List<Object?> get props => [newData];
 }
 
+class DatabaseRemoveAll extends DatabaseEvent {
+  DatabaseRemoveAll({required this.listToDelete});
+
+  final List<ShoppingModel> listToDelete;
+  @override
+  List<Object?> get props => [listToDelete];
+}
+
 class DatabaseChangedCompletionToggled extends DatabaseEvent {
   DatabaseChangedCompletionToggled({
     required this.shopItem,

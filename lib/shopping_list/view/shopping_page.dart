@@ -5,6 +5,7 @@ import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shoppin
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/list_buttons.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
 
 class ShoppingPage extends StatelessWidget {
@@ -83,61 +84,21 @@ class ShoppingView extends StatelessWidget {
                         .where((element) => !element.isCompleted!)
                         .toList(),
                   ),
-                  if (!isEmptyList)
-                    Container(
-                      height: 60,
+                  if (!isEmptyList) ListButtons(),
+                  const Divider(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                  Stack(children: [
+                    ColoredBox(
                       color: Colors.grey.shade700,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            width: 150,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                disabledForegroundColor:
-                                    Colors.grey.withOpacity(0.38),
-                                shape: const RoundedRectangleBorder(
-                                  // ignore: avoid_redundant_argument_values
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
-                              child: const Text(
-                                'UNCHECK ALL',
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 150,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                disabledForegroundColor: Colors.grey,
-                                shape: const RoundedRectangleBorder(
-                                  // ignore: avoid_redundant_argument_values
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
-                              child: const Text(
-                                'DELETE ALL',
-                              ),
-                            ),
-                          ),
-                          const Divider(),
-                        ],
+                      child: MultipleSelectItems(
+                        shoppingList: state.listOfShoppingItems
+                            .where((element) => element.isCompleted!)
+                            .toList(),
                       ),
                     ),
-                  MultipleSelectItems(
-                    shoppingList: state.listOfShoppingItems
-                        .where((element) => element.isCompleted!)
-                        .toList(),
-                  ),
+                  ]),
                   if (!isEmptyList)
                     Expanded(
                       // ignore: use_colored_box

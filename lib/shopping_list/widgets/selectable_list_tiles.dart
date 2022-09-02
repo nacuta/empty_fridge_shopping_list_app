@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/delete_shopping_Item/bloc/delete_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/delete_shopping_Item/view/delete_item_view.dart';
+import 'package:mobi_lab_shopping_list_app/edit_item/view/edit_item_view.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
@@ -39,19 +40,11 @@ class SelectableListTile extends StatelessWidget {
       child: ListTile(
         textColor: isCheck ? Colors.white : Colors.grey.shade600,
         key: ValueKey(shoppingModel),
-        onLongPress: () {
-          Navigator.push(
+        onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
-                child: DeleteItemView(
-                  editShopping: shoppingModel,
-                ),
-              ),
-            ),
-          );
-        },
+              builder: (context) => EditItemView(editShopping: shoppingModel),
+            )),
         leading: Checkbox(
           checkColor: Colors.white,
           fillColor: MaterialStateProperty.resolveWith(getColor),

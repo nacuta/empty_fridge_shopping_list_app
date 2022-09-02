@@ -13,6 +13,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       service.saveAddedShoppingData(item);
 
   @override
-  Future<void> deleteItemData(ShoppingModel item) =>
-      service.deleteShoppingData(item);
+  Future<void> deleteItemData(ShoppingModel item) {
+    print('reposervice');
+    return service.deleteShoppingData(item);
+  }
 }

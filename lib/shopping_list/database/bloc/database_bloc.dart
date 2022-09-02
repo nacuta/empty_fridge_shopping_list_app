@@ -18,6 +18,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     on<DatabaseWrite>(_writeData);
     on<DatabaseChanged>(_changedData);
     on<DatabaseChangedCompletionToggled>(_onDatabaseChangedCompletionToggled);
+    on<DatabaseRemoveAll>(_onDatabaseRemoveAll);
   }
   final DatabaseRepository _databaseRepository;
 
@@ -89,6 +90,24 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
         ),
       );
     } on Exception catch (e) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
+    }
+  }
+
+  Future<void> _onDatabaseRemoveAll(
+    DatabaseRemoveAll event,
+    Emitter<DatabaseState> emit,
+  ) async {
+    try {
+      event.listToDelete.forEach(_databaseRepository.deleteItemData);
+      final listOfShoppings = await _databaseRepository.retrieveItemsData();
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
+    } catch (_) {
       emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }

@@ -15,13 +15,7 @@ class DatabaseService {
   }
 
   Future<void> deleteShoppingData(ShoppingModel item) async {
-    await _db
-        .collection(collectionPath)
-        .doc(item.id)
-        .delete()
-        .then((value) => print('User Deleted'))
-        .catchError(
-          (Exception error) => print('Failed to delete user: $error'),
-        );
+    print('daca ajunge aici');
+    await _db.collection(collectionPath).doc(item.id).delete();
   }
 }
