@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobi_lab_shopping_list_app/adding_shopping_item/adding_item_view.dart';
+import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/view/search_text_field.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/add_new_item_button.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/selectable_list_tiles.dart';
 
 class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
+        ),
+        BlocProvider(
+          create: (context) => AddShoppingItemBloc(
+            DatabaseRepositoryImpl(),
+            DatabaseBloc(
+              DatabaseRepositoryImpl(),
+            ),
+          ),
+        ),
+      ],
       child: const ShoppingView(),
     );
   }
@@ -44,7 +54,7 @@ class ShoppingView extends StatelessWidget {
         ],
         bottom: const PreferredSize(
           preferredSize: Size(40, 60),
-          child: Search(),
+          child: AddShoppingItem(),
         ),
         // centerTitle: true,
       ),
@@ -86,9 +96,10 @@ class ShoppingView extends StatelessWidget {
                             child: TextButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                primary: Colors.white,
+                                foregroundColor: Colors.white,
                                 backgroundColor: Theme.of(context).primaryColor,
-                                onSurface: Colors.grey,
+                                disabledForegroundColor:
+                                    Colors.grey.withOpacity(0.38),
                                 shape: const RoundedRectangleBorder(
                                   // ignore: avoid_redundant_argument_values
                                   borderRadius: BorderRadius.zero,
@@ -105,9 +116,9 @@ class ShoppingView extends StatelessWidget {
                             child: TextButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                primary: Colors.white,
+                                foregroundColor: Colors.white,
                                 backgroundColor: Theme.of(context).primaryColor,
-                                onSurface: Colors.grey,
+                                disabledForegroundColor: Colors.grey,
                                 shape: const RoundedRectangleBorder(
                                   // ignore: avoid_redundant_argument_values
                                   borderRadius: BorderRadius.zero,

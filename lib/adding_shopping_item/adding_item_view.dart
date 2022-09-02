@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 
-class Search extends StatelessWidget {
-  const Search({super.key});
+class AddShoppingItem extends StatelessWidget {
+  const AddShoppingItem({super.key});
 
   @override
   Widget build(BuildContext context) {
     final _shoppingItemController = TextEditingController();
+
+    late String text;
+    // @override
+    // void initState() {
+    //   super.initState();
+    //   _shoppingItemController.addListener(_isTextEditingNotEmpthy);
+    // }
+
+    // @override
+    // void dispose() {
+    //   _shoppingItemController.dispose();
+    //   super.dispose();
+    // }
+
+    bool _isTextEditingNotEmpthy() {
+      print('object${_shoppingItemController.text}');
+      return _shoppingItemController.text.isNotEmpty;
+    }
+
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
@@ -31,7 +51,6 @@ class Search extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8),
           child: TextField(
             controller: _shoppingItemController,
-            textCapitalization: TextCapitalization.none,
             decoration: InputDecoration(
               suffixIcon: Container(
                 width: 80,
@@ -44,21 +63,20 @@ class Search extends StatelessWidget {
                         _shoppingItemController.text = '';
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.check_box),
-                      onPressed: () {
-                        ShoppingModel(
-                          title: _shoppingItemController.text,
-                        );
-                        context.read<DatabaseBloc>().add(
-                              DatabaseWrite(
-                                ShoppingModel(
-                                  title: _shoppingItemController.text,
-                                ),
-                              ),
-                            );
-                      },
-                    ),
+                    if (!context.select(
+                      (AddShoppingItemBloc formBloc) =>
+                          formBloc.state.changedValue.pure,
+                    ))
+                      IconButton(
+                        icon: const Icon(Icons.check_box),
+                        onPressed: () {
+                          context.read<AddShoppingItemBloc>().add(
+                                AddShoppingFormSubmitted(),
+                              );
+                          _shoppingItemController.text = '';
+                          context.watch<DatabaseBloc>().add(DatabaseChanged());
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -67,6 +85,12 @@ class Search extends StatelessWidget {
             ),
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
+            onChanged: (value) {
+              context
+                  .read<AddShoppingItemBloc>()
+                  .add(AddShoppingFormChanged(value));
+              print(value);
+            },
             minLines: 1,
             maxLines: 1000,
           ),

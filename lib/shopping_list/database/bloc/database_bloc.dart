@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository.dart';
-
+import 'package:formz/formz.dart';
 part 'database_event.dart';
 part 'database_state.dart';
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
-  DatabaseBloc(this._databaseRepository) : super(const DatabaseState()) {
+  DatabaseBloc(
+    this._databaseRepository,
+  ) : super(const DatabaseState()) {
     on<DatabaseFetched>(_fetchData);
     on<DatabaseWrite>(_writeData);
+    on<DatabaseChanged>(_changedData);
+    on<DatabaseChangedCompletionToggled>(_onDatabaseChangedCompletionToggled);
   }
   final DatabaseRepository _databaseRepository;
 
@@ -48,6 +55,41 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       );
     } on Exception catch (e) {
       emit(state.copyWith(status: DatabaseStateStatus.failure, exception: e));
+    }
+  }
+
+  void _changedData(DatabaseChanged event, Emitter<DatabaseState> emit) async {
+    try {
+      final List<ShoppingModel> listOfShoppings =
+          await _databaseRepository.retrieveItemsData();
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
+    }
+  }
+
+  Future<FutureOr<void>> _onDatabaseChangedCompletionToggled(
+    DatabaseChangedCompletionToggled event,
+    Emitter<DatabaseState> emit,
+  ) async {
+    try {
+      final newTodo = event.shopItem.copyWith(isCompleted: event.isCompleted);
+      await _databaseRepository.saveItemData(newTodo);
+      final List<ShoppingModel> listOfShoppings =
+          await _databaseRepository.retrieveItemsData();
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
+    } on Exception catch (e) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
 }

@@ -25,6 +25,7 @@ dev_dependencies:
   equatable: ^2.0.5
   flutter_test:
     sdk: flutter
+  formz: ^0.4.1
   mocktail: ^0.3.0
   very_good_analysis: ^3.0.1
 

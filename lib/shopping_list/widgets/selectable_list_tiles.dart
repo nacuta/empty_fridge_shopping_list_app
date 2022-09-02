@@ -57,10 +57,11 @@ class SelectableListTile extends StatelessWidget {
           fillColor: MaterialStateProperty.resolveWith(getColor),
           value: isCheck,
           onChanged: (bool? value) {
-            final updatedStatusModel =
-                shoppingModel.copyWith(isCompleted: !isCheck);
             context.read<DatabaseBloc>().add(
-                  DatabaseWrite(updatedStatusModel),
+                  DatabaseChangedCompletionToggled(
+                    isCompleted: !isCheck,
+                    shopItem: shoppingModel,
+                  ),
                 );
           },
         ),
