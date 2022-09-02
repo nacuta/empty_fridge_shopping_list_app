@@ -25,15 +25,20 @@ class SelectableListTile extends StatelessWidget {
         MaterialState.pressed,
         MaterialState.hovered,
         MaterialState.focused,
+        MaterialState.selected,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Theme.of(context).primaryColor;
       }
-      return Colors.red;
+
+      return Colors.grey.shade600;
     }
 
-    return Card(
+    return Container(
+      color: !isCheck ? Colors.white : Colors.grey.shade700,
       child: ListTile(
+        textColor: isCheck ? Colors.white : Colors.grey.shade600,
+        key: ValueKey(shoppingModel),
         onLongPress: () {
           Navigator.push(
             context,
@@ -51,7 +56,6 @@ class SelectableListTile extends StatelessWidget {
           checkColor: Colors.white,
           fillColor: MaterialStateProperty.resolveWith(getColor),
           value: isCheck,
-          shape: const CircleBorder(),
           onChanged: (bool? value) {
             final updatedStatusModel =
                 shoppingModel.copyWith(isCompleted: !isCheck);
@@ -68,10 +72,8 @@ class SelectableListTile extends StatelessWidget {
             : Text(
                 shoppingModel.title,
               ),
-        subtitle: Text(
-          shoppingModel.quantity.toString(),
-        ),
-        trailing: const Icon(Icons.edit),
+
+        // trailing: const Icon(Icons.edit),
       ),
     );
   }
