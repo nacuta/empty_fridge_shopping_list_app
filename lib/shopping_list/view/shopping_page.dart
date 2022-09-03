@@ -79,31 +79,33 @@ class ShoppingView extends StatelessWidget {
 
               return Column(
                 children: [
-                  MultipleSelectItems(
-                    shoppingList: state.listOfShoppingItems
-                        .where((element) => !element.isCompleted!)
-                        .toList(),
+                  Expanded(
+                    flex: 5,
+                    child: MultipleSelectItems(
+                        shoppingList: state.listOfShoppingItems),
                   ),
-                  if (!isEmptyList) ListButtons(),
-                  const Divider(
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  Stack(children: [
-                    ColoredBox(
-                      color: Colors.grey.shade700,
-                      child: MultipleSelectItems(
-                        shoppingList: state.listOfShoppingItems
-                            .where((element) => element.isCompleted!)
-                            .toList(),
-                      ),
-                    ),
-                  ]),
-                  if (!isEmptyList)
-                    Expanded(
-                      // ignore: use_colored_box
-                      child: Container(color: Colors.grey.shade700),
-                    )
+                  // if (!isEmptyList) const ListButtons(),
+                  // const Divider(
+                  //   height: 1,
+                  //   color: Colors.grey,
+                  // ),
+                  // Expanded(
+                  //   child: Stack(children: [
+                  //     ColoredBox(
+                  //       color: Colors.grey.shade700,
+                  //       child: MultipleSelectItems(
+                  //         shoppingList: state.listOfShoppingItems
+                  //             .where((element) => element.isCompleted!)
+                  //             .toList(),
+                  //       ),
+                  //     ),
+                  //   ]),
+                  // ),
+                  // // if (!isEmptyList)
+                  // // Expanded(
+                  // //   flex: 1,
+                  // //   child: Container(color: Colors.grey.shade700),
+                  // // )
                 ],
               );
             }
