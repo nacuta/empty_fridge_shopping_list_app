@@ -7,6 +7,8 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/list_buttons.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
+import 'package:formz/formz.dart';
+import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 
 class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
@@ -19,12 +21,7 @@ class ShoppingPage extends StatelessWidget {
           create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
         ),
         BlocProvider(
-          create: (context) => AddShoppingItemBloc(
-            DatabaseRepositoryImpl(),
-            DatabaseBloc(
-              DatabaseRepositoryImpl(),
-            ),
-          ),
+          create: (context) => AddShoppingItemBloc(DatabaseRepositoryImpl()),
         ),
       ],
       child: const ShoppingView(),
@@ -59,60 +56,85 @@ class ShoppingView extends StatelessWidget {
         ),
         // centerTitle: true,
       ),
-      body: BlocBuilder<DatabaseBloc, DatabaseState>(
-        builder: (context, state) {
-          context.read<DatabaseBloc>().add(DatabaseFetched());
-          // }
-          if (state.status == DatabaseStateStatus.loading) {
+      body: BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
+        listener: (context, state) {
+          if (state.status == FormzStatus.submissionSuccess) {
+            // Scaffold.of(context)
+            print('succes');
             context.read<DatabaseBloc>().add(DatabaseFetched());
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.status == DatabaseStateStatus.success) {
-            if (state.listOfShoppingItems.isEmpty) {
-              return const Center(
-                child: Text('no data'),
-              );
-            } else {
-              final isEmptyList = (state.listOfShoppingItems
-                      .where((element) => element.isCompleted!)
-                      .toList())
-                  .isEmpty;
-
-              return Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: MultipleSelectItems(
-                        shoppingList: state.listOfShoppingItems),
-                  ),
-                  // if (!isEmptyList) const ListButtons(),
-                  // const Divider(
-                  //   height: 1,
-                  //   color: Colors.grey,
-                  // ),
-                  // Expanded(
-                  //   child: Stack(children: [
-                  //     ColoredBox(
-                  //       color: Colors.grey.shade700,
-                  //       child: MultipleSelectItems(
-                  //         shoppingList: state.listOfShoppingItems
-                  //             .where((element) => element.isCompleted!)
-                  //             .toList(),
-                  //       ),
-                  //     ),
-                  //   ]),
-                  // ),
-                  // // if (!isEmptyList)
-                  // // Expanded(
-                  // //   flex: 1,
-                  // //   child: Container(color: Colors.grey.shade700),
-                  // // )
-                ],
-              );
-            }
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
         },
+        child: BlocBuilder<DatabaseBloc, DatabaseState>(
+          builder: (context, state) {
+            context.read<DatabaseBloc>().add(DatabaseFetched());
+            // }
+            if (state.status == DatabaseStateStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.status == DatabaseStateStatus.success) {
+              if (state.listOfShoppingItems.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      const Text('No data retrived'),
+                      FloatingActionButton(
+                        tooltip: 'Refresh',
+                        child: const Icon(Icons.refresh),
+                        onPressed: () {
+                          context.read<DatabaseBloc>().add(DatabaseFetched());
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                final list = state.listOfShoppingItems
+                    .where((element) => element.isCompleted!)
+                    .toList();
+                final listbad = state.listOfShoppingItems
+                    .where((element) => element.isCompleted == false)
+                    .toList();
+
+                return Column(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: MultipleSelectItems(
+                        shoppingList: state.listOfShoppingItems,
+                      ),
+                    ),
+                    Container(
+                      height: 50,
+                      width: Responsive.width(100, context),
+                      color: Colors.black,
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Items in cart: ${list.length}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            'Items in list: ${listbad.length}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }

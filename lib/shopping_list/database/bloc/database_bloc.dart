@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository.dart';
-import 'package:formz/formz.dart';
+
 part 'database_event.dart';
 part 'database_state.dart';
 
@@ -33,8 +31,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           listOfShoppingItems: listOfShoppings,
         ),
       );
-    } on Exception catch (e) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure, exception: e));
+    } catch (_) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
 
@@ -51,8 +49,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           listOfShoppingItems: listOfShoppings,
         ),
       );
-    } on Exception catch (e) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure, exception: e));
+    } catch (_) {
+      emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
 
@@ -85,7 +83,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           listOfShoppingItems: listOfShoppings,
         ),
       );
-    } on Exception catch (e) {
+    } catch (_) {
       emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
@@ -121,7 +119,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           listOfShoppingItems: listOfShoppings,
         ),
       );
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(status: DatabaseStateStatus.failure));
     }
   }
