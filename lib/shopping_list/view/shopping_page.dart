@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/adding_shopping_item/adding_item_view.dart';
+import 'package:mobi_lab_shopping_list_app/adding_shopping_item/view/adding_item_view.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
