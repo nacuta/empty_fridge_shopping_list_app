@@ -11,7 +11,7 @@ part 'database_state.dart';
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   DatabaseBloc(
     this._databaseRepository,
-  ) : super(const DatabaseState()) {
+  ) : super(const DatabaseState.loading()) {
     on<DatabaseFetched>(_fetchData);
     on<DatabaseWrite>(_writeData);
     on<DatabaseChanged>(_changedData);
@@ -22,17 +22,14 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   final DatabaseRepository _databaseRepository;
 
   Future<void> _fetchData(
-      DatabaseFetched event, Emitter<DatabaseState> emit) async {
+    DatabaseFetched event,
+    Emitter<DatabaseState> emit,
+  ) async {
     try {
       final listOfShoppings = await _databaseRepository.retrieveItemsData();
-      emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
-      );
+      emit(DatabaseState.success(listOfShoppings));
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
 
@@ -42,15 +39,11 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   ) async {
     try {
       await _databaseRepository.saveItemData(event.newData);
-      final listOfShoppings = await _databaseRepository.retrieveItemsData();
-      emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
-      );
+      final listOfShoppings = state.listOfShoppingItems..add(event.newData);
+
+      emit(DatabaseState.success(listOfShoppings));
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
 
@@ -58,14 +51,9 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       DatabaseChanged event, Emitter<DatabaseState> emit) async {
     try {
       final listOfShoppings = await _databaseRepository.retrieveItemsData();
-      emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
-      );
+      emit(DatabaseState.success(listOfShoppings));
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
 
@@ -76,15 +64,16 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     try {
       final newTodo = event.shopItem.copyWith(isCompleted: event.isCompleted);
       await _databaseRepository.saveItemData(newTodo);
-      final listOfShoppings = await _databaseRepository.retrieveItemsData();
-      emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
-      );
+
+      final listOfShoppings = state.listOfShoppingItems.map((item) {
+        return item.id == event.shopItem.id
+            ? item.copyWith(isCompleted: event.isCompleted)
+            : item;
+      }).toList();
+
+      emit(DatabaseState.success(listOfShoppings));
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
 
@@ -93,16 +82,13 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     Emitter<DatabaseState> emit,
   ) async {
     try {
+      final listOfShoppings = List.of(state.listOfShoppingItems)
+        ..removeWhere((element) => element.isCompleted == true);
+      emit(DatabaseState.success(listOfShoppings));
+
       event.listToDelete.forEach(_databaseRepository.deleteItemData);
-      final listOfShoppings = await _databaseRepository.retrieveItemsData();
-      emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
-      );
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
 
@@ -111,16 +97,39 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     Emitter<DatabaseState> emit,
   ) async {
     try {
-      event.listToUncheck.forEach(_databaseRepository.saveItemData);
-      final listOfShoppings = await _databaseRepository.retrieveItemsData();
+      final list = state.listOfShoppingItems
+          .where((element) => element.isCompleted!)
+          .map(
+            (e) => ShoppingModel(
+              title: e.title,
+              id: e.id,
+            ),
+          )
+          .toList();
+      // ignore: cascade_invocations
+      list.forEach(_databaseRepository.saveItemData);
+
       emit(
-        state.copyWith(
-          status: DatabaseStateStatus.success,
-          listOfShoppingItems: listOfShoppings,
-        ),
+        DatabaseState.success(list),
       );
     } catch (_) {
-      emit(state.copyWith(status: DatabaseStateStatus.failure));
+      emit(const DatabaseState.failure());
     }
   }
+
+  // Future<void> deleteItem(String id) async {
+  //   final deleteInProgress = state.listOfShoppingItems.map((item) {
+  //     return item.id == id ? item.copyWith(isDeleting: true) : item;
+  //   }).toList();
+
+  //   emit(DatabaseState.success(deleteInProgress));
+
+  //   unawaited(
+  //     _databaseRepository.deleteItemData(id).then((_) {
+  //       final deleteSuccess = List.of(state.items)
+  //         ..removeWhere((element) => element.id == id);
+  //       emit(ComplexListState.success(deleteSuccess));
+  //     }),
+  //   );
+  // }
 }

@@ -31,11 +31,10 @@ class DatabaseRemoveAll extends DatabaseEvent {
 }
 
 class DatabaseUncheckAll extends DatabaseEvent {
-  DatabaseUncheckAll({required this.listToUncheck});
+  DatabaseUncheckAll();
 
-  final List<ShoppingModel> listToUncheck;
   @override
-  List<Object?> get props => [listToUncheck];
+  List<Object?> get props => [];
 }
 
 class DatabaseChangedCompletionToggled extends DatabaseEvent {

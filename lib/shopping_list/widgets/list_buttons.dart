@@ -8,7 +8,7 @@ class ListButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cntBloc = context.read<DatabaseBloc>();
+    final cntBloc = context.read<DatabaseBloc>();
 
     return Container(
       height: 60,
@@ -22,19 +22,8 @@ class ListButtons extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 //send to uncheck a list to bloc
-                final list = cntBloc.state.listOfShoppingItems
-                    .where((element) => element.isCompleted!)
-                    .toList();
 
-                var map = list
-                    .map((e) => ShoppingModel(
-                          title: e.title,
-                          id: e.id,
-                          isCompleted: false,
-                        ))
-                    .toList();
-
-                cntBloc.add(DatabaseUncheckAll(listToUncheck: map));
+                cntBloc.add(DatabaseUncheckAll());
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,

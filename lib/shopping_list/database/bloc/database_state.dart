@@ -19,28 +19,42 @@ part of 'database_bloc.dart';
 enum DatabaseStateStatus { initial, loading, success, failure }
 
 class DatabaseState extends Equatable {
-  const DatabaseState({
-    this.status = DatabaseStateStatus.initial,
-    this.listOfShoppingItems = const [],
-    this.exception,
+  const DatabaseState.failure() : this._(status: DatabaseStateStatus.failure);
+
+  const DatabaseState.success(List<ShoppingModel> items)
+      : this._(status: DatabaseStateStatus.success, listOfShoppingItems: items);
+
+  const DatabaseState.loading() : this._();
+  const DatabaseState._({
+    this.status = DatabaseStateStatus.loading,
+    this.listOfShoppingItems = const <ShoppingModel>[],
   });
 
   final DatabaseStateStatus status;
   final List<ShoppingModel> listOfShoppingItems;
-  final Exception? exception;
-
-  DatabaseState copyWith({
-    DatabaseStateStatus? status,
-    List<ShoppingModel>? listOfShoppingItems,
-    Exception? exception,
-  }) {
-    return DatabaseState(
-      status: status ?? this.status,
-      listOfShoppingItems: listOfShoppingItems ?? this.listOfShoppingItems,
-      exception: exception ?? this.exception,
-    );
-  }
 
   @override
-  List<Object?> get props => [status, listOfShoppingItems, exception];
+  List<Object?> get props => [status, listOfShoppingItems];
 }
+
+// enum ListStatus { loading, success, failure }
+
+// class ComplexListState extends Equatable {
+//   const ComplexListState._({
+//     this.status = ListStatus.loading,
+//     this.items = const <ShoppingModel>[],
+//   });
+
+//   const ComplexListState.loading() : this._();
+
+//   const ComplexListState.success(List<ShoppingModel> items)
+//       : this._(status: ListStatus.success, items: items);
+
+//   const ComplexListState.failure() : this._(status: ListStatus.failure);
+
+//   final ListStatus status;
+//   final List<ShoppingModel> items;
+
+//   @override
+//   List<Object> get props => [status, items];
+// }
