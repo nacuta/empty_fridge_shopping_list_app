@@ -48,3 +48,13 @@ class DatabaseChangedCompletionToggled extends DatabaseEvent {
   @override
   List<Object?> get props => [shopItem, isCompleted];
 }
+
+class DatabaseRemoveOne extends DatabaseEvent {
+  DatabaseRemoveOne({
+    required this.shopItemToDelete,
+  });
+
+  final ShoppingModel shopItemToDelete;
+  @override
+  List<Object?> get props => [shopItemToDelete];
+}

@@ -18,6 +18,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     on<DatabaseChangedCompletionToggled>(_onDatabaseChangedCompletionToggled);
     on<DatabaseRemoveAll>(_onDatabaseRemoveAll);
     on<DatabaseUncheckAll>(_onDatabaseUncheckAll);
+    on<DatabaseRemoveOne>(_onDatabaseRemoveOne);
   }
   final DatabaseRepository _databaseRepository;
 
@@ -132,4 +133,19 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   //     }),
   //   );
   // }
+
+  FutureOr<void> _onDatabaseRemoveOne(
+    DatabaseRemoveOne event,
+    Emitter<DatabaseState> emit,
+  ) {
+    try {
+      final listOfShoppings = List.of(state.listOfShoppingItems)
+        ..removeWhere((element) => element.id == event.shopItemToDelete.id);
+      _databaseRepository.deleteItemData(event.shopItemToDelete);
+
+      emit(DatabaseState.success(listOfShoppings));
+    } catch (_) {
+      emit(const DatabaseState.failure());
+    }
+  }
 }
