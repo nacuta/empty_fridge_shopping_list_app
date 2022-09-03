@@ -25,7 +25,7 @@ ThemeData lightThemeData(BuildContext context) {
     //   showUnselectedLabels: true,
     // ),
     checkboxTheme: CheckboxThemeData(
-      checkColor: MaterialStateProperty.all(Colors.white),
+      checkColor: MaterialStateProperty.all(Colors.grey),
       fillColor: MaterialStateProperty.all(
         const Color(0xFF3cbcc7),
       ),
@@ -37,7 +37,8 @@ ThemeData darkThemeData(BuildContext context) {
   // Bydefault flutter provie us light and dark theme
   // we just modify it as our need
   return ThemeData.dark().copyWith(
-    primaryColor: Colors.white,
+    primaryColor: Colors.orange,
+
     // scaffoldBackgroundColor: kContentColorLightTheme,
     appBarTheme: appBarTheme,
     // iconTheme: IconThemeData(color: kContentColorDarkTheme),

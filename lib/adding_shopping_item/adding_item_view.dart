@@ -50,10 +50,11 @@ class AddShoppingItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 8),
           child: TextField(
+            style: TextStyle(color: Color(0xffF02E65)),
             controller: _shoppingItemController,
             decoration: InputDecoration(
-              suffixIcon: Container(
-                width: 80,
+              suffixIcon: SizedBox(
+                width: 98,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -74,7 +75,6 @@ class AddShoppingItem extends StatelessWidget {
                                 AddShoppingFormSubmitted(),
                               );
                           _shoppingItemController.text = '';
-                          context.watch<DatabaseBloc>().add(DatabaseChanged());
                         },
                       ),
                   ],
