@@ -44,11 +44,12 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
             const ListButtons(
               key: GlobalObjectKey(2),
             ),
-          const Divider(
-            key: GlobalObjectKey(3),
-            height: 1,
-            color: Colors.grey,
-          ),
+          if (listaRea.isNotEmpty)
+            const Divider(
+              key: GlobalObjectKey(3),
+              height: 1,
+              color: Colors.grey,
+            ),
           for (final itemList in listaRea)
             SelectableListTile(
               key: ValueKey(itemList),
