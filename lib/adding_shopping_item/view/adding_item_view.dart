@@ -17,6 +17,7 @@ class AddShoppingItem extends StatelessWidget {
 
     return BlocBuilder<AddShoppingItemBloc, AddShoppingItemState>(
       builder: (context, state) {
+        final addShopItemBloc = context.read<AddShoppingItemBloc>();
         return Align(
           alignment: Alignment.topLeft,
           child: Container(
@@ -54,9 +55,9 @@ class AddShoppingItem extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.check_box),
                             onPressed: () {
-                              context.read<AddShoppingItemBloc>().add(
-                                    AddShoppingFormSubmitted(),
-                                  );
+                              addShopItemBloc.add(
+                                AddShoppingFormSubmitted(),
+                              );
                               FocusScope.of(context).unfocus();
                               _shoppingItemController.clear();
                             },
@@ -70,9 +71,15 @@ class AddShoppingItem extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 onChanged: (value) {
-                  context
-                      .read<AddShoppingItemBloc>()
+                  addShopItemBloc
                       .add(AddShoppingFormChanged(value.capitalize()));
+                },
+                onSubmitted: (value) {
+                  addShopItemBloc.add(
+                    AddShoppingFormSubmitted(),
+                  );
+                  FocusScope.of(context).unfocus();
+                  _shoppingItemController.clear();
                 },
                 minLines: 1,
                 maxLines: 1000,

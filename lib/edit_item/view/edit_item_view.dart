@@ -7,8 +7,8 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repos
 
 class EditItemPage extends StatelessWidget {
   const EditItemPage({super.key});
-  // final ShoppingModel editShopping;
 
+  // Route with  stless widget to provide bloc of edit item
   static Route<void> route({required ShoppingModel? editShopping}) {
     return MaterialPageRoute(
       fullscreenDialog: true,
@@ -38,16 +38,14 @@ class EditItemView extends StatelessWidget {
   const EditItemView({super.key});
   @override
   Widget build(BuildContext context) {
-    final status = context.select((EditItemBloc bloc) => bloc.state.status);
-    final isNewShoppingItem = context.select(
-      (EditItemBloc bloc) => bloc.state.isNewShoppingItem,
-    );
     final state = context.watch<EditItemBloc>().state;
     final theme = Theme.of(context);
     var _titleController = TextEditingController();
     var _quantityController = TextEditingController()
       ..text = state.quantity.toString();
     _titleController.text = _titleController.text = state.title;
+    final editItemBloc = context.read<EditItemBloc>();
+    var textvalue = '';
 
     return BlocBuilder<EditItemBloc, EditItemState>(
       builder: (context, state) {
@@ -57,7 +55,7 @@ class EditItemView extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {
-                  context.read<EditItemBloc>().add(const EditItemSubmitted());
+                  editItemBloc.add(const EditItemSubmitted());
                 },
                 icon: const Icon(Icons.save),
               )
@@ -71,10 +69,17 @@ class EditItemView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  onTapOutside: (event) {
+                    textvalue = _titleController.text;
+                    final currentFocus = FocusScope.of(context);
+                    editItemBloc.add(EditItemTitleChanged(textvalue));
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  autofocus: true,
                   onSubmitted: (value) {
-                    context
-                        .read<EditItemBloc>()
-                        .add(EditItemTitleChanged(value));
+                    editItemBloc.add(EditItemTitleChanged(value));
                   },
                   controller: _titleController,
                   style:
@@ -96,38 +101,38 @@ class EditItemView extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                            width: 2, color: Theme.of(context).primaryColor),
+                          width: 2,
+                          color: theme.primaryColor,
+                        ),
                       ),
                       height: 40,
                       width: 60,
                       child: IconButton(
                         icon: Icon(
                           Icons.remove,
-                          color: Theme.of(context).primaryColor,
+                          color: theme.primaryColor,
                         ),
                         onPressed: () {
-                          context
-                              .read<EditItemBloc>()
-                              .add(EditItemQuantityDecrement(value));
+                          editItemBloc.add(EditItemQuantityDecrement(value));
                         },
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                            width: 2, color: Theme.of(context).primaryColor),
+                          width: 2,
+                          color: theme.primaryColor,
+                        ),
                       ),
                       height: 40,
                       width: 60,
                       child: IconButton(
                         icon: Icon(
                           Icons.add,
-                          color: Theme.of(context).primaryColor,
+                          color: theme.primaryColor,
                         ),
                         onPressed: () {
-                          context
-                              .read<EditItemBloc>()
-                              .add(EditItemQuantityIncrement(value));
+                          editItemBloc.add(EditItemQuantityIncrement(value));
                         },
                       ),
                     ),
@@ -143,14 +148,13 @@ class EditItemView extends StatelessWidget {
                         style: theme.textTheme.headlineSmall
                             ?.copyWith(color: Colors.black),
                         onSubmitted: (value) {
-                          context
-                              .read<EditItemBloc>()
+                          editItemBloc
                               .add(EditItemQuantityInput(int.parse(value)));
                         },
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8),
                       child: Text(
                         'piece',
                         style: TextStyle(color: Colors.black),
@@ -178,38 +182,6 @@ class EditItemView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class QuantityContainer extends StatelessWidget {
-  const QuantityContainer({
-    super.key,
-    required this.iconProvided,
-    required this.controller,
-    required this.eventAdded,
-  });
-  final IconData iconProvided;
-  final TextEditingController controller;
-  final void eventAdded;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Theme.of(context).primaryColor),
-      ),
-      height: 40,
-      width: 60,
-      child: IconButton(
-        icon: Icon(
-          iconProvided,
-          color: Theme.of(context).primaryColor,
-        ),
-        onPressed: () {
-          eventAdded;
-        },
-      ),
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/dismissible_widget.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/list_buttons.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/shopping_list_tile.dart';

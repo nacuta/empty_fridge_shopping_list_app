@@ -44,11 +44,17 @@ class ListButtons extends StatelessWidget {
             width: 150,
             child: TextButton(
               onPressed: () {
-                //method to delete all
-                final list = cntBloc.state.listOfShoppingItems
-                    .where((element) => element.isCompleted!)
-                    .toList();
-                cntBloc.add(DatabaseRemoveAll(listToDelete: list));
+                //alert dialog to ask if user whants to delete all
+                deleteDialog(context).then(
+                  (value) {
+                    if (value == true) {
+                      final list = cntBloc.state.listOfShoppingItems
+                          .where((element) => element.isCompleted!)
+                          .toList();
+                      cntBloc.add(DatabaseRemoveAll(listToDelete: list));
+                    }
+                  },
+                );
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -66,6 +72,31 @@ class ListButtons extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> deleteDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Confirmation'),
+          content: const Text(
+            'Are you sure you want to delete this item?',
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
