@@ -88,16 +88,20 @@ class SelectableListTile extends StatelessWidget {
                   child: const Icon(Icons.drag_handle),
                 ),
                 key: ValueKey(shoppingModel),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (context) =>
-                          DatabaseBloc(DatabaseRepositoryImpl()),
-                      child: EditItemView(editShopping: shoppingModel),
-                    ),
-                  ),
+                onTap: () => Navigator.of(context).push(
+                  EditItemPage.route(editShopping: shoppingModel),
                 ),
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => BlocProvider(
+                //       create: (context) =>
+                //           DatabaseBloc(DatabaseRepositoryImpl()),
+                //       child: EditItemView(editShopping: shoppingModel),
+                //     ),
+                //   ),
+                // ),
                 onLongPress: () async {
                   await Navigator.push(
                     context,

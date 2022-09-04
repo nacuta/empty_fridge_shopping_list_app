@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
+import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
 class AddShoppingItem extends StatelessWidget {
   const AddShoppingItem({super.key});
@@ -71,7 +72,7 @@ class AddShoppingItem extends StatelessWidget {
                 onChanged: (value) {
                   context
                       .read<AddShoppingItemBloc>()
-                      .add(AddShoppingFormChanged(value));
+                      .add(AddShoppingFormChanged(value.capitalize()));
                 },
                 minLines: 1,
                 maxLines: 1000,
