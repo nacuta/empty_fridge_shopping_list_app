@@ -12,18 +12,19 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   DatabaseBloc(
     this._databaseRepository,
   ) : super(const DatabaseState.loading()) {
-    on<DatabaseFetched>(_fetchData);
+    on<DatabaseFetchData>(_fetchData);
     on<DatabaseWrite>(_writeData);
     on<DatabaseChanged>(_changedData);
     on<DatabaseChangedCompletionToggled>(_onDatabaseChangedCompletionToggled);
     on<DatabaseRemoveAll>(_onDatabaseRemoveAll);
     on<DatabaseUncheckAll>(_onDatabaseUncheckAll);
     on<DatabaseRemoveOne>(_onDatabaseRemoveOne);
+    on<DatabaseEditItem>(_onDatabaseEditItem);
   }
   final DatabaseRepository _databaseRepository;
 
   Future<void> _fetchData(
-    DatabaseFetched event,
+    DatabaseFetchData event,
     Emitter<DatabaseState> emit,
   ) async {
     try {
@@ -67,9 +68,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       await _databaseRepository.saveItemData(newTodo);
 
       final listOfShoppings = state.listOfShoppingItems.map((item) {
-        return item.id == event.shopItem.id
-            ? item.copyWith(isCompleted: event.isCompleted)
-            : item;
+        return item.id == event.shopItem.id ? newTodo : item;
       }).toList();
 
       emit(DatabaseState.success(listOfShoppings));
@@ -142,6 +141,28 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       final listOfShoppings = List.of(state.listOfShoppingItems)
         ..removeWhere((element) => element.id == event.shopItemToDelete.id);
       _databaseRepository.deleteItemData(event.shopItemToDelete);
+
+      emit(DatabaseState.success(listOfShoppings));
+    } catch (_) {
+      emit(const DatabaseState.failure());
+    }
+  }
+
+  Future<FutureOr<void>> _onDatabaseEditItem(
+    DatabaseEditItem event,
+    Emitter<DatabaseState> emit,
+  ) async {
+    try {
+      final editedItem = event.itemToEdit.copyWith(
+        title: event.itemToEdit.title,
+        quantity: event.itemToEdit.quantity,
+      );
+
+      final listOfShoppings = state.listOfShoppingItems.map((item) {
+        return item.id == event.itemToEdit.id ? editedItem : item;
+      }).toList();
+
+      await _databaseRepository.saveItemData(editedItem);
 
       emit(DatabaseState.success(listOfShoppings));
     } catch (_) {

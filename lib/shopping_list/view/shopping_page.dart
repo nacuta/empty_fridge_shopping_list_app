@@ -60,12 +60,12 @@ class ShoppingView extends StatelessWidget {
           if (state.status == FormzStatus.submissionSuccess) {
             // Scaffold.of(context)
             print('succes');
-            context.read<DatabaseBloc>().add(DatabaseFetched());
+            context.read<DatabaseBloc>().add(DatabaseFetchData());
           }
         },
         child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {
-            context.read<DatabaseBloc>().add(DatabaseFetched());
+            context.read<DatabaseBloc>().add(DatabaseFetchData());
             // }
             if (state.status == DatabaseStateStatus.loading) {
               return const Center(child: CircularProgressIndicator());
@@ -79,7 +79,7 @@ class ShoppingView extends StatelessWidget {
                         tooltip: 'Refresh',
                         child: const Icon(Icons.refresh),
                         onPressed: () {
-                          context.read<DatabaseBloc>().add(DatabaseFetched());
+                          context.read<DatabaseBloc>().add(DatabaseFetchData());
                         },
                       ),
                     ],

@@ -2,7 +2,7 @@ part of 'database_bloc.dart';
 
 abstract class DatabaseEvent extends Equatable {}
 
-class DatabaseFetched extends DatabaseEvent {
+class DatabaseFetchData extends DatabaseEvent {
   @override
   List<Object?> get props => [];
 }
@@ -57,4 +57,14 @@ class DatabaseRemoveOne extends DatabaseEvent {
   final ShoppingModel shopItemToDelete;
   @override
   List<Object?> get props => [shopItemToDelete];
+}
+
+class DatabaseEditItem extends DatabaseEvent {
+  DatabaseEditItem({
+    required this.itemToEdit,
+  });
+
+  final ShoppingModel itemToEdit;
+  @override
+  List<Object?> get props => [itemToEdit];
 }
