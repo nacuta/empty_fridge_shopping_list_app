@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/edit_item/bloc/edit_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 
 /// The [EditItemPage] class is a shallow widget to pass the BlocProvider to the
@@ -73,14 +72,16 @@ class EditItemView extends StatelessWidget {
               children: [
                 //Textfield that handles the title
                 TextField(
-                  // onTapOutside: (event) {
-                  //   textvalue = _titleController.text;
-                  //   final currentFocus = FocusScope.of(context);
-                  //   editItemBloc.add(EditItemTitleChanged(textvalue));
-                  //   if (!currentFocus.hasPrimaryFocus) {
-                  //     currentFocus.unfocus();
-                  //   }
-                  // },
+                  ///this [onTapOutside] works with Flutter:3.4.0-19.0.pre.63
+                  ///or just comment it and submit changes with keyboard enter.
+                  onTapOutside: (event) {
+                    textvalue = _titleController.text;
+                    final currentFocus = FocusScope.of(context);
+                    editItemBloc.add(EditItemTitleChanged(textvalue));
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
                   autofocus: true,
                   onSubmitted: (value) {
                     editItemBloc.add(EditItemTitleChanged(value));
