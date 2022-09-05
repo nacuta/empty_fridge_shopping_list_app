@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/view/adding_item_view.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
+import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
@@ -18,9 +19,15 @@ class ShoppingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // check connectivity to internet
+        BlocProvider(
+          create: (context) => NetworkBloc()..add(NetworkObserve()),
+        ),
+        // Database connection bloc
         BlocProvider(
           create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
         ),
+        //  new item bloc
         BlocProvider(
           create: (context) => AddShoppingItemBloc(DatabaseRepositoryImpl()),
         ),
@@ -59,13 +66,34 @@ class ShoppingView extends StatelessWidget {
         ),
         // centerTitle: true,
       ),
-      body: BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
-        listener: (context, state) {
-          if (state.status == FormzStatus.submissionSuccess) {
-            context.read<DatabaseBloc>().add(DatabaseFetchData());
-          }
-        },
-        // Bloc that Listen for changes and build accordingly
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NetworkBloc, NetworkState>(
+            listener: (context, state) {
+              if (state is NetworkFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('No Internet Connection'),
+                    action: SnackBarAction(
+                      onPressed: () {
+                        print(state);
+                      },
+                      label: 'Press',
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
+            listener: (context, state) {
+              if (state.status == FormzStatus.submissionSuccess) {
+                context.read<DatabaseBloc>().add(DatabaseFetchData());
+              }
+            },
+            // Bloc that Listen for changes and build accordingly
+          ),
+        ],
         child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {
             context.read<DatabaseBloc>().add(DatabaseFetchData());

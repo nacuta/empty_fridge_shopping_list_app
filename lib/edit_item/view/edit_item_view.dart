@@ -72,7 +72,8 @@ class EditItemView extends StatelessWidget {
               children: [
                 //Textfield that handles the title
                 TextField(
-                  ///this [onTapOutside] works with Flutter:3.4.0-19.0.pre.63
+                  ///this [onTapOutside] works with
+                  ///Flutter:3.4.0-19.0.pre.63
                   ///or just comment it and submit changes with keyboard enter.
                   onTapOutside: (event) {
                     textvalue = _titleController.text;
