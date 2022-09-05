@@ -1,6 +1,7 @@
 <img src="android/app/src/main/res/drawable/ic_launch_image.png" alt="Personal Logo" width="80" />
 
 <h1 id="mobi-lab-shopping-list-app">Mobi Lab Shopping List App</h1>
+<h5 id="features">The goal of this application is to be able to create a list of shopping goods or todos with the option of selecting the ones that are done, delete the unnecessary and edit items, this is done with an instant database from Firebase and with Flutter for every screen. </h5>
 <h3 id="features">Features</h3>
 <ul>
 <li>Firebase implementation.</li>
@@ -19,14 +20,22 @@
 <li>Production</li>
 </ul>
 <p>To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:</p>
+
 <pre class="codeblock language-sh"><span class="hljs-comment"># Development</span>
 $ flutter run --flavor development --target lib/main_development.dart
+
 
 <span class="hljs-comment"># Staging</span>
 $ flutter run --flavor staging --target lib/main_staging.dart
 
+
 <span class="hljs-comment"># Production</span>
 $ flutter run --flavor production --target lib/main_production.dart
+
+<span class="hljs-comment"># Run all tests</span>
+$ very_good test
+
+
 </pre>
 <p><em>*Mobi Lab Shopping List App works on iOS, Android, Web, and Windows.</em></p>
 <h3 id="build-with">Build with</h3>
