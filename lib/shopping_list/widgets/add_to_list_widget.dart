@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:mobi_lab_shopping_list_app/app/app.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 
-class AddToListScreen extends StatelessWidget {
-  const AddToListScreen({super.key});
+class AddToListWidget extends StatelessWidget {
+  const AddToListWidget({super.key});
 
   void _onSubmit(
     BuildContext context,
@@ -27,7 +24,7 @@ class AddToListScreen extends StatelessWidget {
       appBar: AppBar(),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           TextField(
@@ -60,7 +57,7 @@ class AddToListScreen extends StatelessWidget {
             decoration: InputDecoration(
               // border: InputBorder.none,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               hintText: 'how many?',
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
@@ -78,7 +75,7 @@ class AddToListScreen extends StatelessWidget {
               _shoppingItemController,
               _quantityItemController,
             ),
-            child: Text('Save', style: TextStyle(fontSize: 22)),
+            child: const Text('Save', style: TextStyle(fontSize: 22)),
           ),
         ],
       ),
