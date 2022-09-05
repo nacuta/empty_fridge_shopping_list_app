@@ -8,6 +8,7 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repos
 part 'edit_item_event.dart';
 part 'edit_item_state.dart';
 
+/// [EditItemBloc] that holds the state for [EditItemEvent] implementations
 class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
   EditItemBloc({
     required this.databaseRepository,
