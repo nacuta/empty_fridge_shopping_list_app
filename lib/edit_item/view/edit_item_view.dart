@@ -5,6 +5,8 @@ import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 
+/// The [EditItemPage] class is a shallow widget to pass the BlocProvider to the
+/// EditItemView
 class EditItemPage extends StatelessWidget {
   const EditItemPage({super.key});
 
@@ -34,6 +36,8 @@ class EditItemPage extends StatelessWidget {
   }
 }
 
+/// the class [EditItemView] contains the UI elements
+/// for changing the model params
 class EditItemView extends StatelessWidget {
   const EditItemView({super.key});
   @override
@@ -62,21 +66,21 @@ class EditItemView extends StatelessWidget {
             ],
             title: const Text('Edit Shopping'),
           ),
-          // ignore: use_colored_box
           body: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                //Textfield that handles the title
                 TextField(
-                  onTapOutside: (event) {
-                    textvalue = _titleController.text;
-                    final currentFocus = FocusScope.of(context);
-                    editItemBloc.add(EditItemTitleChanged(textvalue));
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
-                  },
+                  // onTapOutside: (event) {
+                  //   textvalue = _titleController.text;
+                  //   final currentFocus = FocusScope.of(context);
+                  //   editItemBloc.add(EditItemTitleChanged(textvalue));
+                  //   if (!currentFocus.hasPrimaryFocus) {
+                  //     currentFocus.unfocus();
+                  //   }
+                  // },
                   autofocus: true,
                   onSubmitted: (value) {
                     editItemBloc.add(EditItemTitleChanged(value));
@@ -96,6 +100,8 @@ class EditItemView extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
+                //Row with 2 buttons incrementand decrement the number
+                //And TextFiled for quantity
                 Row(
                   children: [
                     Container(
@@ -173,6 +179,7 @@ class EditItemView extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
+                //future improvement addding notes
                 const Text(
                   'No note yet',
                   style: TextStyle(color: Colors.black),

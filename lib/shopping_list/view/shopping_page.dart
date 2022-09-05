@@ -9,6 +9,8 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repos
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/multiple_selection.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 
+/// [ShoppingPage] holds the [MultiBlocProvider] that provides
+/// accesability for [Bloc] into entire application.
 class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
 
@@ -28,11 +30,13 @@ class ShoppingPage extends StatelessWidget {
   }
 }
 
+/// First view [ShoppingView] for shopping list items
 class ShoppingView extends StatelessWidget {
   const ShoppingView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //acces to internalization
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
@@ -58,11 +62,10 @@ class ShoppingView extends StatelessWidget {
       body: BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
         listener: (context, state) {
           if (state.status == FormzStatus.submissionSuccess) {
-            // Scaffold.of(context)
-            print('succes');
             context.read<DatabaseBloc>().add(DatabaseFetchData());
           }
         },
+        // Bloc that Listen for changes and build accordingly
         child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {
             context.read<DatabaseBloc>().add(DatabaseFetchData());
