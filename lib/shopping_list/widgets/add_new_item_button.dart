@@ -3,8 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping/view/add_to_list_screen.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/add_to_list_widget.dart';
 
 class AddNewItem extends StatefulWidget {
   const AddNewItem({super.key});
@@ -32,7 +32,7 @@ class _AddNewItemState extends State<AddNewItem> {
           var newItem = await showDialog(
             context: context,
             builder: (context) {
-              return const AddToListScreen();
+              return const AddToListWidget();
             },
           );
           setState(() {
