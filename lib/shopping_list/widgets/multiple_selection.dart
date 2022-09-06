@@ -21,18 +21,35 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
         .toList();
     final doneList =
         widget.shoppingList.where((element) => element.isCompleted!).toList();
-    return ReorderableListView(
-      scrollController: reorderScrollController,
-      physics: const ClampingScrollPhysics(),
-      shrinkWrap: true,
-      buildDefaultDragHandles: false,
+    return Column(
       children: [
-        for (var i = 0; i < listToShop.length; i++)
-          DismisibleWidget(
-            key: ValueKey(listToShop[i].id),
-            index: i,
-            listToShop: listToShop,
-          ),
+        // reordable list
+        ReorderableListView.builder(
+          scrollController: reorderScrollController,
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+          buildDefaultDragHandles: false,
+          // children: [],
+          onReorder: (int oldIndex, int newIndex) {
+            //TODO change this setState with bloc
+            setState(() {
+              if (newIndex > oldIndex) {
+                newIndex = newIndex - 1;
+              }
+              final element = widget.shoppingList.removeAt(oldIndex);
+              widget.shoppingList.insert(newIndex, element);
+            });
+          },
+          itemBuilder: (BuildContext context, int i) {
+            return DismisibleWidget(
+              key: ValueKey(listToShop[i].id),
+              index: i,
+              listToShop: listToShop,
+            );
+          },
+          itemCount: listToShop.length,
+        ),
+        // buttons and divider
         if (doneList.isNotEmpty)
           const ListButtons(
             key: GlobalObjectKey(2),
@@ -43,23 +60,17 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
             height: 1,
             color: Colors.grey,
           ),
-        for (var i = 0; i < doneList.length; i++)
-          SelectableListTile(
+        // // Lisview with done list
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: doneList.length,
+          itemBuilder: (context, i) => SelectableListTile(
             key: ValueKey(doneList[i]),
             shoppingModel: doneList[i],
             oddNumber: i,
           ),
+        ),
       ],
-      onReorder: (int oldIndex, int newIndex) {
-        //TODO change this setState with bloc
-        setState(() {
-          if (newIndex > oldIndex) {
-            newIndex = newIndex - 1;
-          }
-          final element = widget.shoppingList.removeAt(oldIndex);
-          widget.shoppingList.insert(newIndex, element);
-        });
-      },
     );
   }
 }
