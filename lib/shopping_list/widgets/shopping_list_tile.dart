@@ -73,8 +73,9 @@ class SelectableListTile extends StatelessWidget {
           context.read<DatabaseBloc>().add(DatabaseFetchData());
         },
         leading: Checkbox(
-          checkColor: Colors.white,
+          checkColor: Theme.of(context).primaryColor,
           fillColor: MaterialStateProperty.resolveWith(getColor),
+          focusColor: Theme.of(context).primaryColor,
           value: isCheck,
           onChanged: (bool? value) {
             context.read<DatabaseBloc>().add(
