@@ -65,13 +65,13 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   ) async {
     try {
       final newTodo = event.shopItem.copyWith(isCompleted: event.isCompleted);
-      await _databaseRepository.saveItemData(newTodo);
 
       final listOfShoppings = state.listOfShoppingItems.map((item) {
         return item.id == event.shopItem.id ? newTodo : item;
       }).toList();
 
       emit(DatabaseState.success(listOfShoppings));
+      await _databaseRepository.saveItemData(newTodo);
     } catch (_) {
       emit(const DatabaseState.failure());
     }
