@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart';
@@ -70,7 +71,7 @@ class DismisibleWidget extends StatelessWidget {
           key: ValueKey(listToShop[index]),
           shoppingModel: listToShop[index],
           oddNumber: index,
-        ),
+        ).animate().fadeIn(),
       ),
     );
   }
