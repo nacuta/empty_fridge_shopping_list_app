@@ -7,6 +7,7 @@ import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
+import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
 /// [ShoppingPage] holds the [MultiBlocProvider] that provides
 /// accesability for [Bloc] into entire application.
@@ -120,34 +121,56 @@ class ShoppingView extends StatelessWidget {
                       return Center(
                         child: Column(
                           children: [
-                            const Text('No data retrived'),
-                            FloatingActionButton(
-                              tooltip: 'Refresh',
-                              child: const Icon(Icons.refresh),
-                              onPressed: () {
-                                context
-                                    .read<DatabaseBloc>()
-                                    .add(DatabaseFetchData());
-                              },
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: SizedBox(
+                                height: 200,
+                                width: 300,
+                                child: Card(
+                                  color: Colors.grey.shade500,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(18),
+                                        child: Text(
+                                          'Adding Items',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall!
+                                              .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(18),
+                                        child: Text(
+                                          'Tap "Add item" to type in items',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       );
                     } else {
-                      final list = state.listOfShoppingItems
-                          .where((element) => element.isCompleted!)
-                          .toList();
-                      final listbad = state.listOfShoppingItems
-                          .where((element) => element.isCompleted == false)
-                          .toList();
+                      final list = state.listOfShoppingItems.isToShop();
+                      final listbad = state.listOfShoppingItems.isShop();
 
                       return Column(
                         children: [
-                          Expanded(
+                          const Expanded(
                             flex: 5,
-                            child: MultipleSelectItems(
-                              shoppingList: state.listOfShoppingItems,
-                            ),
+                            child: MultipleSelectItems(),
                           ),
                           Container(
                             height: 50,

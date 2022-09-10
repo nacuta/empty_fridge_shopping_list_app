@@ -1,54 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/reordable_widget.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
-class MultipleSelectItems extends StatefulWidget {
-  const MultipleSelectItems({super.key, required this.shoppingList});
-  final List<ShoppingModel> shoppingList;
-
-  @override
-  State<MultipleSelectItems> createState() => _MultipleSelectItemsState();
-}
-
-class _MultipleSelectItemsState extends State<MultipleSelectItems> {
-  ScrollController listScrollController = ScrollController();
-
-  List<ShoppingModel> get listToShop => widget.shoppingList.isToShop();
-  List<ShoppingModel> get doneList => widget.shoppingList.isShop();
+class MultipleSelectItems extends StatelessWidget {
+  const MultipleSelectItems({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final reorderScrollController = ScrollController();
+    var doneList =
+        context.watch<DatabaseBloc>().state.listOfShoppingItems.isShop();
+    final listScrollController = ScrollController();
     return SingleChildScrollView(
       child: Column(
         children: [
           // reordable list with to shop items
-          ReorderableListView.builder(
-            scrollController: reorderScrollController,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            buildDefaultDragHandles: false,
-            onReorder: (int oldIndex, int newIndex) {
-              //TODO change this setState with bloc
-              setState(() {
-                if (newIndex > oldIndex) {
-                  newIndex = newIndex - 1;
-                }
-                final element = widget.shoppingList.removeAt(oldIndex);
-                widget.shoppingList.insert(newIndex, element);
-              });
-            },
-            itemBuilder: (BuildContext context, int i) {
-              //wrap the ListTile with dismisible widget
-              return DismisibleWidget(
-                key: ValueKey(listToShop[i].id),
-                index: i,
-                listToShop: listToShop,
-              );
-            },
-            itemCount: listToShop.length,
-          ),
+          const ReordableWidget(),
           // buttons and divider
           if (doneList.isNotEmpty)
             const ListButtons(
@@ -60,7 +29,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
               height: 1,
               color: Colors.grey,
             ),
-          // Lisview with in cart  list
+          // Lisview with 'in cart' list
           ListView.builder(
             controller: listScrollController,
             physics: const NeverScrollableScrollPhysics(),

@@ -69,7 +69,6 @@ class SelectableListTile extends StatelessWidget {
         onTap: () async {
           await Navigator.of(context)
               .push(EditItemPage.route(editShopping: shoppingModel));
-
           context.read<DatabaseBloc>().add(DatabaseFetchData());
         },
         leading: Checkbox(
