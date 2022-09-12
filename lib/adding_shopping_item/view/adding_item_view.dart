@@ -4,13 +4,24 @@ import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shoppin
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
-class AddShoppingItem extends StatelessWidget {
+class AddShoppingItem extends StatefulWidget {
   const AddShoppingItem({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final _shoppingItemController = TextEditingController();
+  State<AddShoppingItem> createState() => _AddShoppingItemState();
+}
 
+class _AddShoppingItemState extends State<AddShoppingItem> {
+  final _shoppingItemController = TextEditingController();
+
+  @override
+  void dispose() {
+    _shoppingItemController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     bool _isTextEditingNotEmpthy() {
       return _shoppingItemController.text.isNotEmpty;
     }

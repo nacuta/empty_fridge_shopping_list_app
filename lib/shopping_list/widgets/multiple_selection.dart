@@ -5,25 +5,37 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/reordable_widge
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
-class MultipleSelectItems extends StatelessWidget {
+class MultipleSelectItems extends StatefulWidget {
   const MultipleSelectItems({super.key});
 
   @override
+  State<MultipleSelectItems> createState() => _MultipleSelectItemsState();
+}
+
+class _MultipleSelectItemsState extends State<MultipleSelectItems> {
+  final listScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    listScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var doneList =
+    final checkedItemsList =
         context.watch<DatabaseBloc>().state.listOfShoppingItems.isShop();
-    final listScrollController = ScrollController();
     return SingleChildScrollView(
       child: Column(
         children: [
           // reordable list with to shop items
           const ReordableWidget(),
           // buttons and divider
-          if (doneList.isNotEmpty)
+          if (checkedItemsList.isNotEmpty)
             const ListButtons(
               key: GlobalObjectKey(2),
             ),
-          if (doneList.isNotEmpty)
+          if (checkedItemsList.isNotEmpty)
             const Divider(
               key: GlobalObjectKey(3),
               height: 1,
@@ -34,10 +46,10 @@ class MultipleSelectItems extends StatelessWidget {
             controller: listScrollController,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: doneList.length,
+            itemCount: checkedItemsList.length,
             itemBuilder: (context, i) => SelectableListTile(
-              key: ValueKey(doneList[i]),
-              shoppingModel: doneList[i],
+              key: ValueKey(checkedItemsList[i]),
+              shoppingModel: checkedItemsList[i],
               oddNumber: i,
             ),
           ),

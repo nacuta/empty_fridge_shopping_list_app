@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 
-class AddToListWidget extends StatelessWidget {
+class AddToListWidget extends StatefulWidget {
   const AddToListWidget({super.key});
+
+  @override
+  State<AddToListWidget> createState() => _AddToListWidgetState();
+}
+
+class _AddToListWidgetState extends State<AddToListWidget> {
+  final _shoppingItemController = TextEditingController();
+  final _quantityItemController = TextEditingController();
 
   void _onSubmit(
     BuildContext context,
     TextEditingController _shoppingItemController,
     TextEditingController _quantityItemController,
   ) {
-    var result = ShoppingModel(
+    final result = ShoppingModel(
       title: _shoppingItemController.text,
       quantity: int.parse(_quantityItemController.text),
     );
@@ -17,9 +25,14 @@ class AddToListWidget extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    _shoppingItemController.dispose();
+    _quantityItemController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _shoppingItemController = TextEditingController();
-    final _quantityItemController = TextEditingController();
     return Scaffold(
       appBar: AppBar(),
       body: Column(

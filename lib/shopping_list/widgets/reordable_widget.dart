@@ -4,14 +4,25 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart'
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/dismissible_widget.dart';
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
-class ReordableWidget extends StatelessWidget {
+class ReordableWidget extends StatefulWidget {
   const ReordableWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final reorderScrollController = ScrollController();
+  State<ReordableWidget> createState() => _ReordableWidgetState();
+}
 
-    var listToShop =
+class _ReordableWidgetState extends State<ReordableWidget> {
+  final reorderScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    reorderScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final listToShop =
         context.watch<DatabaseBloc>().state.listOfShoppingItems.isToShop();
     return ReorderableListView.builder(
       scrollController: reorderScrollController,

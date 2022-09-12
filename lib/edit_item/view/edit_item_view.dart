@@ -37,22 +37,35 @@ class EditItemPage extends StatelessWidget {
 
 /// the class [EditItemView] contains the UI elements
 /// for changing the model params
-class EditItemView extends StatelessWidget {
+class EditItemView extends StatefulWidget {
   const EditItemView({super.key});
+  @override
+  State<EditItemView> createState() => _EditItemViewState();
+}
+
+class _EditItemViewState extends State<EditItemView> {
+  final _titleController = TextEditingController();
+  final _quantityController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _quantityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<EditItemBloc>().state;
     final theme = Theme.of(context);
-    var _titleController = TextEditingController();
-    var _quantityController = TextEditingController()
-      ..text = state.quantity.toString();
-    _titleController.text = _titleController.text = state.title;
+    _quantityController.text = state.quantity.toString();
+    _titleController.text = state.title;
     final editItemBloc = context.read<EditItemBloc>();
     var textvalue = '';
 
     return BlocBuilder<EditItemBloc, EditItemState>(
       builder: (context, state) {
-        int? value = context.watch<EditItemBloc>().state.quantity;
+        final value = context.watch<EditItemBloc>().state.quantity;
         return Scaffold(
           appBar: AppBar(
             actions: [
