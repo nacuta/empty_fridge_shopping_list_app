@@ -30,6 +30,20 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
         children: [
           // reordable list with to shop items
           const ReordableWidget(),
+          Container(
+            height: 30,
+            // padding: const EdgeInsets.all(8),
+            alignment: const Alignment(-0.8, 0),
+            margin: const EdgeInsets.all(8),
+            child: Text(
+              'IN YOUR CART',
+              textAlign: TextAlign.left,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.grey.shade600),
+            ),
+          ),
           // buttons and divider
           if (checkedItemsList.isNotEmpty)
             const ListButtons(
