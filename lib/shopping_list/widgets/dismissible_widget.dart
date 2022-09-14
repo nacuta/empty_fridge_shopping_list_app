@@ -5,8 +5,11 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/shopping_list_tile.dart';
 
 class DismisibleWidget extends StatelessWidget {
-  const DismisibleWidget(
-      {super.key, required this.listToShop, required this.index});
+  const DismisibleWidget({
+    super.key,
+    required this.listToShop,
+    required this.index,
+  });
   final List<ShoppingModel> listToShop;
   final int index;
 

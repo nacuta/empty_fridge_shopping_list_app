@@ -93,118 +93,98 @@ class ShoppingView extends StatelessWidget {
             // Bloc that Listen for changes and build accordingly
           ),
         ],
-        child: BlocBuilder<NetworkBloc, NetworkState>(
+        child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {
-            if (state is NetworkFailure) {
-              return SizedBox(
-                width: Responsive.width(100, context),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'No Internet Connection',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    Icon(Icons.wifi_off),
-                  ],
-                ),
-              );
-            } else {
-              return BlocBuilder<DatabaseBloc, DatabaseState>(
-                builder: (context, state) {
-                  context.read<DatabaseBloc>().add(DatabaseFetchData());
-                  // }
-                  if (state.status == DatabaseStateStatus.loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state.status == DatabaseStateStatus.success) {
-                    if (state.listOfShoppingItems.isEmpty) {
-                      return Center(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: SizedBox(
-                                height: 200,
-                                width: 300,
-                                child: Card(
-                                  color: Colors.grey.shade500,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(18),
-                                        child: Text(
-                                          'Adding Items',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall!
-                                              .copyWith(
-                                                color: Colors.white,
-                                              ),
+            context.read<DatabaseBloc>().add(DatabaseFetchData());
+            // }
+            if (state.status == DatabaseStateStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.status == DatabaseStateStatus.success) {
+              if (state.listOfShoppingItems.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: 200,
+                          width: 300,
+                          child: Card(
+                            color: Colors.grey.shade500,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(18),
+                                  child: Text(
+                                    'Adding Items',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall!
+                                        .copyWith(
+                                          color: Colors.white,
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(18),
-                                        child: Text(
-                                          'Tap "Add item" to type in items',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                color: Colors.white,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      final list = state.listOfShoppingItems.isToShop();
-                      final listbad = state.listOfShoppingItems.isShop();
-
-                      return Column(
-                        children: [
-                          const Expanded(
-                            flex: 5,
-                            child: MultipleSelectItems(),
-                          ),
-                          Container(
-                            height: 50,
-                            width: Responsive.width(100, context),
-                            color: Colors.black,
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Items in cart: ${list.length}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(color: Colors.white),
-                                ),
-                                Text(
-                                  'Items in list: ${listbad.length}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(color: Colors.white),
+                                Padding(
+                                  padding: const EdgeInsets.all(18),
+                                  child: Text(
+                                    'Tap "Add item" to type in items',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          color: Colors.white,
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                final list = state.listOfShoppingItems.isToShop();
+                final listbad = state.listOfShoppingItems.isShop();
+
+                return Column(
+                  children: [
+                    const Expanded(
+                      flex: 5,
+                      child: MultipleSelectItems(),
+                    ),
+                    Container(
+                      height: 50,
+                      width: Responsive.width(100, context),
+                      color: Colors.black,
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Items in cart: ${list.length}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            'Items in list: ${listbad.length}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.white),
+                          ),
                         ],
-                      );
-                    }
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              );
+                      ),
+                    ),
+                  ],
+                );
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),

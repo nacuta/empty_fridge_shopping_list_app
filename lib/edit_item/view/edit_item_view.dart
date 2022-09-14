@@ -72,6 +72,8 @@ class _EditItemViewState extends State<EditItemView> {
               IconButton(
                 onPressed: () {
                   editItemBloc.add(const EditItemSubmitted());
+                  //For offline mode
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(Icons.save),
               )
