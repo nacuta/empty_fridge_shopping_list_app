@@ -52,7 +52,9 @@ class SelectableListTile extends StatelessWidget {
             },
           ),
           title: Text(
-            shoppingModel.title,
+            shoppingModel.quantity == 1
+                ? shoppingModel.title
+                : '${shoppingModel.title}  (${shoppingModel.quantity})',
             style: const TextStyle(decoration: TextDecoration.lineThrough),
           ),
         ),
@@ -86,7 +88,9 @@ class SelectableListTile extends StatelessWidget {
           },
         ),
         title: Text(
-          shoppingModel.title,
+          shoppingModel.quantity == 1
+              ? shoppingModel.title
+              : '${shoppingModel.title}  (${shoppingModel.quantity})',
         ),
       );
     }
