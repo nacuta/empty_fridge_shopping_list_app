@@ -166,6 +166,17 @@ class _EditItemViewState extends State<EditItemView> {
                       width: 60,
                       height: 40,
                       child: TextField(
+                        onTapOutside: (event) {
+                          final currentFocus = FocusScope.of(context);
+                          editItemBloc.add(
+                            EditItemQuantityInput(
+                              int.parse(_quantityController.text),
+                            ),
+                          );
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        },
                         controller: _quantityController,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineSmall
