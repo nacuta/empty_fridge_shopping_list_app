@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
+import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
+import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';

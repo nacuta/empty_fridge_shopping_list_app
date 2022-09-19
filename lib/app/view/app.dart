@@ -7,8 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mobi_lab_shopping_list_app/auth/view/auth_delegate_page.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/view/shopping_page.dart';
 import 'package:mobi_lab_shopping_list_app/utils/theme.dart';
 
 class App extends StatelessWidget {
@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const ShoppingPage(),
+      home: const AuthPageDelegate(),
     );
   }
 }
