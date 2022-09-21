@@ -23,3 +23,8 @@ class EmailAndPasswordAuthenticated extends AuthState {
   @override
   List<Object?> get props => [user];
 }
+
+class AuthenticateFailure extends AuthState {
+  @override
+  List<Object?> get props => [];
+}

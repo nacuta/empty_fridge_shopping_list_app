@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/auth/view/login_page.dart';
+import 'package:mobi_lab_shopping_list_app/auth/view/auth_page.dart';
+import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/view/shopping_page.dart';
 
 class AuthPageDelegate extends StatelessWidget {
@@ -26,7 +27,7 @@ class AuthDelegateView extends StatelessWidget {
       builder: (context, state) {
         context.read<AuthBloc>().add(UnAuthEvent());
         if (state is UnAuthenticated) {
-          return const LoginPage();
+          return const AuthPage();
         }
         if (state is AnonAuthenticated ||
             state is EmailAndPasswordAuthenticated) {

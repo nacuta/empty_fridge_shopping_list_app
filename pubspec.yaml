@@ -24,6 +24,7 @@ dependencies:
 dev_dependencies:
   bloc_test: ^9.1.0
   equatable: ^2.0.5
+  firebase_auth: ^3.9.0
   flutter_test:
     sdk: flutter
   formz: ^0.4.1

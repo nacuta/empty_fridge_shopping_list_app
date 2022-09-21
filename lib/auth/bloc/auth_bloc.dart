@@ -39,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     //listen changes of user and check if is
     AuthService().user.listen((event) async {
-      if (event.id != '' || event.isAnonymous!) {
+      if (event.id != '' || event.isAnonymous == true) {
         DatabaseService.collectionPath = event.id;
 
         emit(
