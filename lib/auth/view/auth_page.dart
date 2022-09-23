@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
+import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -29,7 +30,7 @@ class AuthPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(LoginPage.route());
+                Navigator.of(context).push(SignUpPage.route());
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -56,7 +57,9 @@ class AuthPage extends StatelessWidget {
               height: 40,
             ),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(LoginPage.route());
+              },
               style: OutlinedButton.styleFrom(
                 side: BorderSide(color: theme.primaryColor),
                 backgroundColor: Colors.white, // background color
@@ -70,7 +73,7 @@ class AuthPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  'Sign Up',
+                  'Have an Account? Sign In',
                   style: theme.textTheme.bodyLarge!
                       .copyWith(color: theme.primaryColor, fontSize: 20),
                 ),
