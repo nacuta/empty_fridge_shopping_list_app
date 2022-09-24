@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
+import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -16,18 +18,7 @@ class AuthPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Empthy Fidge',
-                style: TextStyle(
-                  color: Color(0xFF3cbcc7),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
-            ),
+            const ImageLogo(),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(SignUpPage.route());
@@ -42,7 +33,7 @@ class AuthPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
                 ),
-                minimumSize: const Size(400, 60),
+                minimumSize: const Size(350, 55),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8),
@@ -68,7 +59,7 @@ class AuthPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
                 ),
-                minimumSize: const Size(400, 60),
+                minimumSize: const Size(350, 55),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8),

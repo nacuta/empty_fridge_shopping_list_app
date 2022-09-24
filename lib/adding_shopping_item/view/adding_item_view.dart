@@ -48,52 +48,59 @@ class _AddShoppingItemState extends State<AddShoppingItem> {
             ),
             child: Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: TextField(
-                style: const TextStyle(color: Colors.black),
-                controller: _shoppingItemController,
-                decoration: InputDecoration(
-                  suffixIcon: SizedBox(
-                    width: 98,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: _shoppingItemController.clear,
-                        ),
-                        //condition
-                        if (_isTextEditingNotEmpthy())
-                          IconButton(
-                            icon: const Icon(Icons.check_box),
-                            onPressed: () {
-                              addShopItemBloc.add(
-                                AddShoppingFormSubmitted(),
-                              );
-                              FocusScope.of(context).unfocus();
-                              _shoppingItemController.clear();
-                            },
-                          ),
-                      ],
-                    ),
+              child: Theme(
+                data: ThemeData(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    enabledBorder: InputBorder.none,
                   ),
-                  hintText: 'Add item',
-                  border: InputBorder.none,
                 ),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-                onChanged: (value) {
-                  addShopItemBloc
-                      .add(AddShoppingFormChanged(value.capitalize()));
-                },
-                onSubmitted: (value) {
-                  addShopItemBloc.add(
-                    AddShoppingFormSubmitted(),
-                  );
-                  FocusScope.of(context).unfocus();
-                  _shoppingItemController.clear();
-                },
-                minLines: 1,
-                maxLines: 1000,
+                child: TextField(
+                  style: const TextStyle(color: Colors.black),
+                  controller: _shoppingItemController,
+                  decoration: InputDecoration(
+                    suffixIcon: SizedBox(
+                      width: 98,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: _shoppingItemController.clear,
+                          ),
+                          //condition
+                          if (_isTextEditingNotEmpthy())
+                            IconButton(
+                              icon: const Icon(Icons.check_box),
+                              onPressed: () {
+                                addShopItemBloc.add(
+                                  AddShoppingFormSubmitted(),
+                                );
+                                FocusScope.of(context).unfocus();
+                                _shoppingItemController.clear();
+                              },
+                            ),
+                        ],
+                      ),
+                    ),
+                    hintText: 'Add item',
+                    border: InputBorder.none,
+                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  onChanged: (value) {
+                    addShopItemBloc
+                        .add(AddShoppingFormChanged(value.capitalize()));
+                  },
+                  onSubmitted: (value) {
+                    addShopItemBloc.add(
+                      AddShoppingFormSubmitted(),
+                    );
+                    FocusScope.of(context).unfocus();
+                    _shoppingItemController.clear();
+                  },
+                  minLines: 1,
+                  maxLines: 1000,
+                ),
               ),
             ),
           ),

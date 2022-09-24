@@ -4,6 +4,9 @@ import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
+import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
+import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -31,7 +34,7 @@ class LoginPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state is AuthenticateFailure) {
+        if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -47,14 +50,7 @@ class LoginPageView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Empthy Fidge',
-                style: TextStyle(
-                  color: Color(0xFF3cbcc7),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
+              const ImageLogo(),
               const SizedBox(height: 16),
               _EmailInput(),
               const SizedBox(height: 8),
@@ -77,22 +73,22 @@ class _EmailInput extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
-        return TextField(
-          key: const Key('loginPageView_emailInput_textField'),
-          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.black),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.circular(30),
+        return SizedBox(
+          width: Responsive.width(95, context),
+          child: TextField(
+            key: const Key('loginPageView_emailInput_textField'),
+            onChanged: (email) =>
+                context.read<LoginCubit>().emailChanged(email),
+            keyboardType: TextInputType.emailAddress,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.black),
+            decoration: InputDecoration(
+              labelText: 'Email',
+              helperText: '',
+              errorText: state.email.invalid ? 'invalid email' : null,
             ),
-            labelText: 'Email',
-            helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
           ),
         );
       },
@@ -104,25 +100,24 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      // buildWhen: (previous, current) => previous.password != current.password,
+      buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        return TextField(
-          key: const Key('loginPageView_PasswordInput_textField'),
-          onChanged: (password) =>
-              context.read<LoginCubit>().passwordChanged(password),
-          obscureText: true,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.black),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.circular(30),
+        return SizedBox(
+          width: Responsive.width(95, context),
+          child: TextField(
+            key: const Key('loginPageView_PasswordInput_textField'),
+            onChanged: (password) =>
+                context.read<LoginCubit>().passwordChanged(password),
+            obscureText: true,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.black),
+            decoration: InputDecoration(
+              labelText: 'Password',
+              helperText: '',
+              errorText: state.password.invalid ? 'invalid password' : null,
             ),
-            labelText: 'Password',
-            helperText: '',
-            errorText: state.password.invalid ? 'invalid password' : null,
           ),
         );
       },
