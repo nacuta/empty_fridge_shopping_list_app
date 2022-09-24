@@ -27,7 +27,7 @@ class _AddNewItemState extends State<AddNewItem> {
           ],
         ),
         onPressed: () async {
-          var newItem = await showDialog(
+          final newItem = await showDialog<AddToListWidget>(
             context: context,
             builder: (context) {
               return const AddToListWidget();

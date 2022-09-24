@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/view/auth_page.dart';
-import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/view/shopping_page.dart';
 
 class AuthPageDelegate extends StatelessWidget {

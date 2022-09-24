@@ -26,7 +26,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepository.authAnon();
       DatabaseService.collectionPath = user.id;
 
-      print('Doin ########################## ${user}');
       emit(AnonAuthenticated(user));
     } catch (e) {
       e;

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
-import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
-import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

@@ -11,8 +11,9 @@ class AddShoppingItemState extends Equatable {
     AddFormModel? changedValue,
   }) {
     return AddShoppingItemState(
-        status: status ?? this.status,
-        changedValue: changedValue ?? this.changedValue);
+      status: status ?? this.status,
+      changedValue: changedValue ?? this.changedValue,
+    );
   }
 
   final FormzStatus status;

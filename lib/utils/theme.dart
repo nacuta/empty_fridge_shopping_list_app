@@ -7,14 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData.light().copyWith(
-    primaryColor: Color(0xFF3cbcc7),
+    primaryColor: const Color(0xFF3cbcc7),
 
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: appBarTheme,
     // iconTheme: IconThemeData(color: kContentColorLightTheme),
     textTheme: textTheme,
     colorScheme: ColorScheme.light(
-      primary: Color(0xFF3cbcc7),
+      primary: const Color(0xFF3cbcc7),
       secondary: Colors.grey.shade700,
       error: Colors.orange.shade300,
     ),
@@ -39,7 +39,7 @@ ThemeData lightThemeData(BuildContext context) {
         borderRadius: BorderRadius.circular(30),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF3cbcc7)),
+        borderSide: const BorderSide(color: Color(0xFF3cbcc7)),
         borderRadius: BorderRadius.circular(30),
       ),
     ),

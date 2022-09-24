@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository_impl.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/cubit/sign_up_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
-import 'package:formz/formz.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -142,12 +142,11 @@ class _SignUpButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          // onPressed: () {},
-          onPressed: /* state.status.isValidated */
-              /*  ? */ () {
-            print((state.status).toString());
-            context.read<SignUpCubit>().signupFormSubbmited();
-          } /* : null */,
+          onPressed: state.status.isValidated
+              ? () {
+                  context.read<SignUpCubit>().signupFormSubbmited();
+                }
+              : null,
           child: const Text('SIGN UP'),
         );
       },

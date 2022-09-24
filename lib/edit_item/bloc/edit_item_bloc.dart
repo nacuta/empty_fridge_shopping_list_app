@@ -49,7 +49,6 @@ class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
     Emitter<EditItemState> emit,
   ) {
     var newInt = event.quantityDecremented;
-    print('in minus $newInt');
     newInt--;
     emit(state.copyWith(quantity: newInt));
   }
@@ -77,7 +76,7 @@ class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
     EditItemQuantityInput event,
     Emitter<EditItemState> emit,
   ) {
-    var newInt = event.quantityInput;
+    final newInt = event.quantityInput;
     emit(state.copyWith(quantity: newInt));
   }
 }
