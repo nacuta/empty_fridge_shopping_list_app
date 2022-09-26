@@ -2,18 +2,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 
-part 'login_state.dart';
+part 'signup_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
+class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository _authRepository;
 
-  LoginCubit(this._authRepository) : super(LoginState.initial());
+  SignUpCubit(this._authRepository) : super(SignUpState.initial());
 
   void emailChanged(String value) {
     emit(
       state.copyWith(
         email: value,
-        status: LoginStatus.initial,
+        status: SignupStatus.initial,
       ),
     );
   }
@@ -22,20 +22,20 @@ class LoginCubit extends Cubit<LoginState> {
     emit(
       state.copyWith(
         password: value,
-        status: LoginStatus.initial,
+        status: SignupStatus.initial,
       ),
     );
   }
 
-  Future<void> logInWithCredentials() async {
-    if (state.status == LoginStatus.submitting) return;
-    emit(state.copyWith(status: LoginStatus.submitting));
+  Future<void> signupFormSubmitted() async {
+    if (state.status == SignupStatus.submitting) return;
+    emit(state.copyWith(status: SignupStatus.submitting));
     try {
-      await _authRepository.logInWithEmailAndPassword(
+      await _authRepository.signup(
         email: state.email,
         password: state.password,
       );
-      emit(state.copyWith(status: LoginStatus.success));
+      emit(state.copyWith(status: SignupStatus.success));
     } catch (_) {}
   }
 }

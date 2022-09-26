@@ -25,6 +25,7 @@ dev_dependencies:
   bloc_test: ^9.1.0
   equatable: ^2.0.5
   firebase_auth: ^3.9.0
+  flow_builder: ^0.0.9
   flutter_test:
     sdk: flutter
   formz: ^0.4.1
@@ -35,6 +36,4 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-   - assets/
-
-
+    - assets/

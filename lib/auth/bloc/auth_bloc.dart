@@ -2,64 +2,52 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_service.dart';
 import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(this.authRepository) : super(UnAuthenticated()) {
-    on<UnAuthEvent>(_onUnAuthenticated);
-    on<AuthAnonEvent>(_anonymousAuth);
-  }
-  final AuthRepository authRepository;
+  final AuthRepository _authRepository;
+  StreamSubscription<UserModel>? _userSubscription;
 
-  Future<void> _anonymousAuth(
-    AuthAnonEvent event,
-    Emitter<AuthState> emit,
-  ) async {
-    try {
-      final user = await authRepository.authAnon();
-      DatabaseService.collectionPath = user.id;
+  AuthBloc({required AuthRepository authRepository})
+      : _authRepository = authRepository,
+        super(
+          authRepository.currentUser.isNotEmpty
+              ? AuthState.authenticated(authRepository.currentUser)
+              : const AuthState.unauthenticated(),
+        ) {
+    on<AppUserChanged>(_onUserChanged);
+    on<AppLogoutRequested>(_onLogoutRequested);
 
-      emit(AnonAuthenticated(user));
-    } catch (e) {
-      e;
-    }
+    _userSubscription = _authRepository.user.listen(
+      (user) => add(AppUserChanged(user)),
+    );
   }
 
-  Future<FutureOr<void>> _onUnAuthenticated(
-    UnAuthEvent event,
+  void _onUserChanged(
+    AppUserChanged event,
     Emitter<AuthState> emit,
-  ) async {
-    //listen changes of user and check if is
-    AuthService().user.listen((event) async {
-      if (event.id != '' || event.isAnonymous == true) {
-        DatabaseService.collectionPath = event.id;
+  ) {
+    emit(
+      event.user.isNotEmpty
+          ? AuthState.authenticated(event.user)
+          : const AuthState.unauthenticated(),
+    );
+  }
 
-        emit(
-          AnonAuthenticated(
-            UserModel(id: event.id, isAnonymous: event.isAnonymous),
-          ),
-        );
-      }
-      if (event.email != null || event.name != null) {
-        DatabaseService.collectionPath = event.id;
-        emit(
-          EmailAndPasswordAuthenticated(
-            UserModel(
-              id: event.id,
-              email: event.email,
-              name: event.name,
-              isAnonymous: event.isAnonymous,
-            ),
-          ),
-        );
-      }
-    });
+  void _onLogoutRequested(
+    AppLogoutRequested event,
+    Emitter<AuthState> emit,
+  ) {
+    unawaited(_authRepository.logOut());
+  }
+
+  @override
+  Future<void> close() {
+    _userSubscription?.cancel();
+    return super.close();
   }
 }
