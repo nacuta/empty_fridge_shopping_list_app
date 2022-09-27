@@ -5,17 +5,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/auth/view/auth_delegate_page.dart';
+import 'package:mobi_lab_shopping_list_app/config/routes.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/utils/theme.dart';
-import 'package:flow_builder/flow_builder.dart';
-
-import '../../config/routes.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -47,6 +45,13 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: lightThemeData(context),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       home: FlowBuilder<AppStatus>(
         state: context.select((AuthBloc bloc) => bloc.state.status),
         onGeneratePages: onGenerateAppViewPages,

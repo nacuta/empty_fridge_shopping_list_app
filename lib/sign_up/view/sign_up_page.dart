@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/cubit/signup_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
-  static Route route() {
+  static MaterialPageRoute<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const SignupScreen());
   }
 
@@ -15,7 +16,7 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Signup')),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: BlocProvider<SignUpCubit>(
           create: (_) => SignUpCubit(context.read<AuthRepository>()),
           child: const SignupForm(),
@@ -26,7 +27,7 @@ class SignupScreen extends StatelessWidget {
 }
 
 class SignupForm extends StatelessWidget {
-  const SignupForm({Key? key}) : super(key: key);
+  const SignupForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +36,28 @@ class SignupForm extends StatelessWidget {
         if (state.status == SignupStatus.success) {
           Navigator.of(context).pop();
         } else if (state.status == SignupStatus.error) {
-          // Nothing for now.
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(
+                content: Text(/* state.errorMessage ?? */ 'Sign Up Failure'),
+              ),
+            );
         }
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _EmailInput(),
-          const SizedBox(height: 8),
-          _PasswordInput(),
-          const SizedBox(height: 8),
-          _SignupButton(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ImageLogo(),
+            const SizedBox(height: 16),
+            _EmailInput(),
+            const SizedBox(height: 16),
+            _PasswordInput(),
+            const SizedBox(height: 16),
+            _SignupButton(),
+          ],
+        ),
       ),
     );
   }
@@ -96,19 +107,31 @@ class _SignupButton extends StatelessWidget {
         return state.status == SignupStatus.submitting
             ? const CircularProgressIndicator()
             : ElevatedButton(
+                key: const Key('signUpPageView_SignUp_elevatedButton'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
                   fixedSize: const Size(200, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                onPressed: () {
-                  context.read<SignUpCubit>().signupFormSubmitted();
-                },
-                child: const Text(
-                  'SIGN UP',
-                  style: TextStyle(color: Colors.white),
-                ),
+                onPressed: () =>
+                    context.read<SignUpCubit>().signupFormSubmitted(),
+                child: const Text('SIGN UP'),
               );
       },
     );
+    // : ElevatedButton(
+    //     style: ElevatedButton.styleFrom(
+    //       backgroundColor: Colors.blue,
+    //       fixedSize: const Size(200, 40),
+    //     ),
+    //     onPressed: () {
+    //       context.read<SignUpCubit>().signupFormSubmitted();
+    //     },
+    //     child: const Text(
+    //       'SIGN UP',
+    //       style: TextStyle(color: Colors.white),
+    //     ),
+    //   );
   }
 }

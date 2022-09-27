@@ -7,7 +7,7 @@
 
 // class AuthPage extends StatelessWidget {
 //   const AuthPage({super.key});
-
+//   static MaterialPage<void> page() => const MaterialPage(child: AuthPage());
 //   @override
 //   Widget build(BuildContext context) {
 //     final theme = Theme.of(context);
@@ -20,7 +20,7 @@
 //             const ImageLogo(),
 //             ElevatedButton(
 //               onPressed: () {
-//                 Navigator.of(context).push(SignUpPage.route());
+//                 Navigator.of(context).push(SignupScreen.route());
 //               },
 //               style: ElevatedButton.styleFrom(
 //                 foregroundColor: Colors.white,
@@ -48,7 +48,9 @@
 //             ),
 //             OutlinedButton(
 //               onPressed: () {
-//                 Navigator.of(context).push(LoginPage.route());
+//                 Navigator.of(context).push(
+//                   MaterialPageRoute(builder: (context) => const LoginPage()),
+//                 );
 //               },
 //               style: OutlinedButton.styleFrom(
 //                 side: BorderSide(color: theme.primaryColor),
@@ -75,7 +77,7 @@
 //             //Anonymous log in
 //             TextButton(
 //               onPressed: () {
-//                 context.read<AuthBloc>().add(AuthAnonEvent());
+//                 // context.read<AuthBloc>().add(AuthAnonEvent());
 //               },
 //               child: Text(
 //                 'Maybe Later',

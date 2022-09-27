@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
+import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
@@ -14,6 +15,8 @@ import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
 
+  static MaterialPage<void> page() => const MaterialPage(child: ShoppingPage());
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -24,11 +27,15 @@ class ShoppingPage extends StatelessWidget {
         ),
         // Database connection bloc
         BlocProvider(
-          create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
+          create: (context) => DatabaseBloc(
+            DatabaseRepositoryImpl(),
+          ),
         ),
         //  new item bloc
         BlocProvider(
-          create: (context) => AddShoppingItemBloc(DatabaseRepositoryImpl()),
+          create: (context) => AddShoppingItemBloc(
+            DatabaseRepositoryImpl(),
+          ),
         ),
       ],
       child: const ShoppingView(),
@@ -58,6 +65,10 @@ class ShoppingView extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.person_add),
           ),
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () => context.read<AuthBloc>().add(AppLogoutRequested()),
+          )
         ],
         bottom: const PreferredSize(
           preferredSize: Size(40, 60),

@@ -91,7 +91,7 @@ android {
         }
         development {
             dimension "default"
-            applicationIdSuffix ".dev"
+            applicationIdSuffix ""
             manifestPlaceholders = [appName: "[DEV] Mobi Lab Shopping List App"]
         }
     }
