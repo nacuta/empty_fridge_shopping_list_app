@@ -120,18 +120,5 @@ class _SignupButton extends StatelessWidget {
               );
       },
     );
-    // : ElevatedButton(
-    //     style: ElevatedButton.styleFrom(
-    //       backgroundColor: Colors.blue,
-    //       fixedSize: const Size(200, 40),
-    //     ),
-    //     onPressed: () {
-    //       context.read<SignUpCubit>().signupFormSubmitted();
-    //     },
-    //     child: const Text(
-    //       'SIGN UP',
-    //       style: TextStyle(color: Colors.white),
-    //     ),
-    //   );
   }
 }

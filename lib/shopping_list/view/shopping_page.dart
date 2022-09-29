@@ -19,26 +19,29 @@ class ShoppingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        // check connectivity to internet
-        BlocProvider(
-          create: (context) => NetworkBloc()..add(NetworkObserve()),
-        ),
-        // Database connection bloc
-        BlocProvider(
-          create: (context) => DatabaseBloc(
-            DatabaseRepositoryImpl(),
+    return RepositoryProvider(
+      create: (context) => DatabaseRepositoryImpl(),
+      child: MultiBlocProvider(
+        providers: [
+          // check connectivity to internet
+          BlocProvider(
+            create: (context) => NetworkBloc()..add(NetworkObserve()),
           ),
-        ),
-        //  new item bloc
-        BlocProvider(
-          create: (context) => AddShoppingItemBloc(
-            DatabaseRepositoryImpl(),
+          // Database connection bloc
+          BlocProvider(
+            create: (context) => DatabaseBloc(
+              context.read<DatabaseRepositoryImpl>(),
+            ),
           ),
-        ),
-      ],
-      child: const ShoppingView(),
+          //  new item bloc
+          BlocProvider(
+            create: (context) => AddShoppingItemBloc(
+              context.read<DatabaseRepositoryImpl>(),
+            ),
+          ),
+        ],
+        child: const ShoppingView(),
+      ),
     );
   }
 }
@@ -78,23 +81,23 @@ class ShoppingView extends StatelessWidget {
       ),
       body: MultiBlocListener(
         listeners: [
-          BlocListener<NetworkBloc, NetworkState>(
-            listener: (context, state) {
-              if (state is NetworkFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'No Internet Connection',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.amberAccent,
-                    padding: EdgeInsets.all(20),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
-              }
-            },
-          ),
+          // BlocListener<NetworkBloc, NetworkState>(
+          //   listener: (context, state) {
+          //     if (state is NetworkFailure) {
+          //       ScaffoldMessenger.of(context).showSnackBar(
+          //         const SnackBar(
+          //           content: Text(
+          //             'No Internet Connection',
+          //             style: TextStyle(color: Colors.black),
+          //           ),
+          //           backgroundColor: Colors.amberAccent,
+          //           padding: EdgeInsets.all(20),
+          //           behavior: SnackBarBehavior.floating,
+          //         ),
+          //       );
+          //     }
+          //   },
+          // ),
           BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
             listener: (context, state) {
               if (state.status == FormzStatus.submissionSuccess) {

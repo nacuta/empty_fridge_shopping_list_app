@@ -5,9 +5,8 @@ import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 part 'signup_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  final AuthRepository _authRepository;
-
   SignUpCubit(this._authRepository) : super(SignUpState.initial());
+  final AuthRepository _authRepository;
 
   void emailChanged(String value) {
     emit(

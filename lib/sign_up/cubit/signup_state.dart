@@ -3,10 +3,6 @@ part of 'signup_cubit.dart';
 enum SignupStatus { initial, submitting, success, error }
 
 class SignUpState extends Equatable {
-  final String email;
-  final String password;
-  final SignupStatus status;
-
   const SignUpState({
     required this.email,
     required this.password,
@@ -20,6 +16,9 @@ class SignUpState extends Equatable {
       status: SignupStatus.initial,
     );
   }
+  final String email;
+  final String password;
+  final SignupStatus status;
 
   SignUpState copyWith({
     String? email,

@@ -5,9 +5,8 @@ import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthRepository _authRepository;
-
   LoginCubit(this._authRepository) : super(LoginState.initial());
+  final AuthRepository _authRepository;
 
   void emailChanged(String value) {
     emit(
@@ -35,6 +34,13 @@ class LoginCubit extends Cubit<LoginState> {
         email: state.email,
         password: state.password,
       );
+      emit(state.copyWith(status: LoginStatus.success));
+    } catch (_) {}
+  }
+
+  Future<void> signInAnonymously() async {
+    try {
+      await _authRepository.anonSignIn();
       emit(state.copyWith(status: LoginStatus.success));
     } catch (_) {}
   }

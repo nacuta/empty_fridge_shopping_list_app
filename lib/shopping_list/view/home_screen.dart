@@ -4,7 +4,7 @@ import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 // import '/blocs/blocs.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   static MaterialPage<void> page() =>
       const MaterialPage<void>(child: HomeScreen());
@@ -24,12 +24,13 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Align(
-        alignment: const Alignment(0, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircleAvatar(
-                radius: 48, child: Icon(Icons.person_outline, size: 48)),
+              radius: 48,
+              child: Icon(Icons.person_outline, size: 48),
+            ),
             const SizedBox(height: 4),
             Text(user.email ?? '', style: const TextStyle(fontSize: 24)),
           ],

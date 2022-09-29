@@ -90,14 +90,14 @@ class _EditItemViewState extends State<EditItemView> {
                   ///this [onTapOutside] works with
                   ///Flutter:3.4.0-19.0.pre.63
                   ///or just comment it and submit changes with keyboard enter.
-                  onTapOutside: (event) {
-                    textvalue = _titleController.text;
-                    final currentFocus = FocusScope.of(context);
-                    editItemBloc.add(EditItemTitleChanged(textvalue));
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
-                  },
+                  // onTapOutside: (event) {
+                  //   textvalue = _titleController.text;
+                  //   final currentFocus = FocusScope.of(context);
+                  //   editItemBloc.add(EditItemTitleChanged(textvalue));
+                  //   if (!currentFocus.hasPrimaryFocus) {
+                  //     currentFocus.unfocus();
+                  //   }
+                  // },
                   autofocus: true,
                   onSubmitted: (value) {
                     editItemBloc.add(EditItemTitleChanged(value));
@@ -166,17 +166,17 @@ class _EditItemViewState extends State<EditItemView> {
                       width: 60,
                       height: 40,
                       child: TextField(
-                        onTapOutside: (event) {
-                          final currentFocus = FocusScope.of(context);
-                          editItemBloc.add(
-                            EditItemQuantityInput(
-                              int.parse(_quantityController.text),
-                            ),
-                          );
-                          if (!currentFocus.hasPrimaryFocus) {
-                            currentFocus.unfocus();
-                          }
-                        },
+                        // onTapOutside: (event) {
+                        //   final currentFocus = FocusScope.of(context);
+                        //   editItemBloc.add(
+                        //     EditItemQuantityInput(
+                        //       int.parse(_quantityController.text),
+                        //     ),
+                        //   );
+                        //   if (!currentFocus.hasPrimaryFocus) {
+                        //     currentFocus.unfocus();
+                        //   }
+                        // },
                         controller: _quantityController,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineSmall

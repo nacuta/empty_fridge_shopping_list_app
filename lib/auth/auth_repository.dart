@@ -52,6 +52,12 @@ class AuthRepository {
       ]);
     } catch (_) {}
   }
+
+  Future<void> anonSignIn() async {
+    try {
+      await _firebaseAuth.signInAnonymously();
+    } catch (_) {}
+  }
 }
 
 extension on firebase_auth.User {
