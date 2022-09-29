@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_service.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -30,11 +31,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AppUserChanged event,
     Emitter<AuthState> emit,
   ) {
-    emit(
-      event.user.isNotEmpty
-          ? AuthState.authenticated(event.user)
-          : const AuthState.unauthenticated(),
-    );
+    if (event.user.isNotEmpty) {
+      DatabaseService.collectionPath = event.user.id;
+      emit(AuthState.authenticated(event.user));
+    } else {
+      emit(const AuthState.unauthenticated());
+    }
   }
 
   void _onLogoutRequested(

@@ -35,12 +35,13 @@ class SignupForm extends StatelessWidget {
       listener: (context, state) {
         if (state.status == SignupStatus.success) {
           Navigator.of(context).pop();
-        } else if (state.status == SignupStatus.error) {
+        }
+        if (state.status == SignupStatus.error) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(
-                content: Text(/* state.errorMessage ?? */ 'Sign Up Failure'),
+              SnackBar(
+                content: Text(state.errorMessage ?? 'Sign Up Failure'),
               ),
             );
         }

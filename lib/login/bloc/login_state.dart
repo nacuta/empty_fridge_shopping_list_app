@@ -7,6 +7,7 @@ class LoginState extends Equatable {
     required this.email,
     required this.password,
     required this.status,
+    this.errorMessage,
   });
 
   factory LoginState.initial() {
@@ -14,21 +15,24 @@ class LoginState extends Equatable {
       email: '',
       password: '',
       status: LoginStatus.initial,
+      errorMessage: '',
     );
   }
   final String email;
   final String password;
   final LoginStatus status;
+  final String? errorMessage;
 
-  LoginState copyWith({
-    String? email,
-    String? password,
-    LoginStatus? status,
-  }) {
+  LoginState copyWith(
+      {String? email,
+      String? password,
+      LoginStatus? status,
+      String? errorMessage}) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 

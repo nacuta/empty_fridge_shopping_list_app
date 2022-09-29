@@ -30,7 +30,11 @@ class AuthRepository {
         email: email,
         password: password,
       );
-    } catch (_) {}
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw SignUpWithEmailAndPasswordFailure();
+    }
   }
 
   Future<void> logInWithEmailAndPassword({
@@ -42,7 +46,11 @@ class AuthRepository {
         email: email,
         password: password,
       );
-    } catch (_) {}
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw LogInWithEmailAndPasswordFailure();
+    }
   }
 
   Future<void> logOut() async {
@@ -50,13 +58,17 @@ class AuthRepository {
       await Future.wait([
         _firebaseAuth.signOut(),
       ]);
-    } catch (_) {}
+    } catch (_) {
+      throw LogOutFailure();
+    }
   }
 
   Future<void> anonSignIn() async {
     try {
       await _firebaseAuth.signInAnonymously();
-    } catch (_) {}
+    } catch (_) {
+      throw SignInAnonymouslyFailure();
+    }
   }
 }
 
@@ -67,79 +79,71 @@ extension on firebase_auth.User {
   }
 }
 
+class SignUpWithEmailAndPasswordFailure implements Exception {
+  SignUpWithEmailAndPasswordFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
 
-// import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
+  factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
+    switch (code) {
+      case 'invalid-email':
+        return SignUpWithEmailAndPasswordFailure(
+          'Email is not valid or badly formatted.',
+        );
+      case 'user-disabled':
+        return SignUpWithEmailAndPasswordFailure(
+          'This user has been disabled. Please contact support for help.',
+        );
+      case 'email-already-in-use':
+        return SignUpWithEmailAndPasswordFailure(
+          'An account already exists for that email.',
+        );
+      case 'operation-not-allowed':
+        return SignUpWithEmailAndPasswordFailure(
+          'Operation is not allowed. Please contact support.',
+        );
+      case 'weak-password':
+        return SignUpWithEmailAndPasswordFailure(
+          'Please enter a stronger password.',
+        );
+      default:
+        return SignUpWithEmailAndPasswordFailure();
+    }
+  }
+  final String message;
+}
 
-// abstract class AuthRepository {
-//   Future<UserModel> authAnon();
-//   Future<void> authEmailAndPass(String email, String password);
-//   Future<void> logInEmailAndPass(String email, String password);
-//   Future<void> authOut();
-// }
+class LogInWithEmailAndPasswordFailure implements Exception {
+  LogInWithEmailAndPasswordFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
 
-// class SignUpWithEmailAndPasswordFailure implements Exception {
-//   SignUpWithEmailAndPasswordFailure([
-//     this.message = 'An unknown exception occurred.',
-//   ]);
+  factory LogInWithEmailAndPasswordFailure.fromCode(String code) {
+    switch (code) {
+      case 'invalid-email':
+        return LogInWithEmailAndPasswordFailure(
+          'Email is not valid or badly formatted.',
+        );
+      case 'user-disabled':
+        return LogInWithEmailAndPasswordFailure(
+          'This user has been disabled. Please contact support for help.',
+        );
+      case 'user-not-found':
+        return LogInWithEmailAndPasswordFailure(
+          'Email is not found, please create an account.',
+        );
+      case 'wrong-password':
+        return LogInWithEmailAndPasswordFailure(
+          'Incorrect password, please try again.',
+        );
+      default:
+        return LogInWithEmailAndPasswordFailure();
+    }
+  }
 
-//   factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
-//     switch (code) {
-//       case 'invalid-email':
-//         return SignUpWithEmailAndPasswordFailure(
-//           'Email is not valid or badly formatted.',
-//         );
-//       case 'user-disabled':
-//         return SignUpWithEmailAndPasswordFailure(
-//           'This user has been disabled. Please contact support for help.',
-//         );
-//       case 'email-already-in-use':
-//         return SignUpWithEmailAndPasswordFailure(
-//           'An account already exists for that email.',
-//         );
-//       case 'operation-not-allowed':
-//         return SignUpWithEmailAndPasswordFailure(
-//           'Operation is not allowed. Please contact support.',
-//         );
-//       case 'weak-password':
-//         return SignUpWithEmailAndPasswordFailure(
-//           'Please enter a stronger password.',
-//         );
-//       default:
-//         return SignUpWithEmailAndPasswordFailure();
-//     }
-//   }
-//   final String message;
-// }
+  final String message;
+}
 
-// class LogInWithEmailAndPasswordFailure implements Exception {
-//   LogInWithEmailAndPasswordFailure([
-//     this.message = 'An unknown exception occurred.',
-//   ]);
+class LogOutFailure implements Exception {}
 
-//   factory LogInWithEmailAndPasswordFailure.fromCode(String code) {
-//     switch (code) {
-//       case 'invalid-email':
-//         return LogInWithEmailAndPasswordFailure(
-//           'Email is not valid or badly formatted.',
-//         );
-//       case 'user-disabled':
-//         return LogInWithEmailAndPasswordFailure(
-//           'This user has been disabled. Please contact support for help.',
-//         );
-//       case 'user-not-found':
-//         return LogInWithEmailAndPasswordFailure(
-//           'Email is not found, please create an account.',
-//         );
-//       case 'wrong-password':
-//         return LogInWithEmailAndPasswordFailure(
-//           'Incorrect password, please try again.',
-//         );
-//       default:
-//         return LogInWithEmailAndPasswordFailure();
-//     }
-//   }
-
-//   final String message;
-// }
-
-// class LogOutFailure implements Exception {}
+class SignInAnonymouslyFailure implements Exception {}

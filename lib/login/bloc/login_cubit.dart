@@ -35,13 +35,17 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       );
       emit(state.copyWith(status: LoginStatus.success));
-    } catch (_) {}
+    } on LogInWithEmailAndPasswordFailure catch (e) {
+      emit(state.copyWith(status: LoginStatus.error, errorMessage: e.message));
+    }
   }
 
   Future<void> signInAnonymously() async {
     try {
       await _authRepository.anonSignIn();
       emit(state.copyWith(status: LoginStatus.success));
-    } catch (_) {}
+    } on LogInWithEmailAndPasswordFailure catch (e) {
+      emit(state.copyWith(status: LoginStatus.error, errorMessage: e.message));
+    }
   }
 }
