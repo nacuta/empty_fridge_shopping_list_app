@@ -1,47 +1,62 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/models/email.dart';
+import 'package:mobi_lab_shopping_list_app/models/password.dart';
 
 part 'signup_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this._authRepository) : super(SignUpState.initial());
-  final AuthRepository _authRepository;
+  SignUpCubit(this._authenticationRepository) : super(const SignUpState());
+
+  final AuthRepository _authenticationRepository;
 
   void emailChanged(String value) {
+    final email = Email.dirty(value);
     emit(
       state.copyWith(
-        email: value,
-        status: SignupStatus.initial,
+        email: email,
+        status: Formz.validate([
+          email,
+          state.password,
+        ]),
       ),
     );
   }
 
   void passwordChanged(String value) {
+    final password = Password.dirty(value);
+
     emit(
       state.copyWith(
-        password: value,
-        status: SignupStatus.initial,
+        password: password,
+        status: Formz.validate([
+          state.email,
+          password,
+        ]),
       ),
     );
   }
 
-  Future<void> signupFormSubmitted() async {
-    if (state.status == SignupStatus.submitting) return;
-    emit(state.copyWith(status: SignupStatus.submitting));
+  Future<void> signUpFormSubmitted() async {
+    if (!state.status.isValidated) return;
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _authRepository.signup(
-        email: state.email,
-        password: state.password,
+      await _authenticationRepository.signup(
+        email: state.email.value,
+        password: state.password.value,
       );
-      emit(state.copyWith(status: SignupStatus.success));
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(
         state.copyWith(
-          status: SignupStatus.error,
           errorMessage: e.message,
+          status: FormzStatus.submissionFailure,
         ),
       );
+    } catch (_) {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }
 }

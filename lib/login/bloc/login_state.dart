@@ -1,33 +1,27 @@
 part of 'login_cubit.dart';
 
-enum LoginStatus { initial, submitting, success, error }
-
 class LoginState extends Equatable {
   const LoginState({
-    required this.email,
-    required this.password,
-    required this.status,
+    this.email = const Email.pure(),
+    this.password = const Password.pure(),
+    this.status = FormzStatus.pure,
     this.errorMessage,
   });
 
-  factory LoginState.initial() {
-    return const LoginState(
-      email: '',
-      password: '',
-      status: LoginStatus.initial,
-      errorMessage: '',
-    );
-  }
-  final String email;
-  final String password;
-  final LoginStatus status;
+  final Email email;
+  final Password password;
+  final FormzStatus status;
   final String? errorMessage;
 
-  LoginState copyWith(
-      {String? email,
-      String? password,
-      LoginStatus? status,
-      String? errorMessage}) {
+  @override
+  List<Object> get props => [email, password, status];
+
+  LoginState copyWith({
+    Email? email,
+    Password? password,
+    FormzStatus? status,
+    String? errorMessage,
+  }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
@@ -35,7 +29,4 @@ class LoginState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
-
-  @override
-  List<Object> get props => [email, password, status];
 }

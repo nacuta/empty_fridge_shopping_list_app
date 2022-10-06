@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/cubit/signup_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
+
+import '../../login/view/login_page.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -33,10 +36,10 @@ class SignupForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
-        if (state.status == SignupStatus.success) {
+        if (state.status.isSubmissionSuccess) {
           Navigator.of(context).pop();
         }
-        if (state.status == SignupStatus.error) {
+        if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -75,6 +78,10 @@ class _EmailInput extends StatelessWidget {
             context.read<SignUpCubit>().emailChanged(email);
           },
           decoration: const InputDecoration(labelText: 'email'),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: Colors.black),
         );
       },
     );
@@ -93,6 +100,10 @@ class _PasswordInput extends StatelessWidget {
           },
           decoration: const InputDecoration(labelText: 'password'),
           obscureText: true,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: Colors.black),
         );
       },
     );
@@ -105,18 +116,21 @@ class _SignupButton extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status == SignupStatus.submitting
+        return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 key: const Key('signUpPageView_SignUp_elevatedButton'),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      !state.status.isValidated ? Colors.grey.shade500 : null,
                   fixedSize: const Size(200, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: () =>
-                    context.read<SignUpCubit>().signupFormSubmitted(),
+                onPressed: () => !state.status.isValidated
+                    ? passwordSnackBar(context)
+                    : context.read<SignUpCubit>().signUpFormSubmitted(),
                 child: const Text('SIGN UP'),
               );
       },

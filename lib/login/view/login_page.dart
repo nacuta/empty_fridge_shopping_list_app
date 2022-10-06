@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
@@ -38,10 +39,10 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.status == LoginStatus.success) {
+        if (state.status.isSubmissionSuccess) {
           Navigator.of(context).pop();
         }
-        if (state.status == LoginStatus.error) {
+        if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -135,14 +136,15 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status == LoginStatus.submitting
+        return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 key: const Key('loginPageView_SignIn_elevatedButton'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor:
-                      Colors.deepOrangeAccent.shade700, // background color
+                  backgroundColor: !state.status.isValidated
+                      ? Colors.grey.shade500
+                      : Colors.deepOrangeAccent.shade700, // background color
 
                   shadowColor: Colors.grey.shade900,
                   elevation: 4,
@@ -151,8 +153,9 @@ class _LoginButton extends StatelessWidget {
                   ),
                   minimumSize: const Size(200, 50),
                 ),
-                onPressed: () =>
-                    context.read<LoginCubit>().logInWithCredentials(),
+                onPressed: () => !state.status.isValidated
+                    ? passwordSnackBar(context)
+                    : context.read<LoginCubit>().logInWithCredentials(),
                 child: Text(
                   'Sign In',
                   style: Theme.of(context)
@@ -179,4 +182,16 @@ class _SignupButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void passwordSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Password should contain at least a special character',
+        ),
+      ),
+    );
 }
