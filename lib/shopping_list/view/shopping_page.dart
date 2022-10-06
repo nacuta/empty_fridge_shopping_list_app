@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
 import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
+import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
@@ -79,36 +80,26 @@ class ShoppingView extends StatelessWidget {
         ),
         // centerTitle: true,
       ),
-      body: MultiBlocListener(
-        listeners: [
-          // BlocListener<NetworkBloc, NetworkState>(
-          //   listener: (context, state) {
-          //     if (state is NetworkFailure) {
-          //       ScaffoldMessenger.of(context).showSnackBar(
-          //         const SnackBar(
-          //           content: Text(
-          //             'No Internet Connection',
-          //             style: TextStyle(color: Colors.black),
-          //           ),
-          //           backgroundColor: Colors.amberAccent,
-          //           padding: EdgeInsets.all(20),
-          //           behavior: SnackBarBehavior.floating,
-          //         ),
-          //       );
-          //     }
-          //   },
-          // ),
-          BlocListener<AddShoppingItemBloc, AddShoppingItemState>(
-            listener: (context, state) {
-              if (state.status == FormzStatus.submissionSuccess) {
-                context.read<DatabaseBloc>().add(DatabaseFetchData());
-              }
-            },
-            // Bloc that Listen for changes and build accordingly
-          ),
-        ],
+      body: BlocListener<NetworkBloc, NetworkState>(
+        listener: (context, state) {
+          if (state is NetworkFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'No Internet Connection',
+                  style: TextStyle(color: Colors.black),
+                ),
+                backgroundColor: Colors.amberAccent,
+                padding: EdgeInsets.all(20),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
         child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {
+            // ignore: unnecessary_statements
+            context.watch<AddShoppingItemBloc>().state.changedValue.value;
             context.read<DatabaseBloc>().add(DatabaseFetchData());
             // }
             if (state.status == DatabaseStateStatus.loading) {
