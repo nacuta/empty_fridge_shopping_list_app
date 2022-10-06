@@ -82,19 +82,19 @@ class ShoppingView extends StatelessWidget {
       ),
       body: BlocListener<NetworkBloc, NetworkState>(
         listener: (context, state) {
-          if (state is NetworkFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'No Internet Connection',
-                  style: TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Colors.amberAccent,
-                padding: EdgeInsets.all(20),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          }
+          //   if (state is NetworkFailure) {
+          //     ScaffoldMessenger.of(context).showSnackBar(
+          //       const SnackBar(
+          //         content: Text(
+          //           'No Internet Connection',
+          //           style: TextStyle(color: Colors.black),
+          //         ),
+          //         backgroundColor: Colors.amberAccent,
+          //         padding: EdgeInsets.all(20),
+          //         behavior: SnackBarBehavior.floating,
+          //       ),
+          //     );
+          //   }
         },
         child: BlocBuilder<DatabaseBloc, DatabaseState>(
           builder: (context, state) {

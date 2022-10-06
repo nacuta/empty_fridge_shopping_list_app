@@ -84,6 +84,7 @@ class _EmailInput extends StatelessWidget {
             key: const Key('loginPageView_emailInput_textField'),
             onChanged: (email) =>
                 context.read<LoginCubit>().emailChanged(email),
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             keyboardType: TextInputType.emailAddress,
             style: Theme.of(context)
                 .textTheme
@@ -113,6 +114,7 @@ class _PasswordInput extends StatelessWidget {
             key: const Key('loginPageView_PasswordInput_textField'),
             onChanged: (password) =>
                 context.read<LoginCubit>().passwordChanged(password),
+            onEditingComplete: () => FocusScope.of(context).unfocus(),
             obscureText: true,
             style: Theme.of(context)
                 .textTheme

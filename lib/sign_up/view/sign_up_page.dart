@@ -77,6 +77,7 @@ class _EmailInput extends StatelessWidget {
           onChanged: (email) {
             context.read<SignUpCubit>().emailChanged(email);
           },
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
           decoration: const InputDecoration(labelText: 'email'),
           style: Theme.of(context)
               .textTheme
@@ -98,6 +99,7 @@ class _PasswordInput extends StatelessWidget {
           onChanged: (password) {
             context.read<SignUpCubit>().passwordChanged(password);
           },
+          onEditingComplete: () => FocusScope.of(context).unfocus(),
           decoration: const InputDecoration(labelText: 'password'),
           obscureText: true,
           style: Theme.of(context)
