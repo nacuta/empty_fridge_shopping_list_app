@@ -1,16 +1,21 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
 
 class AuthRepository {
   AuthRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
-  }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
+    GoogleSignIn? googleSignIn,
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+
   final firebase_auth.FirebaseAuth _firebaseAuth;
 
   var currentUser = UserModel.empthy;
+  final GoogleSignIn _googleSignIn;
 
   Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
@@ -68,6 +73,33 @@ class AuthRepository {
       await _firebaseAuth.signInAnonymously();
     } catch (_) {
       throw SignInAnonymouslyFailure();
+    }
+  }
+
+  /// Starts the Sign In with Google Flow.
+  ///
+  /// Throws a [LogInWithGoogleFailure] if an exception occurs.
+  Future<void> googleSignIn() async {
+    try {
+      late final firebase_auth.AuthCredential credential;
+      if (kIsWeb) {
+        final googleProvider = firebase_auth.GoogleAuthProvider();
+        final userCredential = await _firebaseAuth.signInWithPopup(
+          googleProvider,
+        );
+        credential = userCredential.credential!;
+      } else {
+        final googleUser = await _googleSignIn.signIn();
+        final googleAuth = await googleUser!.authentication;
+        credential = firebase_auth.GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+      }
+
+      await _firebaseAuth.signInWithCredential(credential);
+    } catch (_) {
+      throw LogInWithGoogleFailure();
     }
   }
 }
@@ -147,3 +179,54 @@ class LogInWithEmailAndPasswordFailure implements Exception {
 class LogOutFailure implements Exception {}
 
 class SignInAnonymouslyFailure implements Exception {}
+
+class LogInWithGoogleFailure implements Exception {
+  /// {@macro log_in_with_google_failure}
+  const LogInWithGoogleFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
+
+  /// Create an authentication message
+  /// from a firebase authentication exception code.
+  factory LogInWithGoogleFailure.fromCode(String code) {
+    switch (code) {
+      case 'account-exists-with-different-credential':
+        return const LogInWithGoogleFailure(
+          'Account exists with different credentials.',
+        );
+      case 'invalid-credential':
+        return const LogInWithGoogleFailure(
+          'The credential received is malformed or has expired.',
+        );
+      case 'operation-not-allowed':
+        return const LogInWithGoogleFailure(
+          'Operation is not allowed.  Please contact support.',
+        );
+      case 'user-disabled':
+        return const LogInWithGoogleFailure(
+          'This user has been disabled. Please contact support for help.',
+        );
+      case 'user-not-found':
+        return const LogInWithGoogleFailure(
+          'Email is not found, please create an account.',
+        );
+      case 'wrong-password':
+        return const LogInWithGoogleFailure(
+          'Incorrect password, please try again.',
+        );
+      case 'invalid-verification-code':
+        return const LogInWithGoogleFailure(
+          'The credential verification code received is invalid.',
+        );
+      case 'invalid-verification-id':
+        return const LogInWithGoogleFailure(
+          'The credential verification ID received is invalid.',
+        );
+      default:
+        return const LogInWithGoogleFailure();
+    }
+  }
+
+  /// The associated error message.
+  final String message;
+}

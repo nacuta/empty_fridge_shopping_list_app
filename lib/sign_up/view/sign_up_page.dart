@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
 import 'package:mobi_lab_shopping_list_app/sign_up/cubit/signup_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
-
-import '../../login/view/login_page.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});

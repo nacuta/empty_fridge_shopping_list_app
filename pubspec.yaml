@@ -17,7 +17,9 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
+  font_awesome_flutter: ^10.2.1
   google_fonts: ^3.0.1
+  google_sign_in: ^5.4.2
   intl: ^0.17.0
   uuid: ^3.0.6
 

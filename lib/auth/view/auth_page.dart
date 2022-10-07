@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
@@ -13,7 +14,12 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginCubit(context.read<AuthRepository>()),
-      child: const AuthForm(),
+      child: const Scaffold(
+        body: Padding(
+          padding: EdgeInsets.all(20),
+          child: AuthForm(),
+        ),
+      ),
     );
   }
 }
@@ -23,29 +29,34 @@ class AuthForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          margin: const EdgeInsets.all(10),
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const ImageLogo(),
-              _createAccountButton(context, theme),
-              const SizedBox(height: 40),
-              _signInButton(context, theme),
-              const SizedBox(height: 40),
-              _anonymousButton(context, theme),
+              _CreateAccountButton(),
+              const SizedBox(height: 20),
+              _SignInButton(),
+              const SizedBox(height: 20),
+              _GoogleLoginButton(),
+              const SizedBox(height: 10),
+              _AnonymousButton(),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  ElevatedButton _createAccountButton(BuildContext context, ThemeData theme) {
+class _CreateAccountButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ElevatedButton(
       onPressed: () {
         Navigator.of(context).push(SignupScreen.route());
@@ -59,20 +70,25 @@ class AuthForm extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        minimumSize: const Size(350, 55),
+        minimumSize: const Size(350, 45),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Text(
           'Create An Account',
           style: theme.textTheme.bodyLarge!
-              .copyWith(color: Colors.white, fontSize: 20),
+              .copyWith(color: Colors.white, fontSize: 18),
         ),
       ),
     );
   }
+}
 
-  OutlinedButton _signInButton(BuildContext context, ThemeData theme) {
+class _SignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return OutlinedButton(
       onPressed: () {
         Navigator.of(context).push(LoginScreen.route());
@@ -85,20 +101,50 @@ class AuthForm extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        minimumSize: const Size(350, 55),
+        minimumSize: const Size(350, 45),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Text(
           'Have an Account? Sign In',
           style: theme.textTheme.bodyLarge!
-              .copyWith(color: theme.primaryColor, fontSize: 20),
+              .copyWith(color: theme.primaryColor, fontSize: 16),
         ),
       ),
     );
   }
+}
 
-  TextButton _anonymousButton(BuildContext context, ThemeData theme) {
+class _GoogleLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ElevatedButton.icon(
+      key: const Key('loginForm_googleLogin_raisedButton'),
+      label: const Text(
+        'Sign in with Google',
+        style: TextStyle(color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        backgroundColor: theme.colorScheme.secondary,
+        minimumSize: const Size(350, 45),
+      ),
+      icon: const FaIcon(
+        FontAwesomeIcons.google,
+        // color: Colors.white,
+      ),
+      onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
+    );
+  }
+}
+
+class _AnonymousButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return TextButton(
       onPressed: () {
         context.read<LoginCubit>().signInAnonymously();
