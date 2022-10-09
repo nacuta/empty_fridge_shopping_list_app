@@ -14,7 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobi_lab_shopping_list_app/app/app.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/bootstrap.dart';
 import 'package:mobi_lab_shopping_list_app/firebase_options/firebase_options_staging.dart';
 

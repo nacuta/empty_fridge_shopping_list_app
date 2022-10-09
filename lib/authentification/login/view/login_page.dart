@@ -1,9 +1,13 @@
+import 'dart:math';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/login/bloc/login_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 
@@ -20,7 +24,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      // appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocProvider(
@@ -37,6 +41,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
@@ -47,25 +52,40 @@ class LoginForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Authentication Failure'),
+                content: Text(state.errorMessage ?? l10n.authenticationFailure),
               ),
             );
         }
       },
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const ImageLogo(),
-            const SizedBox(height: 16),
-            _EmailInput(),
-            const SizedBox(height: 8),
-            _PasswordInput(),
-            const SizedBox(height: 8),
-            _LoginButton(),
-            const SizedBox(height: 8),
-            _SignupButton(),
-          ],
+        child: SizedBox(
+          height: Responsive.height(100, context),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Column(
+              children: [
+                const ImageLogo(),
+                Text(
+                  l10n.loginPageInfotext,
+                  style: const TextStyle(color: Colors.black),
+                ),
+                SizedBox(
+                  height: Responsive.height(100, context) - 350,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _EmailInput(),
+                      _PasswordInput(),
+                      _LoginButton(),
+                      const CancelButton(),
+                      _SignupButton(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -159,7 +179,7 @@ class _LoginButton extends StatelessWidget {
                     ? passwordSnackBar(context)
                     : context.read<LoginCubit>().logInWithCredentials(),
                 child: Text(
-                  'Sign In',
+                  'Log In',
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
@@ -175,12 +195,21 @@ class _SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return TextButton(
-      key: const Key('loginPageView_createAccount_textButton'),
-      onPressed: () => Navigator.of(context).push<void>(SignupScreen.route()),
-      child: Text(
-        'CREATE ACCOUNT',
-        style: TextStyle(color: theme.primaryColor),
+    return RichText(
+      text: TextSpan(
+        children: [
+          const TextSpan(
+            style: TextStyle(color: Colors.black),
+            text: 'New to Empty Fridge?',
+          ),
+          TextSpan(
+            style: const TextStyle(color: Colors.red),
+            text: ' Create account',
+            recognizer: TapGestureRecognizer()
+              ..onTap =
+                  () => Navigator.of(context).push<void>(SignupScreen.route()),
+          )
+        ],
       ),
     );
   }
@@ -196,4 +225,25 @@ void passwordSnackBar(BuildContext context) {
         ),
       ),
     );
+}
+
+class CancelButton extends StatelessWidget {
+  const CancelButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TextButton(
+      onPressed: () => Navigator.of(context).pop(),
+      child: Text(
+        'Cancel',
+        // style: TextStyle(decoration: TextDecoration.underline),
+        style: theme.textTheme.bodyLarge?.copyWith(
+          decoration: TextDecoration.underline,
+          color: theme.primaryColor,
+          letterSpacing: 0,
+        ),
+      ),
+    );
+  }
 }

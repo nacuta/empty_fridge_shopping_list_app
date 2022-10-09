@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/models/email.dart';
 import 'package:mobi_lab_shopping_list_app/models/password.dart';
 

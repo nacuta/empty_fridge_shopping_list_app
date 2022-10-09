@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/login/bloc/login_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
-import 'package:mobi_lab_shopping_list_app/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/login/bloc/login_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/login/view/login_page.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/sign_up/view/sign_up_page.dart';
+import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 
 class AuthPage extends StatelessWidget {
@@ -41,6 +42,13 @@ class AuthForm extends StatelessWidget {
               const SizedBox(height: 20),
               _SignInButton(),
               const SizedBox(height: 20),
+              SizedBox(
+                width: kSizeButton.width,
+                child: Divider(
+                  color: Colors.grey.shade800,
+                ),
+              ),
+              const SizedBox(height: 20),
               _GoogleLoginButton(),
               const SizedBox(height: 10),
               _AnonymousButton(),
@@ -70,13 +78,13 @@ class _CreateAccountButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        minimumSize: const Size(350, 45),
+        minimumSize: kSizeButton,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Text(
           'Create An Account',
-          style: theme.textTheme.bodyLarge!
+          style: theme.textTheme.bodyMedium!
               .copyWith(color: Colors.white, fontSize: 18),
         ),
       ),
@@ -101,13 +109,13 @@ class _SignInButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        minimumSize: const Size(350, 45),
+        minimumSize: kSizeButton,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Text(
           'Have an Account? Sign In',
-          style: theme.textTheme.bodyLarge!
+          style: theme.textTheme.bodyMedium!
               .copyWith(color: theme.primaryColor, fontSize: 16),
         ),
       ),
@@ -130,7 +138,7 @@ class _GoogleLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
         backgroundColor: theme.colorScheme.secondary,
-        minimumSize: const Size(350, 45),
+        minimumSize: kSizeButton,
       ),
       icon: const FaIcon(
         FontAwesomeIcons.google,
@@ -153,7 +161,6 @@ class _AnonymousButton extends StatelessWidget {
         'Maybe Later',
         style: theme.textTheme.bodyLarge!.copyWith(
           color: Colors.grey.shade600,
-          fontSize: 20,
           decoration: TextDecoration.underline,
         ),
       ),

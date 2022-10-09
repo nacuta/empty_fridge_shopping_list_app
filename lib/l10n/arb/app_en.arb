@@ -3,5 +3,17 @@
     "shoppingAppBarTitle": "Shopping List",
     "@shoppingAppBarTitle": {
         "description": "Text shown in the AppBar of the Shopping Page"
-    }
+    },
+    "loginPageInfotext": "Log in to existing account:",
+    "@loginPageInfotext": {
+        "description": "Text shown in the Log in Page"
+    },
+    "signUpPageInfotext": "Create an account:",
+    "@signUpPageInfotexts": {
+        "description": "Text shown in the Sign Up Page"
+    },
+    "authenticationFailure": "Authentication Failure",
+    "@authenticationFailure": {},
+    "signUpFailure": "Sign Up Failure",
+    "@signUpFailure": {}
 }

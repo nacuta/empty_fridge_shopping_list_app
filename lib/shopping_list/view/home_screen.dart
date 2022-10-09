@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/auth/bloc/auth_bloc.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
 // import '/blocs/blocs.dart';
 
 class HomeScreen extends StatelessWidget {

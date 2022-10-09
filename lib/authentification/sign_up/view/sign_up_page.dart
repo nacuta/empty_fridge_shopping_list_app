@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/login/view/login_page.dart';
-import 'package:mobi_lab_shopping_list_app/sign_up/cubit/signup_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/login/view/login_page.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/sign_up/cubit/signup_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
+import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
 import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -16,7 +18,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Signup')),
+      // appBar: AppBar(title: const Text('Signup')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocProvider<SignUpCubit>(
@@ -33,6 +35,7 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
@@ -43,23 +46,39 @@ class SignupForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Sign Up Failure'),
+                content: Text(state.errorMessage ?? l10n.signUpFailure),
               ),
             );
         }
       },
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const ImageLogo(),
-            const SizedBox(height: 16),
-            _EmailInput(),
-            const SizedBox(height: 16),
-            _PasswordInput(),
-            const SizedBox(height: 16),
-            _SignupButton(),
-          ],
+        child: SizedBox(
+          height: Responsive.height(100, context),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Column(
+              children: [
+                const ImageLogo(),
+                Text(
+                  l10n.signUpPageInfotext,
+                  style: const TextStyle(color: Colors.black),
+                ),
+                SizedBox(
+                  height: Responsive.height(100, context) - 350,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _EmailInput(),
+                      _PasswordInput(),
+                      _SignupButton(),
+                      const CancelButton(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -72,16 +91,23 @@ class _EmailInput extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
-        return TextField(
-          onChanged: (email) {
-            context.read<SignUpCubit>().emailChanged(email);
-          },
-          onEditingComplete: () => FocusScope.of(context).nextFocus(),
-          decoration: const InputDecoration(labelText: 'email'),
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.black),
+        return SizedBox(
+          width: Responsive.width(95, context),
+          child: TextField(
+            key: const Key('signUpPageView_emailInput_textField'),
+            onChanged: (email) {
+              context.read<SignUpCubit>().emailChanged(email);
+            },
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              helperText: '',
+            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.black),
+          ),
         );
       },
     );
@@ -94,17 +120,24 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        return TextField(
-          onChanged: (password) {
-            context.read<SignUpCubit>().passwordChanged(password);
-          },
-          onEditingComplete: () => FocusScope.of(context).unfocus(),
-          decoration: const InputDecoration(labelText: 'password'),
-          obscureText: true,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.black),
+        return SizedBox(
+          width: Responsive.width(95, context),
+          child: TextField(
+            key: const Key('signUpPageView_PasswordInput_textField'),
+            onChanged: (password) {
+              context.read<SignUpCubit>().passwordChanged(password);
+            },
+            onEditingComplete: () => FocusScope.of(context).unfocus(),
+            obscureText: true,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.black),
+            decoration: const InputDecoration(
+              labelText: 'Password',
+              helperText: '',
+            ),
+          ),
         );
       },
     );

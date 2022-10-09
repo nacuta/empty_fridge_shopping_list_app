@@ -39,7 +39,9 @@ ThemeData lightThemeData(BuildContext context) {
         borderRadius: BorderRadius.circular(30),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Color(0xFF3cbcc7)),
+        borderSide: const BorderSide(
+          color: Color(0xFF3cbcc7),
+        ),
         borderRadius: BorderRadius.circular(30),
       ),
     ),

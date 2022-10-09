@@ -9,3 +9,5 @@ class Responsive {
     return MediaQuery.of(context).size.height * (p / 100);
   }
 }
+
+Size kSizeButton = const Size(360, 50);

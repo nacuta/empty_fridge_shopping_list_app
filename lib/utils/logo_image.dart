@@ -6,8 +6,8 @@ class ImageLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 500,
-      height: 250,
+      // width: 500,
+      // height: 250,
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
       child: Image.asset(
