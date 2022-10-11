@@ -22,10 +22,6 @@ class ShoppingPage extends StatelessWidget {
       create: (context) => DatabaseRepositoryImpl(),
       child: MultiBlocProvider(
         providers: [
-          // check connectivity to internet
-          BlocProvider(
-            create: (context) => NetworkBloc()..add(NetworkObserve()),
-          ),
           // Database connection bloc
           BlocProvider(
             create: (context) => DatabaseBloc(
@@ -76,121 +72,103 @@ class ShoppingView extends StatelessWidget {
           preferredSize: Size(40, 60),
           child: AddShoppingItem(),
         ),
-        // centerTitle: true,
       ),
-      body: BlocListener<NetworkBloc, NetworkState>(
-        listener: (context, state) {
-          //   if (state is NetworkFailure) {
-          //     ScaffoldMessenger.of(context).showSnackBar(
-          //       const SnackBar(
-          //         content: Text(
-          //           'No Internet Connection',
-          //           style: TextStyle(color: Colors.black),
-          //         ),
-          //         backgroundColor: Colors.amberAccent,
-          //         padding: EdgeInsets.all(20),
-          //         behavior: SnackBarBehavior.floating,
-          //       ),
-          //     );
-          //   }
-        },
-        child: BlocBuilder<DatabaseBloc, DatabaseState>(
-          builder: (context, state) {
-            // ignore: unnecessary_statements
-            context.watch<AddShoppingItemBloc>().state.changedValue.value;
-            context.read<DatabaseBloc>().add(DatabaseFetchData());
-            // }
-            if (state.status == DatabaseStateStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state.status == DatabaseStateStatus.success) {
-              if (state.listOfShoppingItems.isEmpty) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: SizedBox(
-                          height: 200,
-                          width: 300,
-                          child: Card(
-                            color: Colors.grey.shade500,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(18),
-                                  child: Text(
-                                    'Adding Items',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                  ),
+      body: BlocBuilder<DatabaseBloc, DatabaseState>(
+        builder: (context, state) {
+          // ignore: unnecessary_statements
+          context.watch<AddShoppingItemBloc>().state.changedValue.value;
+          context.read<DatabaseBloc>().add(DatabaseFetchData());
+          // }
+          if (state.status == DatabaseStateStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.status == DatabaseStateStatus.success) {
+            if (state.listOfShoppingItems.isEmpty) {
+              return Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        height: 200,
+                        width: 300,
+                        child: Card(
+                          color: Colors.grey.shade500,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(18),
+                                child: Text(
+                                  'Adding Items',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(18),
-                                  child: Text(
-                                    'Tap "Add item" to type in items',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(18),
+                                child: Text(
+                                  'Tap "Add item" to type in items',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                );
-              } else {
-                final list = state.listOfShoppingItems.isToShop();
-                final listbad = state.listOfShoppingItems.isShop();
-
-                return Column(
-                  children: [
-                    const Expanded(
-                      flex: 5,
-                      child: MultipleSelectItems(),
-                    ),
-                    Container(
-                      height: 50,
-                      width: Responsive.width(100, context),
-                      color: Colors.black,
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Items in cart: ${list.length}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            'Items in list: ${listbad.length}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
                     ),
                   ],
-                );
-              }
+                ),
+              );
             } else {
-              return const Center(child: CircularProgressIndicator());
+              final list = state.listOfShoppingItems.isToShop();
+              final listbad = state.listOfShoppingItems.isShop();
+
+              return Column(
+                children: [
+                  const Expanded(
+                    flex: 5,
+                    child: MultipleSelectItems(),
+                  ),
+                  Container(
+                    height: 50,
+                    width: Responsive.width(100, context),
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Items in cart: ${list.length}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          'Items in list: ${listbad.length}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             }
-          },
-        ),
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
