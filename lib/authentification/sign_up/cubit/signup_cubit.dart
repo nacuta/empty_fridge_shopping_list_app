@@ -39,6 +39,16 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
+  void passwordVisibility() {
+    final isVisibility = !state.obscurePassword;
+    emit(
+      state.copyWith(
+        obscurePassword: isVisibility,
+        status: Formz.validate([state.email, state.password]),
+      ),
+    );
+  }
+
   Future<void> signUpFormSubmitted() async {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));

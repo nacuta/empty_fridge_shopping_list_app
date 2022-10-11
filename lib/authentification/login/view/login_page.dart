@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/auth/view/auth_page.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/login/bloc/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/sign_up/view/sign_up_page.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
@@ -126,7 +127,6 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return SizedBox(
           width: Responsive.width(95, context),
@@ -135,14 +135,23 @@ class _PasswordInput extends StatelessWidget {
             onChanged: (password) =>
                 context.read<LoginCubit>().passwordChanged(password),
             onEditingComplete: () => FocusScope.of(context).unfocus(),
-            obscureText: true,
+            obscureText: state.obscurePassword,
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
                 ?.copyWith(color: Colors.black),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Password',
               helperText: '',
+              suffixIcon: IconButton(
+                onPressed: () {
+                  context.read<LoginCubit>().passwordVisibility();
+                },
+                // If is non-password filed like emal the suffix icon will be null
+                icon: state.obscurePassword
+                    ? const Icon(Icons.visibility_off)
+                    : const Icon(Icons.visibility),
+              ),
               // errorText: state.password.invalid ? 'invalid password' : null,
             ),
           ),
@@ -233,15 +242,18 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return TextButton(
-      onPressed: () => Navigator.of(context).pop(),
-      child: Text(
-        'Cancel',
-        // style: TextStyle(decoration: TextDecoration.underline),
-        style: theme.textTheme.bodyLarge?.copyWith(
-          decoration: TextDecoration.underline,
-          color: theme.primaryColor,
-          letterSpacing: 0,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: Text(
+          'Cancel',
+          // style: TextStyle(decoration: TextDecoration.underline),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            decoration: TextDecoration.underline,
+            color: theme.primaryColor,
+            letterSpacing: 0,
+          ),
         ),
       ),
     );

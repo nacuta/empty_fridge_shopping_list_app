@@ -118,7 +118,7 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) => previous.password != current.password,
+      // buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return SizedBox(
           width: Responsive.width(95, context),
@@ -128,14 +128,23 @@ class _PasswordInput extends StatelessWidget {
               context.read<SignUpCubit>().passwordChanged(password);
             },
             onEditingComplete: () => FocusScope.of(context).unfocus(),
-            obscureText: true,
+            obscureText: state.obscurePassword,
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
                 ?.copyWith(color: Colors.black),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Password',
               helperText: '',
+              suffixIcon: IconButton(
+                onPressed: () {
+                  context.read<SignUpCubit>().passwordVisibility();
+                },
+                // If is non-password filed like emal the suffix icon will be null
+                icon: state.obscurePassword
+                    ? const Icon(Icons.visibility_off)
+                    : const Icon(Icons.visibility),
+              ),
             ),
           ),
         );

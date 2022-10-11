@@ -11,6 +11,9 @@ import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
   static MaterialPage<void> page() => const MaterialPage(child: AuthPage());
+  // static MaterialPageRoute<void> route() => MaterialPageRoute(
+  //       builder: (context) => const AuthPage(),
+  //     );
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
