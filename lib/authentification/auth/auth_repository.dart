@@ -14,9 +14,10 @@ class AuthRepository {
 
   final firebase_auth.FirebaseAuth _firebaseAuth;
 
-  var currentUser = UserModel.empthy;
+  UserModel currentUser = UserModel.empthy;
   final GoogleSignIn _googleSignIn;
 
+  ///Listener on firebase user changes
   Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user =
@@ -26,6 +27,9 @@ class AuthRepository {
     });
   }
 
+  ///Create new user with email and password
+  ///
+  /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
   Future<void> signup({
     required String email,
     required String password,
@@ -42,6 +46,9 @@ class AuthRepository {
     }
   }
 
+  ///Enter with the email and password
+  ///
+  /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
   Future<void> logInWithEmailAndPassword({
     required String email,
     required String password,
@@ -58,6 +65,9 @@ class AuthRepository {
     }
   }
 
+  ///Sign Up from the app
+  ///
+  /// Throws a [LogOutFailure] if an exception occurs.
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -68,6 +78,9 @@ class AuthRepository {
     }
   }
 
+  /// Connect with the app Anonymously
+  ///
+  /// Throws a [SignInAnonymouslyFailure] if an exception occurs.
   Future<void> anonSignIn() async {
     try {
       await _firebaseAuth.signInAnonymously();
@@ -99,7 +112,18 @@ class AuthRepository {
 
       await _firebaseAuth.signInWithCredential(credential);
     } catch (_) {
-      throw LogInWithGoogleFailure();
+      throw const LogInWithGoogleFailure();
+    }
+  }
+
+  Future<void> resetPassword({
+    required String email,
+  }) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on Exception catch (e) {
+      //todo create reset password exception
+      e.toString();
     }
   }
 }

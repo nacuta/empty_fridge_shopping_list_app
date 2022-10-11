@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/auth/view/auth_page.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/login/bloc/login_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/login/cubit/login_cubit.dart';
+import 'package:mobi_lab_shopping_list_app/authentification/reset_password/view/reset_password_page.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/sign_up/view/sign_up_page.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
 import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
@@ -80,6 +81,7 @@ class LoginForm extends StatelessWidget {
                       _PasswordInput(),
                       _LoginButton(),
                       const CancelButton(),
+                      _ResetPasswordButton(),
                       _SignupButton(),
                     ],
                   ),
@@ -219,6 +221,29 @@ class _SignupButton extends StatelessWidget {
                   () => Navigator.of(context).push<void>(SignupScreen.route()),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _ResetPasswordButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              style: const TextStyle(color: Colors.red),
+              text: 'Forgot your password?',
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => Navigator.of(context)
+                    .push<void>(ResetPasswordScreen.route()),
+            )
+          ],
+        ),
       ),
     );
   }
