@@ -13,7 +13,23 @@
         "description": "Text shown in the Sign Up Page"
     },
     "authenticationFailure": "Authentication Failure",
-    "@authenticationFailure": {},
+    "@authenticationFailure": {
+       "description": "Text shown if Authentication with email and password fails"
+        },
     "signUpFailure": "Sign Up Failure",
-    "@signUpFailure": {}
+    "@signUpFailure": { "description": "Text shown if Sign Up with email and password fails"},
+   
+    "resetPasswordSnackBarText": "Email has been sent",
+    "@resetPasswordSnackBarText": {
+       "description":  "Text shown in the Reset Password snackBar"
+        },
+    "resetErorText": "Reset Error",
+    "@resetErorText": {
+        "description": "Text shown if the email subbmison fails"
+        },
+    "resetPageInfoText": "Reset account password:",
+    "@resetPageInfoText": {},
+    "resetButtonText": "Reset Password",
+    "@resetButtonText": { "description": "Text used by Reset Button"
+     }
 }

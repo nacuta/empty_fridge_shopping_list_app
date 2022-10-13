@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -48,7 +50,7 @@ class ResetPasswordForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text('Email has been sent'),
+                content: Text(l10n.resetPasswordSnackBarText),
               ),
             );
           Navigator.of(context).pop();
@@ -58,7 +60,7 @@ class ResetPasswordForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Reset Error'),
+                content: Text(state.errorMessage ?? l10n.resetErorText),
               ),
             );
         }
@@ -72,9 +74,9 @@ class ResetPasswordForm extends StatelessWidget {
             child: Column(
               children: [
                 const ImageLogo(),
-                const Text(
-                  'Reset Error:',
-                  style: TextStyle(color: Colors.black),
+                Text(
+                  l10n.resetPageInfoText,
+                  style: const TextStyle(color: Colors.black),
                 ),
                 SizedBox(
                   height: Responsive.height(100, context) - 350,
@@ -99,6 +101,7 @@ class ResetPasswordForm extends StatelessWidget {
 class _ResetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
@@ -123,7 +126,7 @@ class _ResetButton extends StatelessWidget {
                     ? passwordSnackBar(context)
                     : context.read<ResetPasswordCubit>().resetPassword(),
                 child: Text(
-                  'Reset Password',
+                  l10n.resetButtonText,
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
