@@ -25,6 +25,13 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     try {
       await _authenticationRepository.resetPassword(email: state.email.value);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on ResetPasswordFailure catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: e.message,
+          status: FormzStatus.submissionFailure,
+        ),
+      );
     } catch (_) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }

@@ -111,6 +111,8 @@ class AuthRepository {
       }
 
       await _firebaseAuth.signInWithCredential(credential);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw LogInWithGoogleFailure.fromCode(e.code);
     } catch (_) {
       throw const LogInWithGoogleFailure();
     }
@@ -121,9 +123,10 @@ class AuthRepository {
   }) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } on Exception catch (e) {
-      //todo create reset password exception
-      e.toString();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw ResetPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const ResetPasswordFailure();
     }
   }
 }
@@ -205,13 +208,10 @@ class LogOutFailure implements Exception {}
 class SignInAnonymouslyFailure implements Exception {}
 
 class LogInWithGoogleFailure implements Exception {
-  /// {@macro log_in_with_google_failure}
   const LogInWithGoogleFailure([
     this.message = 'An unknown exception occurred.',
   ]);
 
-  /// Create an authentication message
-  /// from a firebase authentication exception code.
   factory LogInWithGoogleFailure.fromCode(String code) {
     switch (code) {
       case 'account-exists-with-different-credential':
@@ -252,5 +252,31 @@ class LogInWithGoogleFailure implements Exception {
   }
 
   /// The associated error message.
+  final String message;
+}
+
+class ResetPasswordFailure implements Exception {
+  const ResetPasswordFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
+
+  factory ResetPasswordFailure.fromCode(String code) {
+    switch (code) {
+      case 'operation-not-allowed':
+        return const ResetPasswordFailure(
+          'Operation is not allowed.  Please contact support.',
+        );
+      case 'user-disabled':
+        return const ResetPasswordFailure(
+          'This user has been disabled. Please contact support for help.',
+        );
+      case 'user-not-found':
+        return const ResetPasswordFailure(
+          'Email is not found, please create an account.',
+        );
+      default:
+        return const ResetPasswordFailure();
+    }
+  }
   final String message;
 }
