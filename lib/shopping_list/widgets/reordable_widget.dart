@@ -5,7 +5,8 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/dismissible_wid
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
 class ReordableWidget extends StatefulWidget {
-  const ReordableWidget({super.key});
+  const ReordableWidget({super.key, required this.listId});
+  final String listId;
 
   @override
   State<ReordableWidget> createState() => _ReordableWidgetState();
@@ -42,6 +43,7 @@ class _ReordableWidgetState extends State<ReordableWidget> {
           key: ValueKey(listToShop[i].id),
           index: i,
           listToShop: listToShop,
+          listId: widget.listId,
         );
       },
       itemCount: listToShop.length,

@@ -9,9 +9,11 @@ class DismisibleWidget extends StatelessWidget {
     super.key,
     required this.listToShop,
     required this.index,
+    required this.listId,
   });
   final List<ShoppingModel> listToShop;
   final int index;
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,10 @@ class DismisibleWidget extends StatelessWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             //remove the item
-            context
-                .read<DatabaseBloc>()
-                .add(DatabaseRemoveOne(shopItemToDelete: listToShop[index]));
+            context.read<DatabaseBloc>().add(DatabaseRemoveOne(
+                  listId: listId,
+                  shopItemToDelete: listToShop[index],
+                ));
             listToShop.removeAt(index);
           }
         },
@@ -73,6 +76,7 @@ class DismisibleWidget extends StatelessWidget {
           key: ValueKey(listToShop[index]),
           shoppingModel: listToShop[index],
           oddNumber: index,
+          listId: listId,
         ),
       ),
     );

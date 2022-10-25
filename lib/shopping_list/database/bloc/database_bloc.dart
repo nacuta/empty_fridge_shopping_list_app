@@ -17,6 +17,9 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     // initial load of the data, gets the firebase document
     on<DatabaseFetchData>(_fetchData);
 
+    // initial load of the data, from list screen
+    on<DatabaseChanged>(_onChangedData);
+
     // at every change it is used to write individual change
     on<DatabaseWrite>(_writeData);
 
@@ -40,15 +43,24 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   /// [_fetchData] gets from repository all the documents
   /// stored in Firebase
   /// and returns a  Future<List<ShoppingModel>>
+
   Future<void> _fetchData(
     DatabaseFetchData event,
     Emitter<DatabaseState> emit,
   ) async {
     try {
       // get the list with shopping items
-      final listOfShoppings = await _databaseRepository.retrieveItemsData();
+      final listOfShoppings =
+          await _databaseRepository.retriveDocumentItems(event.docId);
+
       // emit the state with the list
-      emit(DatabaseState.success(listOfShoppings));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+          listId: event.docId,
+        ),
+      );
     } catch (_) {
       emit(const DatabaseState.failure());
     }
@@ -62,12 +74,17 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   ) async {
     try {
       // save into database the new item
-      await _databaseRepository.saveItemData(event.newData);
+      await _databaseRepository.saveItemData(event.listId, event.newData);
       // store it alsi inte=o the list of shoppings allready
       final listOfShoppings = state.listOfShoppingItems..add(event.newData);
 
       // emit the state with the complete list
-      emit(DatabaseState.success(listOfShoppings));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
     } catch (_) {
       emit(const DatabaseState.failure());
     }
@@ -90,10 +107,15 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       }).toList();
 
       // emit the state with new list
-      emit(DatabaseState.success(listOfShoppings));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
 
       // write it to the database
-      await _databaseRepository.saveItemData(newTodo);
+      await _databaseRepository.saveItemData(event.listId, newTodo);
     } catch (_) {
       // if the writting is failed send the failure state
       emit(const DatabaseState.failure());
@@ -112,10 +134,18 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
         ..removeWhere((element) => element.isCompleted == true);
 
       // emit the state with remain items that needs to be bought
-      emit(DatabaseState.success(stillToBuyList));
-
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: stillToBuyList,
+        ),
+      );
       // delete from database
-      event.listToDelete.forEach(_databaseRepository.deleteItemData);
+      event.listToDelete.forEach(
+        (element) {
+          _databaseRepository.deleteItemData(state.listId, element);
+        },
+      );
     } catch (_) {
       // if the writting is failed send the failure state
       emit(const DatabaseState.failure());
@@ -142,10 +172,16 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           .toList();
       // writes every item with the new flag
       // ignore: cascade_invocations
-      list.forEach(_databaseRepository.saveItemData);
-
+      list
+        ..forEach((element) {
+          _databaseRepository.saveItemData(event.listId, element);
+        })
+        ..addAll(state.listOfShoppingItems);
       // emit the state with all items
-      emit(DatabaseState.success(list));
+      emit(state.copyWith(
+        status: DatabaseStateStatus.success,
+        listOfShoppingItems: list,
+      ));
     } catch (_) {
       emit(const DatabaseState.failure());
     }
@@ -162,9 +198,14 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       final listOfShoppings = List.of(state.listOfShoppingItems)
         ..removeWhere((element) => element.id == event.shopItemToDelete.id);
       // delete the item from the database
-      _databaseRepository.deleteItemData(event.shopItemToDelete);
+      _databaseRepository.deleteItemData(event.listId, event.shopItemToDelete);
       // emit the list without the item
-      emit(DatabaseState.success(listOfShoppings));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
     } catch (_) {
       emit(const DatabaseState.failure());
     }
@@ -188,10 +229,34 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       }).toList();
 
       // save item to database
-      await _databaseRepository.saveItemData(editedItem);
+      await _databaseRepository.saveItemData(event.listId, editedItem);
 
       // emit the changed list
-      emit(DatabaseState.success(listOfShoppings));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
+    } catch (_) {
+      emit(const DatabaseState.failure());
+    }
+  }
+
+  FutureOr<void> _onChangedData(
+    DatabaseChanged event,
+    Emitter<DatabaseState> emit,
+  ) {
+    try {
+      final listOfShoppings = event.list;
+
+      // emit the changed list
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
     } catch (_) {
       emit(const DatabaseState.failure());
     }

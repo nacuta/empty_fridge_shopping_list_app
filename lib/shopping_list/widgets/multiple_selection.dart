@@ -6,7 +6,8 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
 import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
 
 class MultipleSelectItems extends StatefulWidget {
-  const MultipleSelectItems({super.key});
+  const MultipleSelectItems({super.key, required this.listId});
+  final String listId;
 
   @override
   State<MultipleSelectItems> createState() => _MultipleSelectItemsState();
@@ -29,7 +30,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
       child: Column(
         children: [
           // reordable list with to shop items
-          const ReordableWidget(),
+          ReordableWidget(listId: widget.listId),
           Container(
             height: 30,
             // padding: const EdgeInsets.all(8),
@@ -46,7 +47,8 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
           ),
           // buttons and divider
           if (checkedItemsList.isNotEmpty)
-            const ListButtons(
+            ListButtons(
+              listId: widget.listId,
               key: GlobalObjectKey(2),
             ),
           if (checkedItemsList.isNotEmpty)
@@ -65,6 +67,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
               key: ValueKey(checkedItemsList[i]),
               shoppingModel: checkedItemsList[i],
               oddNumber: i,
+              listId: widget.listId,
             ),
           ),
         ],

@@ -31,6 +31,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   formz: ^0.4.1
+  hydrated_bloc: ^8.1.0
   mocktail: ^0.3.0
   very_good_analysis: ^3.0.1
 

@@ -9,10 +9,12 @@ class SelectableListTile extends StatelessWidget {
     super.key,
     required this.shoppingModel,
     required this.oddNumber,
+    required this.listId,
   });
 
   final ShoppingModel shoppingModel;
   final int oddNumber;
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class SelectableListTile extends StatelessWidget {
             onChanged: (bool? value) {
               context.read<DatabaseBloc>().add(
                     DatabaseChangedCompletionToggled(
+                      listId: listId,
                       isCompleted: !isCheck,
                       shopItem: shoppingModel,
                     ),
@@ -69,9 +72,11 @@ class SelectableListTile extends StatelessWidget {
         ),
         key: ValueKey(shoppingModel),
         onTap: () async {
-          await Navigator.of(context)
-              .push(EditItemPage.route(editShopping: shoppingModel));
-          context.read<DatabaseBloc>().add(DatabaseFetchData());
+          await Navigator.of(context).push(EditItemPage.route(
+            editShopping: shoppingModel,
+            listId: listId,
+          ));
+          context.read<DatabaseBloc>().add(DatabaseFetchData(listId));
         },
         leading: Checkbox(
           checkColor: Theme.of(context).primaryColor,
@@ -81,6 +86,7 @@ class SelectableListTile extends StatelessWidget {
           onChanged: (bool? value) {
             context.read<DatabaseBloc>().add(
                   DatabaseChangedCompletionToggled(
+                    listId: listId,
                     isCompleted: !isCheck,
                     shopItem: shoppingModel,
                   ),

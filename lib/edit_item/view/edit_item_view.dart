@@ -7,10 +7,14 @@ import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repos
 /// The [EditItemPage] class is a shallow widget to pass the BlocProvider to the
 /// EditItemView
 class EditItemPage extends StatelessWidget {
-  const EditItemPage({super.key});
+  const EditItemPage({super.key, required this.listId});
+  final String listId;
 
   // Route with  stless widget to provide bloc of edit item
-  static Route<void> route({required ShoppingModel? editShopping}) {
+  static Route<void> route({
+    required ShoppingModel? editShopping,
+    required String listId,
+  }) {
     return MaterialPageRoute(
       fullscreenDialog: true,
       builder: (context) => BlocProvider(
@@ -18,7 +22,9 @@ class EditItemPage extends StatelessWidget {
           initialItem: editShopping,
           databaseRepository: DatabaseRepositoryImpl(),
         ),
-        child: const EditItemPage(),
+        child: EditItemPage(
+          listId: listId,
+        ),
       ),
     );
   }
@@ -30,7 +36,9 @@ class EditItemPage extends StatelessWidget {
           previous.status != current.status &&
           current.status == EditItemStatus.success,
       listener: (context, state) => Navigator.of(context).pop(),
-      child: const EditItemView(),
+      child: EditItemView(
+        listId: listId,
+      ),
     );
   }
 }
@@ -38,7 +46,8 @@ class EditItemPage extends StatelessWidget {
 /// the class [EditItemView] contains the UI elements
 /// for changing the model params
 class EditItemView extends StatefulWidget {
-  const EditItemView({super.key});
+  const EditItemView({super.key, required this.listId});
+  final String listId;
   @override
   State<EditItemView> createState() => _EditItemViewState();
 }
@@ -71,7 +80,7 @@ class _EditItemViewState extends State<EditItemView> {
             actions: [
               IconButton(
                 onPressed: () {
-                  editItemBloc.add(const EditItemSubmitted());
+                  editItemBloc.add(EditItemSubmitted(widget.listId));
                   //For offline mode
                   Navigator.of(context).pop();
                 },

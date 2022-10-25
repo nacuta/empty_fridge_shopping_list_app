@@ -43,5 +43,5 @@ class _AddNewItemState extends State<AddNewItem> {
 }
 
 void _call(BuildContext context, ShoppingModel newItem) {
-  context.read<DatabaseBloc>().add(DatabaseWrite(newData: newItem));
+  // context.read<DatabaseBloc>().add(DatabaseWrite(listId: ,newData: newItem));
 }

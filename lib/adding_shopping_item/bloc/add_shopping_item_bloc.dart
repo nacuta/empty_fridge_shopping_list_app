@@ -17,6 +17,7 @@ class AddShoppingItemBloc
       : super(const AddShoppingItemState()) {
     on<AddShoppingFormChanged>(_onTextFormChanged);
     on<AddShoppingFormSubmitted>(_onSubmitted);
+    on<AddListName>(_onListName);
   }
 
   final DatabaseRepository _databaseRepository;
@@ -41,7 +42,8 @@ class AddShoppingItemBloc
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
-        await _databaseRepository.saveItemData(
+        await _databaseRepository.writeCollectionDoc(
+          state.listName,
           ShoppingModel(title: state.changedValue.value),
         );
 
@@ -51,5 +53,12 @@ class AddShoppingItemBloc
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
+  }
+
+  FutureOr<void> _onListName(
+    AddListName event,
+    Emitter<AddShoppingItemState> emit,
+  ) {
+    emit(state.copyWith(listName: event.listName));
   }
 }
