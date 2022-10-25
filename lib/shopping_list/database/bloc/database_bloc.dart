@@ -172,15 +172,23 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           .toList();
       // writes every item with the new flag
       // ignore: cascade_invocations
-      list
-        ..forEach((element) {
-          _databaseRepository.saveItemData(event.listId, element);
-        })
-        ..addAll(state.listOfShoppingItems);
+      list.forEach((element) {
+        _databaseRepository.saveItemData(event.listId, element);
+      });
+
+      // replace into the list the new model with the old one
+      var listOfShoppings = state.listOfShoppingItems.map((item) {
+        return item.isCompleted == true
+            ? item.copyWith(isCompleted: false)
+            : item;
+      }).toList();
+      print(listOfShoppings);
+
+      // list.addAll(state.listOfShoppingItems);
       // emit the state with all items
       emit(state.copyWith(
         status: DatabaseStateStatus.success,
-        listOfShoppingItems: list,
+        listOfShoppingItems: listOfShoppings,
       ));
     } catch (_) {
       emit(const DatabaseState.failure());
