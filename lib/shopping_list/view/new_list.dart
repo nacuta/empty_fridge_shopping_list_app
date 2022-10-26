@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/cubit/list_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/view/addList.dart';
+import 'package:mobi_lab_shopping_list_app/shopping_list/view/add_list.dart';
 
 import '../database/database_repository_impl.dart';
 
