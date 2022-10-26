@@ -134,7 +134,11 @@ class AuthRepository {
 extension on firebase_auth.User {
   UserModel get toUser {
     return UserModel(
-        id: uid, email: email, name: displayName, isAnonymous: isAnonymous);
+      id: uid,
+      email: email,
+      name: displayName,
+      isAnonymous: isAnonymous,
+    );
   }
 }
 

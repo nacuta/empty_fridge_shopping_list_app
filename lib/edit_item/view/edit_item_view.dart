@@ -70,7 +70,7 @@ class _EditItemViewState extends State<EditItemView> {
     _quantityController.text = state.quantity.toString();
     _titleController.text = state.title;
     final editItemBloc = context.read<EditItemBloc>();
-    var textvalue = '';
+    // var textvalue = '';
 
     return BlocBuilder<EditItemBloc, EditItemState>(
       builder: (context, state) {

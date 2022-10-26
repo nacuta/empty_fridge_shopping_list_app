@@ -56,9 +56,7 @@ class _ShoppingViewState extends State<ShoppingView> {
           previous.shoppingItemsList.length != current.shoppingItemsList.length,
       builder: (context, state) {
         final l10n = context.l10n;
-        print(state);
-        List<ShoppingModel> listShoppingModels = [];
-        var listOfLists = [];
+        final listShoppingModels = <ShoppingModel>[];
         return Scaffold(
           drawer: _drawer(context),
           appBar: AppBar(
@@ -101,8 +99,7 @@ class _ShoppingViewState extends State<ShoppingView> {
                                   state.shoppingItemsList[index].list;
                               listList!.forEach(
                                 (key, value) {
-                                  print(key);
-                                  var doc = value as Map<String, dynamic>;
+                                  final doc = value as Map<String, dynamic>;
                                   final listElements =
                                       ShoppingModel.fromJson(doc);
 
@@ -112,27 +109,24 @@ class _ShoppingViewState extends State<ShoppingView> {
                               final listbad = listShoppingModels.isShop();
                               return InkWell(
                                 onTap: () {
-                                  List<ShoppingModel> listShoppingModels2 = [];
+                                  final listShoppingModels2 = <ShoppingModel>[];
                                   final listList =
                                       state.shoppingItemsList[index].list;
                                   listList!.forEach(
                                     (key, value) {
-                                      print(key);
-                                      var doc = value as Map<String, dynamic>;
+                                      final doc = value as Map<String, dynamic>;
                                       final listElements =
                                           ShoppingModel.fromJson(doc);
 
                                       listShoppingModels2.add(listElements);
                                     },
                                   );
-                                  print(listShoppingModels2);
                                   Navigator.of(context).push(
                                     AddList.route(
                                       state.shoppingItemsList[index].listId,
                                       listShoppingModels2,
                                     ),
                                   );
-                                  print(index);
                                 },
                                 child: Card(
                                   child: ListTile(
@@ -166,7 +160,8 @@ class _ShoppingViewState extends State<ShoppingView> {
               //       title: const Text('List Name'),
               //       content: TextField(
               //         controller: _textEditingController,
-              //         decoration: const InputDecoration(hintText: 'New List'),
+              //         decoration: const InputDecoration(
+              //          hintText: 'New List'),
               //       ),
               //       actions: [
               //         TextButton(
@@ -180,11 +175,7 @@ class _ShoppingViewState extends State<ShoppingView> {
               //       ],
               //     ),
               //   );
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ListDialog(),
-                ),
-              );
+              Navigator.of(context).push<void>(ListDialog.route());
             },
           ),
         );
@@ -202,10 +193,10 @@ Widget _drawer(BuildContext context) {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
-          child: Text('Drawer Header'),
+          child: const Text('Drawer Header'),
         ),
-        ListTile(
-          title: Text("Home"),
+        const ListTile(
+          title: Text('Home'),
         )
       ],
     ),
@@ -215,10 +206,10 @@ Widget _drawer(BuildContext context) {
 class ListDialog extends StatefulWidget {
   const ListDialog({super.key});
 
-  // ignore: strict_raw_type
-  MaterialPageRoute route() => MaterialPageRoute(
+  static MaterialPageRoute<void> route() => MaterialPageRoute(
         builder: (context) => const ListDialog(),
       );
+
   @override
   State<ListDialog> createState() => _ListDialogState();
 }
@@ -295,7 +286,8 @@ class _ListDialogState extends State<ListDialog> {
 //           ),
 //           IconButton(
 //             icon: const Icon(Icons.exit_to_app),
-//             onPressed: () => context.read<AuthBloc>().add(AppLogoutRequested()),
+//             onPressed: () => context.read<AuthBloc>().add(
+//            AppLogoutRequested()),
 //           )
 //         ],
 //         bottom: const PreferredSize(

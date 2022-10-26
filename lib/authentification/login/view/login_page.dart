@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/view/auth_page.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/login/cubit/login_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/reset_password/view/reset_password_page.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/sign_up/view/sign_up_page.dart';
@@ -149,7 +146,8 @@ class _PasswordInput extends StatelessWidget {
                 onPressed: () {
                   context.read<LoginCubit>().passwordVisibility();
                 },
-                // If is non-password filed like emal the suffix icon will be null
+                // If is non-password filed like
+                // email the suffix icon will be null
                 icon: state.obscurePassword
                     ? const Icon(Icons.visibility_off)
                     : const Icon(Icons.visibility),
@@ -205,7 +203,6 @@ class _LoginButton extends StatelessWidget {
 class _SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return RichText(
       text: TextSpan(
         children: [
@@ -229,7 +226,6 @@ class _SignupButton extends StatelessWidget {
 class _ResetPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: RichText(
@@ -268,7 +264,7 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: TextButton(
         onPressed: () => Navigator.of(context).pop(),
         child: Text(

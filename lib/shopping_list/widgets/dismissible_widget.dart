@@ -23,10 +23,12 @@ class DismisibleWidget extends StatelessWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             //remove the item
-            context.read<DatabaseBloc>().add(DatabaseRemoveOne(
-                  listId: listId,
-                  shopItemToDelete: listToShop[index],
-                ));
+            context.read<DatabaseBloc>().add(
+                  DatabaseRemoveOne(
+                    listId: listId,
+                    shopItemToDelete: listToShop[index],
+                  ),
+                );
             listToShop.removeAt(index);
           }
         },

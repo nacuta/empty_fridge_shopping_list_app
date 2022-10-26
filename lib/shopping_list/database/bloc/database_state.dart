@@ -11,7 +11,8 @@ class DatabaseState extends Equatable {
   const DatabaseState.failure() : this(status: DatabaseStateStatus.failure);
 
   // const DatabaseState.success(List<ShoppingModel> items)
-  //     : this._(status: DatabaseStateStatus.success, listOfShoppingItems: items);
+  //     : this._(status: DatabaseStateStatus.success,
+  //listOfShoppingItems: items);
 
   const DatabaseState.loading() : this();
 

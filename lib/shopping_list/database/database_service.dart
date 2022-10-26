@@ -44,18 +44,19 @@ class DatabaseService {
 
   Future<List<ShoppingModel>> retriveDocumentItems(String docId) async {
     final shot = await _db.collection(collectionPath).doc(docId).get();
-    print(shot);
-    List<ShoppingModel> list = [];
-    var x = shot.data()!.forEach((key, value) {
-      print(key);
-      print(value);
-      var x = ShoppingModel(
-        title: value['title'] as String,
-        id: value['id'] as String,
-        quantity: value['quantity'] as int,
-        isCompleted: value['isCompleted'] as bool,
-      );
-      list.add(x);
+    // print(shot);
+    // ignore: omit_local_variable_types
+    final List<ShoppingModel> list = [];
+    shot.data()!.forEach((key, value) {
+      final doc = value as Map<String, dynamic>;
+      final listElements = ShoppingModel.fromJson(doc);
+      // final x = ShoppingModel(
+      //   title: doc['title'] as String,
+      //   id: doc['id'] as String,
+      //   quantity: doc['quantity'] as int,
+      //   isCompleted: doc['isCompleted'] as bool,
+      // );
+      list.add(listElements);
     });
     return list;
   }

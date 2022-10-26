@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:uuid/uuid.dart';
 
 class ListModel extends Equatable {

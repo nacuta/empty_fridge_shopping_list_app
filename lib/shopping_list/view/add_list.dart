@@ -5,7 +5,6 @@ import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shoppin
 import 'package:mobi_lab_shopping_list_app/adding_shopping_item/view/adding_item_view.dart';
 import 'package:mobi_lab_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
 import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/models/list.dart';
 import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/cubit/list_cubit.dart';
 import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
@@ -122,7 +121,7 @@ class _TextFieldFormState extends State<TextFieldForm> {
       body: BlocConsumer<AddShoppingItemBloc, AddShoppingItemState>(
         listener: (context, state) {
           if (state.status.isSubmissionSuccess) {
-            var lista = context.read<DatabaseBloc>().state.listOfShoppingItems
+            final lista = context.read<DatabaseBloc>().state.listOfShoppingItems
               ..add(ShoppingModel(title: state.changedValue.value));
 
             context.read<DatabaseBloc>().add(DatabaseChanged(lista));

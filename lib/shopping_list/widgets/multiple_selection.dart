@@ -49,7 +49,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
           if (checkedItemsList.isNotEmpty)
             ListButtons(
               listId: widget.listId,
-              key: GlobalObjectKey(2),
+              key: const GlobalObjectKey(2),
             ),
           if (checkedItemsList.isNotEmpty)
             const Divider(

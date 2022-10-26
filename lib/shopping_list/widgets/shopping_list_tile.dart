@@ -18,6 +18,7 @@ class SelectableListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<DatabaseBloc>();
     final isCheck = shoppingModel.isCompleted!;
 
     Color getColor(Set<MaterialState> states) {
@@ -72,11 +73,13 @@ class SelectableListTile extends StatelessWidget {
         ),
         key: ValueKey(shoppingModel),
         onTap: () async {
-          await Navigator.of(context).push(EditItemPage.route(
-            editShopping: shoppingModel,
-            listId: listId,
-          ));
-          context.read<DatabaseBloc>().add(DatabaseFetchData(listId));
+          await Navigator.of(context).push(
+            EditItemPage.route(
+              editShopping: shoppingModel,
+              listId: listId,
+            ),
+          );
+          bloc.add(DatabaseFetchData(listId));
         },
         leading: Checkbox(
           checkColor: Theme.of(context).primaryColor,

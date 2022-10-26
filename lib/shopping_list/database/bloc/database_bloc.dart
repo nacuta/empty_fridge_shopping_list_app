@@ -141,11 +141,9 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
         ),
       );
       // delete from database
-      event.listToDelete.forEach(
-        (element) {
-          _databaseRepository.deleteItemData(event.listId, element);
-        },
-      );
+      for (final element in event.listToDelete) {
+        await _databaseRepository.deleteItemData(event.listId, element);
+      }
     } catch (_) {
       // if the writting is failed send the failure state
       emit(const DatabaseState.failure());
@@ -172,24 +170,26 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
           .toList();
       // writes every item with the new flag
       // ignore: cascade_invocations
-      list.forEach((element) {
-        _databaseRepository.saveItemData(event.listId, element);
-      });
+      for (final element in list) {
+        await _databaseRepository.saveItemData(event.listId, element);
+      }
 
       // replace into the list the new model with the old one
-      var listOfShoppings = state.listOfShoppingItems.map((item) {
+      final listOfShoppings = state.listOfShoppingItems.map((item) {
         return item.isCompleted == true
             ? item.copyWith(isCompleted: false)
             : item;
       }).toList();
-      print(listOfShoppings);
+      // print(listOfShoppings);
 
       // list.addAll(state.listOfShoppingItems);
       // emit the state with all items
-      emit(state.copyWith(
-        status: DatabaseStateStatus.success,
-        listOfShoppingItems: listOfShoppings,
-      ));
+      emit(
+        state.copyWith(
+          status: DatabaseStateStatus.success,
+          listOfShoppingItems: listOfShoppings,
+        ),
+      );
     } catch (_) {
       emit(const DatabaseState.failure());
     }
