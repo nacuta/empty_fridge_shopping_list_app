@@ -143,7 +143,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       // delete from database
       event.listToDelete.forEach(
         (element) {
-          _databaseRepository.deleteItemData(state.listId, element);
+          _databaseRepository.deleteItemData(event.listId, element);
         },
       );
     } catch (_) {

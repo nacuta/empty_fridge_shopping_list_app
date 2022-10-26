@@ -51,7 +51,12 @@ class ListButtons extends StatelessWidget {
                       final list = cntBloc.state.listOfShoppingItems
                           .where((element) => element.isCompleted!)
                           .toList();
-                      cntBloc.add(DatabaseRemoveAll(listToDelete: list));
+                      cntBloc.add(
+                        DatabaseRemoveAll(
+                          listToDelete: list,
+                          listId: listId,
+                        ),
+                      );
                     }
                   },
                 );

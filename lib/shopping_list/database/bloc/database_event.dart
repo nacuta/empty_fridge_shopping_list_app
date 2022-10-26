@@ -31,11 +31,15 @@ class DatabaseWrite extends DatabaseEvent {
 }
 
 class DatabaseRemoveAll extends DatabaseEvent {
-  DatabaseRemoveAll({required this.listToDelete});
+  DatabaseRemoveAll({
+    required this.listToDelete,
+    required this.listId,
+  });
 
   final List<ShoppingModel> listToDelete;
+  final String listId;
   @override
-  List<Object?> get props => [listToDelete];
+  List<Object?> get props => [listId, listToDelete];
 }
 
 class DatabaseUncheckAll extends DatabaseEvent {
