@@ -40,15 +40,14 @@ class AddShoppingItemBloc
     Emitter<AddShoppingItemState> emit,
   ) async {
     if (state.status.isValidated) {
+      // DatabaseChangedCompletionToggled
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
         await _databaseRepository.writeCollectionDoc(
           state.listName,
           ShoppingModel(title: state.changedValue.value),
         );
-
-        // DatabaseChangedCompletionToggled
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }

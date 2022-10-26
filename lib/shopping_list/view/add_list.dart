@@ -46,8 +46,8 @@ class AddList extends StatelessWidget {
           //  new item bloc
           BlocProvider(
             create: (context) => AddShoppingItemBloc(
-                // context.read<DatabaseRepositoryImpl>(),
-                ),
+              context.read<DatabaseRepositoryImpl>(),
+            ),
           ),
           BlocProvider(
             create: (context) => ListCubit(
@@ -72,7 +72,7 @@ class TextFieldForm extends StatefulWidget {
 
 class _TextFieldFormState extends State<TextFieldForm> {
   late TextEditingController _textEditingController;
-  late List<ShoppingModel> shopping_list;
+  late List<ShoppingModel> shoppingList;
   @override
   void initState() {
     super.initState();
@@ -122,12 +122,10 @@ class _TextFieldFormState extends State<TextFieldForm> {
       body: BlocConsumer<AddShoppingItemBloc, AddShoppingItemState>(
         listener: (context, state) {
           if (state.status.isSubmissionSuccess) {
-            var x = state.listName;
-            var y = ShoppingModel(title: state.changedValue.value);
-            context.read<ListCubit>().getLists();
-            context
-                .read<DatabaseBloc>()
-                .add(DatabaseFetchData(widget.listname));
+            var lista = context.read<DatabaseBloc>().state.listOfShoppingItems
+              ..add(ShoppingModel(title: state.changedValue.value));
+
+            context.read<DatabaseBloc>().add(DatabaseChanged(lista));
           }
         },
         buildWhen: (previous, current) =>
