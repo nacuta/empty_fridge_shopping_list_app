@@ -48,30 +48,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC9ggC7CGPMRraha4Go3t--sCc9prb2mts',
-    appId: '1:519871489490:web:b30dccb2ff83c8fa6d140b',
-    messagingSenderId: '519871489490',
-    projectId: 'mobilabshoppinglist',
-    authDomain: 'mobilabshoppinglist.firebaseapp.com',
-    storageBucket: 'mobilabshoppinglist.appspot.com',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    authDomain: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBI8f-mlqftxrJtpWLIh4E2BX5fMmVVHIY',
-    appId: '1:519871489490:android:45a5679f5eff18ce6d140b',
-    messagingSenderId: '519871489490',
-    projectId: 'mobilabshoppinglist',
-    storageBucket: 'mobilabshoppinglist.appspot.com',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD7rr6OetDN2Gt27YXRWZn8fhCmSBAkLtg',
-    appId: '1:519871489490:ios:cada634789f18c5f6d140b',
-    messagingSenderId: '519871489490',
-    projectId: 'mobilabshoppinglist',
-    storageBucket: 'mobilabshoppinglist.appspot.com',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
     iosClientId:
-        '519871489490-j9mahihncdu3bksijndm1q0g5vglgjgm.apps.googleusercontent.com',
-    iosBundleId: 'com.example.verygoodcore.mobi-lab-shopping-list-app',
+        '',
+    iosBundleId: '',
   );
 }
