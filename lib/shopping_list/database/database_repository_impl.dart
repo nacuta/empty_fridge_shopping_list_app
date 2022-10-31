@@ -34,4 +34,9 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   Future<List<ShoppingModel>> retriveDocumentItems(String docId) {
     return service.retriveDocumentItems(docId);
   }
+
+  @override
+  Future<void> deleteList(String docId) {
+    return service.deleteDocument(docId);
+  }
 }

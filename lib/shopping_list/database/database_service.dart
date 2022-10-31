@@ -67,4 +67,9 @@ class DatabaseService {
       SetOptions(merge: true),
     );
   }
+
+  //delete a document from the collection with all items
+  Future<void> deleteDocument(String docId) async {
+    await _db.collection(collectionPath).doc(docId).delete();
+  }
 }

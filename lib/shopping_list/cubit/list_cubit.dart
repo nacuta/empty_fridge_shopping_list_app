@@ -23,4 +23,24 @@ class ListCubit extends Cubit<ListState> {
       );
     }
   }
+
+  // remove list from database
+  Future<void> removeList(String name, int index) async {
+    final initialList = state.shoppingItemsList;
+    // ignore: cascade_invocations
+    initialList.removeAt(index);
+    final list = initialList;
+    try {
+      await _databaseRepository.deleteList(name);
+      emit(
+        state.copyWith(
+          shoppingItemsList: list,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(status: ListStateStatus.error),
+      );
+    }
+  }
 }

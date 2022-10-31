@@ -16,7 +16,12 @@ abstract class DatabaseRepository {
   // fetch all the documents from a specific collection
   Future<List<ListModel>> retrieveLists();
 
+  // write a document to a specific collection
   Future<void> writeCollectionDoc(String listName, ShoppingModel item);
 
+  // retrive documents from a specific collection
   Future<List<ShoppingModel>> retriveDocumentItems(String docId);
+
+  //delete list from a specific collection
+  Future<void> deleteList(String docId);
 }
