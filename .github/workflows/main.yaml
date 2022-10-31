@@ -1,4 +1,4 @@
-name: mobi_lab_shopping_list_app
+name: empty_fridge_shopping_list_app
 
 on: [pull_request, push]
 

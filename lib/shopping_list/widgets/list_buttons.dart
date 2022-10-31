@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 
 class ListButtons extends StatelessWidget {
-  const ListButtons({super.key});
+  const ListButtons({super.key, required this.listId});
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ListButtons extends StatelessWidget {
               onPressed: () {
                 //send to uncheck a list to bloc
 
-                cntBloc.add(DatabaseUncheckAll());
+                cntBloc.add(DatabaseUncheckAll(listId));
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -50,7 +51,12 @@ class ListButtons extends StatelessWidget {
                       final list = cntBloc.state.listOfShoppingItems
                           .where((element) => element.isCompleted!)
                           .toList();
-                      cntBloc.add(DatabaseRemoveAll(listToDelete: list));
+                      cntBloc.add(
+                        DatabaseRemoveAll(
+                          listToDelete: list,
+                          listId: listId,
+                        ),
+                      );
                     }
                   },
                 );

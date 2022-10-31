@@ -44,5 +44,9 @@ class EditItemQuantityInput extends EditItemEvent {
 }
 
 class EditItemSubmitted extends EditItemEvent {
-  const EditItemSubmitted();
+  const EditItemSubmitted(this.listId);
+  final String listId;
+
+  @override
+  List<Object> get props => [listId];
 }

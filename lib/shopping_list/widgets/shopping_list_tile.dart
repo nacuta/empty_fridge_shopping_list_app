@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/edit_item/view/edit_item_view.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/edit_item/view/edit_item_view.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 
 class SelectableListTile extends StatelessWidget {
   const SelectableListTile({
     super.key,
     required this.shoppingModel,
     required this.oddNumber,
+    required this.listId,
   });
 
   final ShoppingModel shoppingModel;
   final int oddNumber;
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<DatabaseBloc>();
     final isCheck = shoppingModel.isCompleted!;
 
     Color getColor(Set<MaterialState> states) {
@@ -45,6 +48,7 @@ class SelectableListTile extends StatelessWidget {
             onChanged: (bool? value) {
               context.read<DatabaseBloc>().add(
                     DatabaseChangedCompletionToggled(
+                      listId: listId,
                       isCompleted: !isCheck,
                       shopItem: shoppingModel,
                     ),
@@ -69,9 +73,13 @@ class SelectableListTile extends StatelessWidget {
         ),
         key: ValueKey(shoppingModel),
         onTap: () async {
-          await Navigator.of(context)
-              .push(EditItemPage.route(editShopping: shoppingModel));
-          context.read<DatabaseBloc>().add(DatabaseFetchData());
+          await Navigator.of(context).push(
+            EditItemPage.route(
+              editShopping: shoppingModel,
+              listId: listId,
+            ),
+          );
+          bloc.add(DatabaseFetchData(listId));
         },
         leading: Checkbox(
           checkColor: Theme.of(context).primaryColor,
@@ -81,6 +89,7 @@ class SelectableListTile extends StatelessWidget {
           onChanged: (bool? value) {
             context.read<DatabaseBloc>().add(
                   DatabaseChangedCompletionToggled(
+                    listId: listId,
                     isCompleted: !isCheck,
                     shopItem: shoppingModel,
                   ),

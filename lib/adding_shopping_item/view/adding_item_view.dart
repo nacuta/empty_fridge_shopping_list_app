@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
-import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
+import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/utils/constants.dart';
+import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
 
 class AddShoppingItem extends StatefulWidget {
-  const AddShoppingItem({super.key});
+  const AddShoppingItem({super.key, required this.listName});
+  final String listName;
 
   @override
   State<AddShoppingItem> createState() => _AddShoppingItemState();
@@ -28,7 +29,8 @@ class _AddShoppingItemState extends State<AddShoppingItem> {
 
     return BlocBuilder<AddShoppingItemBloc, AddShoppingItemState>(
       builder: (context, state) {
-        final addShopItemBloc = context.read<AddShoppingItemBloc>();
+        final addShopItemBloc = context.read<AddShoppingItemBloc>()
+          ..add(AddListName(widget.listName));
         return Align(
           alignment: Alignment.topLeft,
           child: Container(

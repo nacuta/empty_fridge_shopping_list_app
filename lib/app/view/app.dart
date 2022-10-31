@@ -9,11 +9,11 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/config/routes.dart';
-import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/utils/theme.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/config/routes.dart';
+import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/utils/theme.dart';
 
 class App extends StatelessWidget {
   const App({

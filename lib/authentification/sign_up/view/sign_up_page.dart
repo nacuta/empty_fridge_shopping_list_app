@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/login/view/login_page.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/sign_up/cubit/signup_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
-import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/login/view/login_page.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/sign_up/cubit/signup_cubit.dart';
+import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/utils/constants.dart';
+import 'package:empty_fridge_shopping_list_app/utils/logo_image.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -118,7 +118,8 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
-      // buildWhen: (previous, current) => previous.password != current.password,
+      // buildWhen: (previous, current)
+      //=> previous.password != current.password,
       builder: (context, state) {
         return SizedBox(
           width: Responsive.width(95, context),
@@ -140,7 +141,8 @@ class _PasswordInput extends StatelessWidget {
                 onPressed: () {
                   context.read<SignUpCubit>().passwordVisibility();
                 },
-                // If is non-password filed like emal the suffix icon will be null
+                // If is non-password filed like
+                // email the suffix icon will be null
                 icon: state.obscurePassword
                     ? const Icon(Icons.visibility_off)
                     : const Icon(Icons.visibility),

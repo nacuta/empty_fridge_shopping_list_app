@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_service.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:empty_fridge_shopping_list_app/models/user_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_service.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

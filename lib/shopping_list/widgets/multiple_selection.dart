@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/reordable_widget.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/widgets.dart';
-import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/reordable_widget.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/widgets.dart';
+import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
 
 class MultipleSelectItems extends StatefulWidget {
-  const MultipleSelectItems({super.key});
+  const MultipleSelectItems({super.key, required this.listId});
+  final String listId;
 
   @override
   State<MultipleSelectItems> createState() => _MultipleSelectItemsState();
@@ -29,7 +30,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
       child: Column(
         children: [
           // reordable list with to shop items
-          const ReordableWidget(),
+          ReordableWidget(listId: widget.listId),
           Container(
             height: 30,
             // padding: const EdgeInsets.all(8),
@@ -46,8 +47,9 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
           ),
           // buttons and divider
           if (checkedItemsList.isNotEmpty)
-            const ListButtons(
-              key: GlobalObjectKey(2),
+            ListButtons(
+              listId: widget.listId,
+              key: const GlobalObjectKey(2),
             ),
           if (checkedItemsList.isNotEmpty)
             const Divider(
@@ -65,6 +67,7 @@ class _MultipleSelectItemsState extends State<MultipleSelectItems> {
               key: ValueKey(checkedItemsList[i]),
               shoppingModel: checkedItemsList[i],
               oddNumber: i,
+              listId: widget.listId,
             ),
           ),
         ],

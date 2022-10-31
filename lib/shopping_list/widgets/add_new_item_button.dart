@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/add_to_list_widget.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/add_to_list_widget.dart';
 
 class AddNewItem extends StatefulWidget {
   const AddNewItem({super.key});
@@ -43,5 +41,5 @@ class _AddNewItemState extends State<AddNewItem> {
 }
 
 void _call(BuildContext context, ShoppingModel newItem) {
-  context.read<DatabaseBloc>().add(DatabaseWrite(newData: newItem));
+  // context.read<DatabaseBloc>().add(DatabaseWrite(listId: ,newData: newItem));
 }

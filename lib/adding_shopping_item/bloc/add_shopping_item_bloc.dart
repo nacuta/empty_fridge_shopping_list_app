@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
-import 'package:mobi_lab_shopping_list_app/adding_shopping_item/bloc/add_form_model.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository.dart';
+import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_form_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository.dart';
 
 part 'add_shopping_item_event.dart';
 part 'add_shopping_item_state.dart';
@@ -17,6 +17,7 @@ class AddShoppingItemBloc
       : super(const AddShoppingItemState()) {
     on<AddShoppingFormChanged>(_onTextFormChanged);
     on<AddShoppingFormSubmitted>(_onSubmitted);
+    on<AddListName>(_onListName);
   }
 
   final DatabaseRepository _databaseRepository;
@@ -39,17 +40,24 @@ class AddShoppingItemBloc
     Emitter<AddShoppingItemState> emit,
   ) async {
     if (state.status.isValidated) {
+      // DatabaseChangedCompletionToggled
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
-        await _databaseRepository.saveItemData(
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        await _databaseRepository.writeCollectionDoc(
+          state.listName,
           ShoppingModel(title: state.changedValue.value),
         );
-
-        // DatabaseChangedCompletionToggled
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
+  }
+
+  FutureOr<void> _onListName(
+    AddListName event,
+    Emitter<AddShoppingItemState> emit,
+  ) {
+    emit(state.copyWith(listName: event.listName));
   }
 }

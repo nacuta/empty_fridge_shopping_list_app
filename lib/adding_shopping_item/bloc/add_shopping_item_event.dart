@@ -16,3 +16,11 @@ class AddShoppingFormSubmitted extends AddShoppingItemEvent {
   @override
   List<Object?> get props => [];
 }
+
+class AddListName extends AddShoppingItemEvent {
+  AddListName(this.listName);
+
+  final String listName;
+  @override
+  List<Object?> get props => [];
+}

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/shopping_list_tile.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/bloc.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/shopping_list_tile.dart';
 
 class DismisibleWidget extends StatelessWidget {
   const DismisibleWidget({
     super.key,
     required this.listToShop,
     required this.index,
+    required this.listId,
   });
   final List<ShoppingModel> listToShop;
   final int index;
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,12 @@ class DismisibleWidget extends StatelessWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             //remove the item
-            context
-                .read<DatabaseBloc>()
-                .add(DatabaseRemoveOne(shopItemToDelete: listToShop[index]));
+            context.read<DatabaseBloc>().add(
+                  DatabaseRemoveOne(
+                    listId: listId,
+                    shopItemToDelete: listToShop[index],
+                  ),
+                );
             listToShop.removeAt(index);
           }
         },
@@ -73,6 +78,7 @@ class DismisibleWidget extends StatelessWidget {
           key: ValueKey(listToShop[index]),
           shoppingModel: listToShop[index],
           oddNumber: index,
+          listId: listId,
         ),
       ),
     );

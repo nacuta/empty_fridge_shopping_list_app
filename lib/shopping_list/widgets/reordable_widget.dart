@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/dismissible_widget.dart';
-import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/dismissible_widget.dart';
+import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
 
 class ReordableWidget extends StatefulWidget {
-  const ReordableWidget({super.key});
+  const ReordableWidget({super.key, required this.listId});
+  final String listId;
 
   @override
   State<ReordableWidget> createState() => _ReordableWidgetState();
@@ -42,6 +43,7 @@ class _ReordableWidgetState extends State<ReordableWidget> {
           key: ValueKey(listToShop[i].id),
           index: i,
           listToShop: listToShop,
+          listId: widget.listId,
         );
       },
       itemCount: listToShop.length,
