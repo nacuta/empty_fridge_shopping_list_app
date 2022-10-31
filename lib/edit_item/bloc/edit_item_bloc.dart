@@ -65,8 +65,8 @@ class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
     );
 
     try {
-      await databaseRepository.saveItemData(event.listId, changedItem);
       emit(state.copyWith(status: EditItemStatus.success));
+      await databaseRepository.saveItemData(event.listId, changedItem);
     } catch (e) {
       emit(state.copyWith(status: EditItemStatus.failure));
     }
