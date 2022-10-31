@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 
 class AddToListWidget extends StatefulWidget {
   const AddToListWidget({super.key});

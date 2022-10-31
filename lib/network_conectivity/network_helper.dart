@@ -1,5 +1,5 @@
 // import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:mobi_lab_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
+// import 'package:empty_fridge_shopping_list_app/network_conectivity/bloc/network_bloc.dart';
 
 // class NetworkHelper {
 //   static void observeNetwork() {

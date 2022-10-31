@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/edit_item/view/edit_item_view.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/edit_item/view/edit_item_view.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 
 class SelectableListTile extends StatelessWidget {
   const SelectableListTile({

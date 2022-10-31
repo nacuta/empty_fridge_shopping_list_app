@@ -3,7 +3,7 @@
 // import 'package:bloc/bloc.dart';
 // import 'package:meta/meta.dart';
 // import 'package:equatable/equatable.dart';
-// import 'package:mobi_lab_shopping_list_app/network_conectivity/network_helper.dart';
+// import 'package:empty_fridge_shopping_list_app/network_conectivity/network_helper.dart';
 
 // part 'network_event.dart';
 // part 'network_state.dart';

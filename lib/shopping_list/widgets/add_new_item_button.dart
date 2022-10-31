@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/widgets/add_to_list_widget.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/add_to_list_widget.dart';
 
 class AddNewItem extends StatefulWidget {
   const AddNewItem({super.key});

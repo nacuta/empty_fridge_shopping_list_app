@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mobi_lab_shopping_list_app/models/list.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database_repository.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository.dart';
 
 part 'list_state.dart';
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/login/view/login_page.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/reset_password/cubit/reset_password_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/utils/constants.dart';
-import 'package:mobi_lab_shopping_list_app/utils/logo_image.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/login/view/login_page.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/reset_password/cubit/reset_password_cubit.dart';
+import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/utils/constants.dart';
+import 'package:empty_fridge_shopping_list_app/utils/logo_image.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});

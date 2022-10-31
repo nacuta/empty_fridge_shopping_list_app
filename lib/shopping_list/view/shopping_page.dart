@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/l10n/l10n.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/cubit/list_cubit.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/database.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/view/add_list.dart';
-import 'package:mobi_lab_shopping_list_app/utils/utils.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/view/add_list.dart';
+import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
 
 /// [ShoppingPage] holds the [MultiBlocProvider] that provides
 /// accesability for [Bloc] into entire application.

@@ -1,5 +1,5 @@
-import 'package:mobi_lab_shopping_list_app/models/list.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 
 /// The interface for an API that provides
 /// access to a list of shopping items.

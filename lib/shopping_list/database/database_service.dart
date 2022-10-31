@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mobi_lab_shopping_list_app/models/list.dart';
-import 'package:mobi_lab_shopping_list_app/models/shopping_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
+import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

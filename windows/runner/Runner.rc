@@ -90,11 +90,11 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example.verygoodcore.mobi-lab-shopping-list-app" "\0"
-            VALUE "FileDescription", "mobi_lab_shopping_list_app" "\0"
+            VALUE "FileDescription", "empty_fridge_shopping_list_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "mobi_lab_shopping_list_app" "\0"
+            VALUE "InternalName", "empty_fridge_shopping_list_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example.verygoodcore.mobi-lab-shopping-list-app. All rights reserved." "\0"
-            VALUE "OriginalFilename", "mobi_lab_shopping_list_app.exe" "\0"
+            VALUE "OriginalFilename", "empty_fridge_shopping_list_app.exe" "\0"
             VALUE "ProductName", "Mobi Lab Shopping List App" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

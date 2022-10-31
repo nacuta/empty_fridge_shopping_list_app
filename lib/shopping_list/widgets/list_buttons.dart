@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobi_lab_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 
 class ListButtons extends StatelessWidget {
   const ListButtons({super.key, required this.listId});

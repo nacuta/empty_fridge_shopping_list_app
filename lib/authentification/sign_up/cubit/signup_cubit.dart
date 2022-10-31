@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobi_lab_shopping_list_app/authentification/auth/auth_repository.dart';
-import 'package:mobi_lab_shopping_list_app/models/email.dart';
-import 'package:mobi_lab_shopping_list_app/models/password.dart';
+import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
+import 'package:empty_fridge_shopping_list_app/models/email.dart';
+import 'package:empty_fridge_shopping_list_app/models/password.dart';
 
 part 'signup_state.dart';
 

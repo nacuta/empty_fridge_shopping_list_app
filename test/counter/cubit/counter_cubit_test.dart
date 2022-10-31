@@ -8,8 +8,8 @@
 // import 'package:bloc_test/bloc_test.dart';
 // import 'package:flutter_test/flutter_test.dart';
 
-// import 'package:mobi_lab_shopping_list_app/counter/counter.dart';
-// import 'package:mobi_lab_shopping_list_app/shopping/cubit/shopping_cubit.dart';
+// import 'package:empty_fridge_shopping_list_app/counter/counter.dart';
+// import 'package:empty_fridge_shopping_list_app/shopping/cubit/shopping_cubit.dart';
 
 // void main() {
 //   group('ShoppingCubit', () {

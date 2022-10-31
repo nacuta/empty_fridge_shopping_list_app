@@ -6,7 +6,7 @@
 // // https://opensource.org/licenses/MIT.
 
 // import 'package:flutter_test/flutter_test.dart';
-// import 'package:mobi_lab_shopping_list_app/shopping_list/view/shopping_page.dart';
+// import 'package:empty_fridge_shopping_list_app/shopping_list/view/shopping_page.dart';
 
 // void main() {
 //   group('App', () {

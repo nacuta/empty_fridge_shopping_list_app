@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobi_lab_shopping_list_app/models/user_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/user_model.dart';
 
 class AuthRepository {
   AuthRepository({

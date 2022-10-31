@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(mobi_lab_shopping_list_app LANGUAGES CXX)
+project(empty_fridge_shopping_list_app LANGUAGES CXX)
 
-set(BINARY_NAME "mobi_lab_shopping_list_app")
+set(BINARY_NAME "empty_fridge_shopping_list_app")
 
 cmake_policy(SET CMP0063 NEW)
 
