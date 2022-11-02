@@ -33,12 +33,12 @@ class ListCubit extends Cubit<ListState> {
     // initialList.removeAt(index);
     final list = initialList;
     try {
-      await _databaseRepository.deleteList(name);
       emit(
         state.copyWith(
           shoppingItemsList: list,
         ),
       );
+      await _databaseRepository.deleteList(name);
     } catch (e) {
       emit(
         state.copyWith(status: ListStateStatus.error),
