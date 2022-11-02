@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository.dart';
+import 'package:equatable/equatable.dart';
 
 part 'list_state.dart';
 
@@ -26,9 +29,8 @@ class ListCubit extends Cubit<ListState> {
 
   // remove list from database
   Future<void> removeList(String name, int index) async {
-    final initialList = state.shoppingItemsList;
-    // ignore: cascade_invocations
-    initialList.removeAt(index);
+    final initialList = state.shoppingItemsList..removeAt(index);
+    // initialList.removeAt(index);
     final list = initialList;
     try {
       await _databaseRepository.deleteList(name);

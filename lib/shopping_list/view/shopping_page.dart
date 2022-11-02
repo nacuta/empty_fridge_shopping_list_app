@@ -133,9 +133,9 @@ class _ShoppingViewState extends State<ShoppingView> {
                                       return AlertDialog(
                                         title:
                                             const Text('Delete Confirmation'),
-                                        // ignore: lines_longer_than_80_chars
                                         content: const Text(
-                                          'Are you sure you want to delete this item?',
+                                          'Are you sure you want to delete'
+                                          ' this list?',
                                           style: TextStyle(color: Colors.black),
                                         ),
                                         actions: <Widget>[
@@ -308,9 +308,15 @@ class _ListDialogState extends State<ListDialog> {
             title: const Text('List Name'),
             content: TextField(
               controller: _textEditingController,
-              decoration: const InputDecoration(hintText: 'New List'),
+              decoration: const InputDecoration(hintText: 'Add New List'),
             ),
             actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Return'),
+              ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
@@ -323,6 +329,7 @@ class _ListDialogState extends State<ListDialog> {
                 child: const Text('Submit'),
               ),
             ],
+            actionsAlignment: MainAxisAlignment.spaceAround,
           ),
         ),
       ),

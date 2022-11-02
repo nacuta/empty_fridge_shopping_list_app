@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/view/add_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewList extends StatelessWidget {
   const NewList({super.key});
@@ -48,8 +48,11 @@ class _NewListFormState extends State<NewListForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
+            style: const TextStyle(color: Colors.black),
             controller: _textEditingController,
-            decoration: const InputDecoration(hintText: 'New List'),
+            decoration: const InputDecoration(
+              hintText: 'New List',
+            ),
           ),
           TextButton(
             onPressed: () {
