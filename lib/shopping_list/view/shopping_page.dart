@@ -1,3 +1,4 @@
+import 'package:empty_fridge_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
@@ -14,6 +15,9 @@ class ShoppingPage extends StatelessWidget {
   const ShoppingPage({super.key});
 
   static MaterialPage<void> page() => const MaterialPage(child: ShoppingPage());
+  static MaterialPageRoute<void> route() => MaterialPageRoute(
+        builder: (context) => const ShoppingPage(),
+      );
   @override
   Widget build(BuildContext context) {
     // createList(listx);
@@ -112,13 +116,6 @@ class _ShoppingViewState extends State<ShoppingView> {
                                 onDismissed: (direction) {
                                   if (direction ==
                                       DismissDirection.endToStart) {
-                                    //remove the item
-                                    // context.read<DatabaseBloc>().add(
-                                    //       DatabaseRemoveDocumentFromList(
-                                    //         listId: listId,
-                                    //       ),
-                                    //     );
-                                    // listToShop.removeAt(index);
                                     context.read<ListCubit>().removeList(
                                           state.shoppingItemsList[index].listId,
                                           index,
@@ -220,32 +217,10 @@ class _ShoppingViewState extends State<ShoppingView> {
                     )
                   : const Center(child: Text('Add List')),
           floatingActionButton: IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              //   showDialog(
-              //     context: context,
-              //     builder: (context) => AlertDialog(
-              //       title: const Text('List Name'),
-              //       content: TextField(
-              //         controller: _textEditingController,
-              //         decoration: const InputDecoration(
-              //          hintText: 'New List'),
-              //       ),
-              //       actions: [
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pushReplacement(
-              //               AddList.route(_textEditingController.text),
-              //             );
-              //           },
-              //           child: const Text('Submit'),
-              //         ),
-              //       ],
-              //     ),
-              //   );
-              Navigator.of(context).push<void>(ListDialog.route());
-            },
-          ),
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push<void>(ListDialog.route());
+              }),
         );
       },
     );
@@ -307,6 +282,7 @@ class _ListDialogState extends State<ListDialog> {
           body: AlertDialog(
             title: const Text('List Name'),
             content: TextField(
+              style: const TextStyle(color: Colors.black),
               controller: _textEditingController,
               decoration: const InputDecoration(hintText: 'Add New List'),
             ),
