@@ -92,7 +92,9 @@ class _TextFieldFormState extends State<TextFieldForm> {
     return WillPopScope(
       onWillPop: () {
         //trigger leaving and use own data
-        Navigator.of(context).pushReplacement(ShoppingPage.route());
+        Navigator.of(context).pushReplacement(
+          ShoppingPage.route(),
+        );
         //we need to return a future
         return Future.value(false);
       },
