@@ -1,4 +1,5 @@
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
@@ -187,7 +188,7 @@ class _ShoppingViewState extends State<ShoppingView> {
                                     );
                                     Navigator.of(context).push(
                                       AddList.route(
-                                        state.shoppingItemsList[index].listId,
+                                        state.shoppingItemsList[index],
                                         listShoppingModels2,
                                       ),
                                     );
@@ -297,7 +298,7 @@ class _ListDialogState extends State<ListDialog> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     AddList.route(
-                      _textEditingController.text,
+                      ListModel(listId: _textEditingController.text),
                       [],
                     ),
                   );

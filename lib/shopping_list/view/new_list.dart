@@ -56,12 +56,12 @@ class _NewListFormState extends State<NewListForm> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).push(
-                AddList.route(
-                  _textEditingController.text,
-                  [],
-                ),
-              );
+              // Navigator.of(context).push(
+              //   AddList.route(
+              //     _textEditingController.text,
+              //     [],
+              //   ),
+              // );
             },
             child: const Text('Submit'),
           ),

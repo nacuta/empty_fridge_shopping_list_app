@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/edit_item/bloc/edit_item_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository_impl.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// The [EditItemPage] class is a shallow widget to pass the BlocProvider to the
 /// EditItemView
