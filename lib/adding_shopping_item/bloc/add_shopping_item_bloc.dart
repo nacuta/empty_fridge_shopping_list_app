@@ -7,6 +7,7 @@ import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_r
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 part 'add_shopping_item_event.dart';
 part 'add_shopping_item_state.dart';
@@ -41,12 +42,25 @@ class AddShoppingItemBloc
   ) async {
     if (state.status.isValidated) {
       // DatabaseChangedCompletionToggled
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(
+        state.copyWith(
+          status: FormzStatus.submissionInProgress,
+        ),
+      );
       try {
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        final newShoppingitem = ShoppingModel(
+          title: state.changedValue.value,
+          id: const Uuid().v4(),
+        );
+        emit(
+          state.copyWith(
+            newItem: newShoppingitem,
+            status: FormzStatus.submissionSuccess,
+          ),
+        );
         await _databaseRepository.writeCollectionDoc(
           state.listName,
-          ShoppingModel(title: state.changedValue.value),
+          newShoppingitem,
         );
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));

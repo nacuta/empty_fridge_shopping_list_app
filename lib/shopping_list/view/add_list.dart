@@ -2,6 +2,7 @@ import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_sho
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/view/adding_item_view.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
@@ -17,16 +18,17 @@ import 'package:formz/formz.dart';
 class AddList extends StatelessWidget {
   const AddList({
     super.key,
-    required this.listname,
+    required this.listModel,
     required this.lista,
   });
-  final String listname;
+  final ListModel listModel;
   final List<ShoppingModel> lista;
 
-  static MaterialPageRoute<void> route(String _ids, List<ShoppingModel> list) =>
+  static MaterialPageRoute<void> route(
+          ListModel _ids, List<ShoppingModel> list) =>
       MaterialPageRoute(
         builder: (context) => AddList(
-          listname: _ids,
+          listModel: _ids,
           lista: list,
         ),
       );
@@ -55,7 +57,7 @@ class AddList extends StatelessWidget {
             ),
           ),
         ],
-        child: TextFieldForm(listname: listname, lista: lista),
+        child: TextFieldForm(listname: listModel, lista: lista),
       ),
     );
   }
@@ -63,7 +65,7 @@ class AddList extends StatelessWidget {
 
 class TextFieldForm extends StatefulWidget {
   const TextFieldForm({super.key, required this.listname, required this.lista});
-  final String listname;
+  final ListModel listname;
   final List<ShoppingModel> lista;
 
   @override
@@ -125,7 +127,7 @@ class _TextFieldFormState extends State<TextFieldForm> {
           bottom: PreferredSize(
             preferredSize: const Size(40, 60),
             child: AddShoppingItem(
-              listName: widget.listname,
+              listName: widget.listname.listId,
             ),
           ),
         ),
@@ -136,7 +138,7 @@ class _TextFieldFormState extends State<TextFieldForm> {
                   .read<DatabaseBloc>()
                   .state
                   .listOfShoppingItems
-                ..add(ShoppingModel(title: state.changedValue.value));
+                ..add(state.newItem);
 
               context.read<DatabaseBloc>().add(DatabaseChanged(lista));
             }
@@ -204,7 +206,8 @@ class _TextFieldFormState extends State<TextFieldForm> {
                       children: [
                         Expanded(
                           flex: 5,
-                          child: MultipleSelectItems(listId: widget.listname),
+                          child: MultipleSelectItems(
+                              listId: widget.listname.listId),
                         ),
                         Container(
                           height: 50,
