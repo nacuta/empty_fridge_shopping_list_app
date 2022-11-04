@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:formz/formz.dart';
-import 'package:meta/meta.dart';
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_form_model.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:meta/meta.dart';
 
 part 'add_shopping_item_event.dart';
 part 'add_shopping_item_state.dart';

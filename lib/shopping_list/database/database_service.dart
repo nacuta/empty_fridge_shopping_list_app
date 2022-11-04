@@ -36,7 +36,7 @@ class DatabaseService {
         .update({item.id: FieldValue.delete()});
   }
 
-  //connects to database and delete item provided
+  //connects to database and get list of all DocumentSnapshot
   Future<List<ListModel>> getLists() async {
     final snapshot = await _db.collection(collectionPath).get();
     return snapshot.docs.map(ListModel.fromDocumentSnapshot).toList();
@@ -44,18 +44,11 @@ class DatabaseService {
 
   Future<List<ShoppingModel>> retriveDocumentItems(String docId) async {
     final shot = await _db.collection(collectionPath).doc(docId).get();
-    // print(shot);
     // ignore: omit_local_variable_types
     final List<ShoppingModel> list = [];
     shot.data()!.forEach((key, value) {
       final doc = value as Map<String, dynamic>;
       final listElements = ShoppingModel.fromJson(doc);
-      // final x = ShoppingModel(
-      //   title: doc['title'] as String,
-      //   id: doc['id'] as String,
-      //   quantity: doc['quantity'] as int,
-      //   isCompleted: doc['isCompleted'] as bool,
-      // );
       list.add(listElements);
     });
     return list;
@@ -66,5 +59,10 @@ class DatabaseService {
       {item.id: item.toJson()},
       SetOptions(merge: true),
     );
+  }
+
+  //delete a document from the collection with all items
+  Future<void> deleteDocument(String docId) async {
+    await _db.collection(collectionPath).doc(docId).delete();
   }
 }
