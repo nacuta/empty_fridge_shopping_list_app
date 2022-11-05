@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/reordable_widget.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/widgets/widgets.dart';
 import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MultipleSelectItems extends StatefulWidget {
   const MultipleSelectItems({super.key, required this.listId});

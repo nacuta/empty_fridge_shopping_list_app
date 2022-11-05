@@ -70,7 +70,8 @@ class _ShoppingViewState extends State<ShoppingView> {
           previous.shoppingItemsList.length != current.shoppingItemsList.length,
       builder: (context, state) {
         final l10n = context.l10n;
-        final listShoppingModels = <ShoppingModel>[];
+        int counter = 0;
+        var listShoppingModels = <ShoppingModel>[];
         return Scaffold(
           drawer: _drawer(context),
           appBar: AppBar(
@@ -82,10 +83,10 @@ class _ShoppingViewState extends State<ShoppingView> {
             //     icon: Icon(Icons.shopping_bag)),
             title: Text(l10n.shoppingAppBarTitle),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.cached),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(Icons.cached),
+              // ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.person_add),
@@ -102,128 +103,118 @@ class _ShoppingViewState extends State<ShoppingView> {
                   child: CircularProgressIndicator(),
                 )
               : (state.shoppingItemsList.isNotEmpty)
-                  ? Column(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: ListView.builder(
-                            itemCount: state.shoppingItemsList.length,
-                            itemBuilder: (context, index) {
-                              final listList =
-                                  state.shoppingItemsList[index].list;
-                              listList!.forEach(
-                                (key, value) {
-                                  final doc = value as Map<String, dynamic>;
-                                  final listElements =
-                                      ShoppingModel.fromJson(doc);
-
-                                  listShoppingModels.add(listElements);
-                                },
-                              );
-                              final listbad = listShoppingModels.isShop();
-                              return Dismissible(
-                                key: Key(listShoppingModels[index].id),
-                                onDismissed: (direction) {
-                                  if (direction ==
-                                      DismissDirection.endToStart) {
-                                    context.read<ListCubit>().removeList(
-                                          state.shoppingItemsList[index].listId,
-                                          index,
-                                        );
-                                  }
-                                },
-                                direction: DismissDirection.endToStart,
-                                confirmDismiss: (direction) async {
-                                  return showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title:
-                                            const Text('Delete Confirmation'),
-                                        content: const Text(
-                                          'Are you sure you want to delete'
-                                          ' this list?',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(true),
-                                            child: const Text('Delete'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context)
-                                                    .pop(false),
-                                            child: const Text('Cancel'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                // add background when is dismiss the item.
-                                background: ColoredBox(
-                                  color: Colors.red,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const [
-                                        Icon(Icons.delete, color: Colors.white),
-                                        Text(
-                                          'Move to trash',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
+                  ? RefreshIndicator(
+                      onRefresh: _refreshIndicator,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: ListView.builder(
+                              itemCount: state.shoppingItemsList.length,
+                              itemBuilder: (context, index) {
+                                final listList =
+                                    state.shoppingItemsList[index].list;
+                                final listbad = listList?.isShop();
+                                return Dismissible(
+                                  key: Key(
+                                    state.shoppingItemsList[index].listId,
                                   ),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    final listShoppingModels2 =
-                                        <ShoppingModel>[];
-                                    final listList =
-                                        state.shoppingItemsList[index].list;
-                                    listList!.forEach(
-                                      (key, value) {
-                                        final doc =
-                                            value as Map<String, dynamic>;
-                                        final listElements =
-                                            ShoppingModel.fromJson(doc);
-
-                                        listShoppingModels2.add(listElements);
+                                  onDismissed: (direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                      context.read<ListCubit>().removeList(
+                                            state.shoppingItemsList[index]
+                                                .listId,
+                                            index,
+                                          );
+                                    }
+                                  },
+                                  direction: DismissDirection.endToStart,
+                                  confirmDismiss: (direction) async {
+                                    return showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              const Text('Delete Confirmation'),
+                                          content: const Text(
+                                            'Are you sure you want to delete'
+                                            ' this list?',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: const Text('Delete'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text('Cancel'),
+                                            ),
+                                          ],
+                                        );
                                       },
                                     );
-                                    Navigator.of(context).push(
-                                      AddList.route(
-                                        state.shoppingItemsList[index],
-                                        listShoppingModels2,
-                                      ),
-                                    );
                                   },
-                                  child: Card(
-                                    child: ListTile(
-                                      title: Text(
-                                        state.shoppingItemsList[index].listId,
-                                        style: TextStyle(
-                                          color: Colors.grey.shade900,
-                                        ),
+                                  // add background when is dismiss the item.
+                                  background: ColoredBox(
+                                    color: Colors.red,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: const [
+                                          Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            'Move to trash',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                      trailing: Text(
-                                        '${listbad.length}/${listList.length}',
-                                        style: TextStyle(
-                                          color: Colors.grey.shade900,
+                                    ),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        AddList.route(
+                                          state.shoppingItemsList[index],
+                                          listList!,
+                                        ),
+                                      );
+                                    },
+                                    child: Card(
+                                      child: ListTile(
+                                        title: Text(
+                                          state.shoppingItemsList[index].listId,
+                                          style: TextStyle(
+                                            color: Colors.grey.shade900,
+                                          ),
+                                        ),
+                                        trailing: Text(
+                                          '${listbad?.length}/${listList?.length}',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade900,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   : const Center(child: Text('Add List')),
           floatingActionButton: IconButton(
@@ -234,6 +225,10 @@ class _ShoppingViewState extends State<ShoppingView> {
         );
       },
     );
+  }
+
+  Future<void> _refreshIndicator() {
+    return context.read<ListCubit>().getLists();
   }
 }
 
@@ -283,43 +278,36 @@ class _ListDialogState extends State<ListDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ListCubit(
-        DatabaseRepositoryImpl(),
-      ),
-      child: Builder(
-        builder: (context) => Scaffold(
-          body: AlertDialog(
-            title: const Text('List Name'),
-            content: TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: _textEditingController,
-              decoration: const InputDecoration(hintText: 'Add New List'),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Return'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    AddList.route(
-                      ListModel(
-                        listId: _textEditingController.text,
-                      ),
-                      [],
-                    ),
-                  );
-                },
-                child: const Text('Submit'),
-              ),
-            ],
-            actionsAlignment: MainAxisAlignment.spaceAround,
-          ),
+    return Scaffold(
+      body: AlertDialog(
+        title: const Text('List Name'),
+        content: TextField(
+          style: const TextStyle(color: Colors.black),
+          controller: _textEditingController,
+          decoration: const InputDecoration(hintText: 'Add New List'),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Return'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                AddList.route(
+                  ListModel(
+                    listId: _textEditingController.text,
+                  ),
+                  [],
+                ),
+              );
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+        actionsAlignment: MainAxisAlignment.spaceAround,
       ),
     );
   }

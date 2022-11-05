@@ -5,15 +5,19 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:flow_builder/flow_builder.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/bloc.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/auth_repository.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/config/routes.dart';
 import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
 import 'package:empty_fridge_shopping_list_app/utils/theme.dart';
+import 'package:flow_builder/flow_builder.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -52,9 +56,28 @@ class AppView extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: FlowBuilder<AppStatus>(
-        state: context.select((AuthBloc bloc) => bloc.state.status),
-        onGeneratePages: onGenerateAppViewPages,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => DatabaseBloc(
+              DatabaseRepositoryImpl(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ListCubit(
+              DatabaseRepositoryImpl(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => AddShoppingItemBloc(
+              DatabaseRepositoryImpl(),
+            ),
+          ),
+        ],
+        child: FlowBuilder<AppStatus>(
+          state: context.select((AuthBloc bloc) => bloc.state.status),
+          onGeneratePages: onGenerateAppViewPages,
+        ),
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_b
 import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
 import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
-import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/bloc/database_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository_impl.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/view/shopping_page.dart';
@@ -39,23 +38,23 @@ class AddList extends StatelessWidget {
       create: (context) => DatabaseRepositoryImpl(),
       child: MultiBlocProvider(
         providers: [
-          // Database connection bloc
+          // // Database connection bloc
           BlocProvider(
             create: (context) => DatabaseBloc(
               context.read<DatabaseRepositoryImpl>(),
             ),
           ),
           //  new item bloc
-          BlocProvider(
-            create: (context) => AddShoppingItemBloc(
-              context.read<DatabaseRepositoryImpl>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => ListCubit(
-              DatabaseRepositoryImpl(),
-            ),
-          ),
+          // BlocProvider(
+          //   create: (context) => AddShoppingItemBloc(
+          //     context.read<DatabaseRepositoryImpl>(),
+          //   ),
+          // ),
+          // BlocProvider(
+          //   create: (context) => ListCubit(
+          //     DatabaseRepositoryImpl(),
+          //   ),
+          // ),
         ],
         child: TextFieldForm(listname: listModel, lista: lista),
       ),
@@ -110,10 +109,10 @@ class _TextFieldFormState extends State<TextFieldForm> {
           //     icon: Icon(Icons.shopping_bag)),
           title: Text(l10n.shoppingAppBarTitle),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.cached),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(Icons.cached),
+            // ),
             IconButton(
               onPressed: () {},
               icon: const Icon(Icons.person_add),
@@ -154,87 +153,14 @@ class _TextFieldFormState extends State<TextFieldForm> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state.status == DatabaseStateStatus.success) {
                   if (state.listOfShoppingItems.isEmpty) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: SizedBox(
-                              height: 200,
-                              width: 300,
-                              child: Card(
-                                color: Colors.grey.shade500,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(18),
-                                      child: Text(
-                                        'Adding Items',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(18),
-                                      child: Text(
-                                        'Tap "Add item" to type in items',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                    return const EmptyContainer();
                   } else {
                     final list = state.listOfShoppingItems.isToShop();
                     final listbad = state.listOfShoppingItems.isShop();
-
-                    return Column(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: MultipleSelectItems(
-                              listId: widget.listname.listId),
-                        ),
-                        Container(
-                          height: 50,
-                          width: Responsive.width(100, context),
-                          color: Colors.black,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Items in cart: ${list.length}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(color: Colors.white),
-                              ),
-                              Text(
-                                'Items in list: ${listbad.length}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    return ListItems(
+                      listname: widget.listname,
+                      list: list,
+                      listbad: listbad,
                     );
                   }
                 } else {
@@ -292,6 +218,56 @@ class EmptyContainer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ListItems extends StatelessWidget {
+  const ListItems({
+    super.key,
+    required this.listname,
+    required this.list,
+    required this.listbad,
+  });
+  final ListModel listname;
+  final List<ShoppingModel> list;
+  final List<ShoppingModel> listbad;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 5,
+          child: MultipleSelectItems(
+            listId: listname.listId,
+          ),
+        ),
+        Container(
+          height: 50,
+          width: Responsive.width(100, context),
+          color: Colors.black,
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Items in cart: ${list.length}',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Colors.white),
+              ),
+              Text(
+                'Items in list: ${listbad.length}',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
