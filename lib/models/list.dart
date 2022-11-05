@@ -20,6 +20,10 @@ class ListModel extends Equatable {
   //   quantity: doc.data()!['quantity'] as int,
   //   isCompleted: doc.data()!['isCompleted'] as bool,
   // );
+  const ListModel.empty()
+      : list = const {},
+        listId = '',
+        listName = '';
 
   final String listId;
   final Map<String, dynamic>? list;

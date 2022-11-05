@@ -1,14 +1,14 @@
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/adding_shopping_item.dart';
-import 'package:empty_fridge_shopping_list_app/models/list.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/authentification/auth/bloc/auth_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/l10n/l10n.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/cubit/list_cubit.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/view/add_list.dart';
 import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// [ShoppingPage] holds the [MultiBlocProvider] that provides
 /// accesability for [Bloc] into entire application.
@@ -22,10 +22,19 @@ class ShoppingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // createList(listx);
-    return BlocProvider(
-      create: (context) => ListCubit(
-        DatabaseRepositoryImpl(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ListCubit(
+            DatabaseRepositoryImpl(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AddShoppingItemBloc(
+            DatabaseRepositoryImpl(),
+          ),
+        ),
+      ],
       child: const ShoppingView(),
     );
   }
@@ -55,7 +64,7 @@ class _ShoppingViewState extends State<ShoppingView> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ListCubit>().getLists();
+    // context.read<ListCubit>().getLists();
     return BlocBuilder<ListCubit, ListState>(
       buildWhen: (previous, current) =>
           previous.shoppingItemsList.length != current.shoppingItemsList.length,
@@ -298,7 +307,9 @@ class _ListDialogState extends State<ListDialog> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     AddList.route(
-                      ListModel(listId: _textEditingController.text),
+                      ListModel(
+                        listId: _textEditingController.text,
+                      ),
                       [],
                     ),
                   );

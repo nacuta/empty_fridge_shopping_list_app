@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_form_model.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/models/shopping_model.dart';
 import 'package:empty_fridge_shopping_list_app/shopping_list/database/database_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -59,7 +60,7 @@ class AddShoppingItemBloc
           ),
         );
         await _databaseRepository.writeCollectionDoc(
-          state.listName,
+          state.listName.listId,
           newShoppingitem,
         );
       } catch (_) {

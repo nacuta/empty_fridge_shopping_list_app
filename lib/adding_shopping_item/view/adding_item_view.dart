@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:empty_fridge_shopping_list_app/adding_shopping_item/bloc/add_shopping_item_bloc.dart';
+import 'package:empty_fridge_shopping_list_app/models/list.dart';
 import 'package:empty_fridge_shopping_list_app/utils/constants.dart';
 import 'package:empty_fridge_shopping_list_app/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddShoppingItem extends StatefulWidget {
   const AddShoppingItem({super.key, required this.listName});
-  final String listName;
+  final ListModel listName;
 
   @override
   State<AddShoppingItem> createState() => _AddShoppingItemState();

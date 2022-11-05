@@ -5,13 +5,13 @@ class AddShoppingItemState extends Equatable {
     this.newItem = const ShoppingModel.empty(),
     this.status = FormzStatus.pure,
     this.changedValue = const AddFormModel.pure(),
-    this.listName = 'New List',
+    this.listName = const ListModel.empty(),
   });
 
   AddShoppingItemState copyWith({
     FormzStatus? status,
     AddFormModel? changedValue,
-    String? listName,
+    ListModel? listName,
     ShoppingModel? newItem,
   }) {
     return AddShoppingItemState(
@@ -24,7 +24,7 @@ class AddShoppingItemState extends Equatable {
 
   final FormzStatus status;
   final AddFormModel changedValue;
-  final String listName;
+  final ListModel listName;
   final ShoppingModel newItem;
 
   @override

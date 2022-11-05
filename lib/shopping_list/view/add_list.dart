@@ -127,7 +127,7 @@ class _TextFieldFormState extends State<TextFieldForm> {
           bottom: PreferredSize(
             preferredSize: const Size(40, 60),
             child: AddShoppingItem(
-              listName: widget.listname.listId,
+              listName: widget.listname,
             ),
           ),
         ),

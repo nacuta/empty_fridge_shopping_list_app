@@ -20,7 +20,7 @@ class AddShoppingFormSubmitted extends AddShoppingItemEvent {
 class AddListName extends AddShoppingItemEvent {
   AddListName(this.listName);
 
-  final String listName;
+  final ListModel listName;
   @override
   List<Object?> get props => [];
 }
